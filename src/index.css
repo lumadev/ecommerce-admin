@@ -1,0 +1,215 @@
+@import "tailwindcss";
+
+/* Tokens (design system) */
+:root {
+  --background: 220 20% 6%;
+  --foreground: 200 20% 92%;
+
+  --card: 220 18% 10%;
+  --card-foreground: 200 20% 92%;
+
+  --popover: 220 18% 10%;
+  --popover-foreground: 200 20% 92%;
+
+  --primary: 185 80% 55%;
+  --primary-foreground: 220 20% 6%;
+
+  --secondary: 220 15% 16%;
+  --secondary-foreground: 200 20% 85%;
+
+  --muted: 220 15% 14%;
+  --muted-foreground: 215 12% 55%;
+
+  --accent: 280 70% 60%;
+  --accent-foreground: 200 20% 95%;
+
+  --destructive: 0 72% 55%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 220 15% 18%;
+  --input: 220 15% 18%;
+  --ring: 185 80% 55%;
+
+  --radius: 0.75rem;
+
+  --glow-primary: 185 80% 55%;
+  --glow-accent: 280 70% 60%;
+
+  --gradient-hero: linear-gradient(
+    135deg,
+    hsl(220 20% 6%) 0%,
+    hsl(220 18% 12%) 50%,
+    hsl(230 20% 8%) 100%
+  );
+
+  --gradient-card: linear-gradient(
+    145deg,
+    hsl(220 18% 12%) 0%,
+    hsl(220 18% 8%) 100%
+  );
+
+  --gradient-cta: linear-gradient(
+    135deg,
+    hsl(185 80% 55%) 0%,
+    hsl(280 70% 60%) 100%
+  );
+
+  --shadow-glow: 0 0 20px hsl(185 80% 55% / 0.15);
+  --shadow-glow-strong: 0 0 40px hsl(185 80% 55% / 0.25);
+
+  --sidebar-background: 220 18% 8%;
+  --sidebar-foreground: 200 20% 85%;
+  --sidebar-primary: 185 80% 55%;
+  --sidebar-primary-foreground: 220 20% 6%;
+  --sidebar-accent: 220 15% 16%;
+  --sidebar-accent-foreground: 200 20% 85%;
+  --sidebar-border: 220 15% 18%;
+  --sidebar-ring: 185 80% 55%;
+}
+
+/* Base styles */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: hsl(var(--border) / var(--tw-border-opacity, 1));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: Inter, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: Orbitron, sans-serif;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+@theme {
+  --font-display: "Orbitron", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  /* base */
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  /* primary */
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  /* secondary */
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  /* destructive */
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  /* muted */
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  /* accent */
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  /* card */
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  /* popover */
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  /* sidebar */
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+}
+
+@layer utilities {
+  .text-gradient-primary {
+    background: var(--gradient-cta);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-card {
+    background: var(--gradient-card);
+  }
+
+  .bg-primary {
+    background: var(--gradient-cta);
+    color: hsl(var(--primary-foreground));
+  }
+
+  /* hover automático no botão */
+  .hover\:bg-primary\/90:hover {
+    opacity: 0.9;
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* =========================
+   * INPUTS / FOCUS
+   * ========================= */
+
+  .focus\:ring-primary:focus {
+    box-shadow:
+      0 0 0 1px hsl(var(--primary)),
+      var(--shadow-glow);
+  }
+
+  .focus\:border-primary:focus {
+    border-color: hsl(var(--primary));
+  }
+
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .bg-gradient-card {
+    background: var(--gradient-card);
+  }
+
+  .bg-gradient-cta {
+    background: var(--gradient-cta);
+  }
+
+  .shadow-2xl {
+    box-shadow:
+      0 25px 50px -12px rgb(0 0 0 / 0.25),
+      var(--shadow-glow-strong);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-glow-strong {
+    box-shadow: var(--shadow-glow-strong);
+  }
+
+  .border-glow {
+    border-color: hsl(var(--primary) / 0.3);
+  }
+}
