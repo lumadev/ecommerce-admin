@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
 import { adminNavigationItems } from "@/features//admin-navigation";
 import { useVariants } from "@/features/variant/hooks/useVariants";
+import CurrentUserProfile from "./CurrentUserProfile";
 export type { AdminSection } from "@/features//admin-navigation";
 import {
   Sidebar,
@@ -55,6 +56,7 @@ const AdminSidebar = (_props: AdminSidebarProps) => {
       </SidebarHeader>
 
       <SidebarContent>
+        <CurrentUserProfile collapsed={collapsed} />
         <SidebarGroup className={collapsed ? "px-2 pt-4" : "px-3 pt-4 pr-6"}>
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
