@@ -14,6 +14,8 @@ import AdminMerchants from "@/features/merchant/AdminMerchants";
 import EditMerchantPage from "@/features/merchant/EditMerchantPage";
 import AdminCustomers from "@/features/customer/AdminCustomers";
 import AdminVariants from "@/features/variant/AdminVariants";
+import RoadmapPage from "@/features/roadmap/RoadmapPage";
+import NotFound from "@/pages/NotFound";
 
 const RequireAdmin = () => {
   const { isAuthenticated, isCheckingSession } = useAdminAuth();
@@ -72,11 +74,12 @@ export const AdminRoutes = () => (
         <Route path="destaques" element={<AdminHighlights />} />
         <Route path="clientes" element={<AdminCustomers />} />
         <Route path="variantes" element={<AdminVariants />} />
+        <Route path="roadmap" element={<RoadmapPage />} />
         <Route path="lojas" element={<RequireSuperAdmin />}>
           <Route index element={<AdminMerchants />} />
           <Route path=":merchantId/editar" element={<EditMerchantPage />} />
         </Route>
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   </AdminAuthProvider>
