@@ -16,15 +16,15 @@ import EditMerchantAdminDialog from "./form/EditMerchantAdminDialog";
 
 interface Props {
   merchantId: string;
+  admins: MerchantAdmin[];
 }
 
-const MerchantAdminsSection = ({ merchantId }: Props) => {
+const MerchantAdminsSection = ({ merchantId, admins }: Props) => {
   const {
     adminList,
-    isLoading,
     createAdmin,
     updateAdmin,
-  } = useMerchantAdmins(merchantId);
+  } = useMerchantAdmins(merchantId, admins);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingAdmin, setEditingAdmin] = useState<MerchantAdmin | null>(null);
 
@@ -48,7 +48,7 @@ const MerchantAdminsSection = ({ merchantId }: Props) => {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold">Admins da loja</h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground mt-4">
             Gerencie quem pode administrar esta loja.
           </p>
         </div>
@@ -58,9 +58,7 @@ const MerchantAdminsSection = ({ merchantId }: Props) => {
         </Button>
       </div>
 
-      {isLoading ? (
-        <p className="py-6 text-sm text-muted-foreground">Carregando admins...</p>
-      ) : adminList.length === 0 ? (
+      {adminList.length === 0 ? (
         <p className="py-6 text-sm text-muted-foreground">
           Nenhum admin cadastrado para esta loja.
         </p>

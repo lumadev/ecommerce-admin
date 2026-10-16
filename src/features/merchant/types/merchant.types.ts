@@ -1,3 +1,5 @@
+import type { MerchantAdmin } from "./merchant-admin.types";
+
 export type MerchantAttributeType = "preset" | "free_text";
 
 export interface MerchantAttribute {
@@ -22,6 +24,10 @@ export interface Merchant {
   attributes?: MerchantAttribute[];
   createdAt: string;
   updatedAt: string;
+}
+
+export interface MerchantDetails extends Merchant {
+  admins: MerchantAdmin[];
 }
 
 export interface CreateMerchantData {

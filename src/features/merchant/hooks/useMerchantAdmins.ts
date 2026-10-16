@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { merchantAdminRepository } from "../repositories/merchantAdminRepository";
 import {
@@ -8,34 +7,12 @@ import {
   UpdateMerchantAdminData,
 } from "../types/merchant-admin.types";
 
-export const useMerchantAdmins = (merchantId: string) => {
+export const useMerchantAdmins = (
+  merchantId: string,
+  initialAdmins: MerchantAdmin[]
+) => {
   const { toast } = useToast();
-  const [adminList, setAdminList] = useState<MerchantAdmin[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const loadAdmins = async () => {
-      setIsLoading(true);
-
-      try {
-        const admins = await merchantAdminRepository.findByMerchant(
-          merchantId,
-          controller.signal
-        );
-        setAdminList(admins);
-      } catch (error) {
-        if (axios.isCancel(error)) return;
-        toast({ description: "Não foi possível carregar os admins da loja." });
-      } finally {
-        if (!controller.signal.aborted) setIsLoading(false);
-      }
-    };
-
-    void loadAdmins();
-    return () => controller.abort();
-  }, [merchantId]);
+  const [adminList, setAdminList] = useState<MerchantAdmin[]>(initialAdmins);
 
   const createAdmin = async (data: CreateMerchantAdminData) => {
     try {
@@ -63,5 +40,5 @@ export const useMerchantAdmins = (merchantId: string) => {
     }
   };
 
-  return { adminList, isLoading, createAdmin, updateAdmin };
+  return { adminList, createAdmin, updateAdmin };
 };

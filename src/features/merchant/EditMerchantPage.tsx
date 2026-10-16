@@ -1,8 +1,8 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/shared/components/ui/button/button";
-import { useMerchants } from "./hooks/useMerchants";
+import { useMerchant } from "./hooks/useMerchant";
 import {
   MerchantAttributeFormItem,
   MerchantFormErrors,
@@ -14,6 +14,7 @@ import ConfirmMerchantChangesDialog from "./form/ConfirmMerchantChangesDialog";
 import { getMerchantChanges } from "./form/getMerchantChanges";
 import { validateMerchantForm } from "./form/validateMerchantForm";
 import MerchantAdminsSection from "./MerchantAdminsSection";
+import MerchantDetailsSkeleton from "./MerchantDetailsSkeleton";
 
 const toFormState = (merchant: Merchant | null): MerchantFormState => ({
   code: merchant?.code ?? "",
@@ -32,8 +33,7 @@ const toFormState = (merchant: Merchant | null): MerchantFormState => ({
 const EditMerchantPage = () => {
   const { merchantId } = useParams();
   const navigate = useNavigate();
-  const { merchantList, isLoading, updateMerchant } = useMerchants();
-  const merchant = merchantList.find((item) => item.id === merchantId) ?? null;
+  const { merchant, isLoading, updateMerchant } = useMerchant(merchantId);
   const [form, setForm] = useState<MerchantFormState>(() => toFormState(null));
   const [errors, setErrors] = useState<MerchantFormErrors>({});
   const [isSaving, setIsSaving] = useState(false);
@@ -102,12 +102,7 @@ const EditMerchantPage = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex items-center gap-2 py-8 text-sm text-muted-foreground">
-        <Loader2 className="h-4 w-4 animate-spin" />
-        Carregando loja...
-      </div>
-    );
+    return <MerchantDetailsSkeleton />;
   }
 
   if (!merchant) {
@@ -165,7 +160,7 @@ const EditMerchantPage = () => {
         </div>
       </form>
 
-      <MerchantAdminsSection merchantId={merchant.id} />
+      <MerchantAdminsSection merchantId={merchant.id} admins={merchant.admins} />
 
       <ConfirmMerchantChangesDialog
         open={isConfirming}
