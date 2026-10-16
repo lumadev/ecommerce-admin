@@ -6,6 +6,7 @@ import {
   Store,
   Tags,
   Users,
+  Map,
 } from "lucide-react";
 
 export const adminNavigationItems = [
@@ -50,6 +51,12 @@ export const adminNavigationItems = [
     description: "Gerencie as lojas da plataforma.",
     icon: Store,
     key: "lojas",
+  },
+  {
+    title: "Roadmap",
+    description: "Acompanhe as tarefas planejadas e concluídas.",
+    icon: Map,
+    key: "roadmap",
   },
 ] as const;
 

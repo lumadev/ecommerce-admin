@@ -7,7 +7,7 @@ const RoadmapPage = () => (
     style={{ fontFamily: "'Nunito', sans-serif" }}
   >
     <div className="mx-auto max-w-2xl px-5 py-16">
-      <p className="mt-3 text-slate-400 py-8">
+      <p className="mt-3 py-8 text-slate-400">
         Milii BabyStore - Acompanhe o que está sendo feito na loja.
       </p>
 
