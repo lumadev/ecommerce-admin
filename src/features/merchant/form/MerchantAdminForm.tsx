@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import {
@@ -9,6 +11,7 @@ interface Props {
   form: MerchantAdminFormState;
   errors: MerchantAdminFormErrors;
   passwordOptional?: boolean;
+  showPassword?: boolean;
   onChange: (field: keyof MerchantAdminFormState, value: string) => void;
 }
 
@@ -23,8 +26,12 @@ const MerchantAdminForm = ({
   form,
   errors,
   passwordOptional = false,
+  showPassword = true,
   onChange,
-}: Props) => (
+}: Props) => {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  return (
   <div className="grid gap-3 py-1">
     <div className="flex flex-col gap-2">
       <Label htmlFor="merchant-admin-name">Nome</Label>
@@ -66,23 +73,37 @@ const MerchantAdminForm = ({
       <FieldError id="merchant-admin-email-error" message={errors.email} />
     </div>
 
-    <div className="flex flex-col gap-2">
-      <Label htmlFor="merchant-admin-password">
-        Senha{passwordOptional ? " (opcional)" : ""}
-      </Label>
-      <Input
-        id="merchant-admin-password"
-        type="password"
-        autoComplete="new-password"
-        value={form.password}
-        onChange={(event) => onChange("password", event.target.value)}
-        placeholder={passwordOptional ? "Deixe em branco para manter a atual" : "Mínimo de 6 caracteres"}
-        aria-invalid={!!errors.password}
-        aria-describedby={errors.password ? "merchant-admin-password-error" : undefined}
-      />
-      <FieldError id="merchant-admin-password-error" message={errors.password} />
-    </div>
+    {showPassword && (
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="merchant-admin-password">
+          Senha{passwordOptional ? " (opcional)" : ""}
+        </Label>
+        <div className="relative">
+          <Input
+            id="merchant-admin-password"
+            type={passwordVisible ? "text" : "password"}
+            autoComplete="new-password"
+            className="pr-10"
+            value={form.password}
+            onChange={(event) => onChange("password", event.target.value)}
+            placeholder={passwordOptional ? "Deixe em branco para manter a atual" : "Mínimo de 6 caracteres"}
+            aria-invalid={!!errors.password}
+            aria-describedby={errors.password ? "merchant-admin-password-error" : undefined}
+          />
+          <button
+            type="button"
+            onClick={() => setPasswordVisible((visible) => !visible)}
+            aria-label={passwordVisible ? "Ocultar senha" : "Mostrar senha"}
+            className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground"
+          >
+            {passwordVisible ? <EyeOff size={16} /> : <Eye size={16} />}
+          </button>
+        </div>
+        <FieldError id="merchant-admin-password-error" message={errors.password} />
+      </div>
+    )}
   </div>
-);
+  );
+};
 
 export default MerchantAdminForm;
