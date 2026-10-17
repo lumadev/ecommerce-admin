@@ -124,7 +124,7 @@ const CreateProductDialog = ({ open, onClose, onCreate }: Props) => {
             hasMediaError={hasMediaError}
           />
 
-          <DialogFooter className="shrink-0 border-t border-border pt-4">
+          <DialogFooter className="shrink-0 pt-4">
             <Button
               type="button"
               variant="outline"
