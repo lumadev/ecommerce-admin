@@ -35,10 +35,6 @@ export const todoTasks: RoadmapTask[] = [
     title: "Lógica de observabilidade da aplicação",
   },
   {
-    id: "13",
-    title: "Criar tema ADMIN para a loja Mili Babystore",
-  },
-  {
     id: "14",
     title: "Fazer o deploy da área Admin em outro projeto",
     note: "O domínio irá mudar.",
@@ -58,6 +54,11 @@ export const doneTasks: RoadmapTask[] = [
   {
     id: "12",
     title: "Criar área de gerenciamento de lojas",
-    note: "Permite cadastrar variantes na loja Milii BabyStore.",
+    note: "Permite cadastrar variantes na loja da Mili.",
+  },
+  {
+    id: "13",
+    title: "Criar tema ADMIN para a loja da Mili",
+    note: "Tema associado ao código loja-da-mili.",
   },
 ];
