@@ -63,4 +63,8 @@ export const merchantAdminRepository = {
     return response.data;
   },
 
+  remove: async (id: string): Promise<void> => {
+    await httpClientAuth.delete(`${BASE_URL}/${id}`);
+  },
+
 };

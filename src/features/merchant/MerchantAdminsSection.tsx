@@ -1,6 +1,16 @@
 import { useState } from "react";
-import { Pencil, Plus } from "lucide-react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/shared/components/ui/button/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/shared/components/ui/alert-dialog";
 import {
   Table,
   TableBody,
@@ -24,9 +34,11 @@ const MerchantAdminsSection = ({ merchantId, admins }: Props) => {
     adminList,
     createAdmin,
     updateAdmin,
+    removeAdmin,
   } = useMerchantAdmins(merchantId, admins);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingAdmin, setEditingAdmin] = useState<MerchantAdmin | null>(null);
+  const [removingAdmin, setRemovingAdmin] = useState<MerchantAdmin | null>(null);
 
   const openCreateDialog = () => {
     setEditingAdmin(null);
@@ -41,6 +53,17 @@ const MerchantAdminsSection = ({ merchantId, admins }: Props) => {
   const closeDialog = () => {
     setDialogOpen(false);
     setEditingAdmin(null);
+  };
+
+  const handleRemoveAdmin = async () => {
+    if (!removingAdmin) return;
+    try {
+      await removeAdmin(removingAdmin.id);
+    } catch {
+      return;
+    } finally {
+      setRemovingAdmin(null);
+    }
   };
 
   return (
@@ -97,6 +120,14 @@ const MerchantAdminsSection = ({ merchantId, admins }: Props) => {
                       >
                         <Pencil size={16} />
                       </button>
+                      <button
+                        type="button"
+                        onClick={() => setRemovingAdmin(admin)}
+                        aria-label={`Remover ${admin.name}`}
+                        className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                      >
+                        <Trash2 size={16} />
+                      </button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -119,6 +150,31 @@ const MerchantAdminsSection = ({ merchantId, admins }: Props) => {
           onUpdate={updateAdmin}
         />
       )}
+      <AlertDialog
+        open={removingAdmin !== null}
+        onOpenChange={(open) => {
+          if (!open) setRemovingAdmin(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remover admin da loja?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {removingAdmin?.name} perderá o acesso administrativo a esta loja.
+              Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleRemoveAdmin}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Remover admin
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 };
