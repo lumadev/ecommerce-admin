@@ -5,7 +5,7 @@ import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
 import { AdminLayout } from "@/features/AdminLayout";
 import AdminHome from "@/features/AdminHome";
 import { AdminLoadingScreen } from "@/features/components/AdminLoadingScreen";
-import AdminLogin from "@/features/login/AdminLogin";
+import AdminLogin from "@/features/auth/login/AdminLogin";
 import OrderPage from "@/features/order/OrderPage";
 import AdminProducts from "@/features/product/AdminProducts";
 import AdminCategories from "@/features/category/AdminCategories";
