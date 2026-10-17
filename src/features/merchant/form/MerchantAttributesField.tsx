@@ -39,9 +39,14 @@ const MerchantAttributesField = ({ value, onChange, error }: Props) => {
   const remove = (uid: string) => onChange(value.filter((a) => a.uid !== uid));
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3 sm:col-span-2">
       <div className="flex items-center justify-between">
-        <Label className="text-sm font-medium">Variantes</Label>
+        <div>
+          <Label className="text-sm font-medium">Variantes</Label>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Defina as opções disponíveis no catálogo.
+          </p>
+        </div>
         <Button
           type="button"
           variant="outline"
@@ -63,7 +68,10 @@ const MerchantAttributesField = ({ value, onChange, error }: Props) => {
         const inUse = attribute.productCount > 0;
 
         return (
-          <div key={attribute.uid} className="flex items-center gap-2">
+          <div
+            key={attribute.uid}
+            className="grid grid-cols-1 gap-2 rounded-md border border-border bg-background p-3 sm:grid-cols-[minmax(0,1fr)_180px_auto] sm:items-center sm:border-0 sm:bg-transparent sm:p-0"
+          >
             <Input
               value={attribute.key}
               onChange={(e) => update(attribute.uid, { key: e.target.value })}
@@ -79,7 +87,7 @@ const MerchantAttributesField = ({ value, onChange, error }: Props) => {
               }
             >
               <SelectTrigger
-                className="w-[160px] bg-background"
+                className="w-full bg-background sm:w-[180px]"
                 aria-label={`Tipo da variante ${index + 1}`}
               >
                 <SelectValue />

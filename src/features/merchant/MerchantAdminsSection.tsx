@@ -44,11 +44,11 @@ const MerchantAdminsSection = ({ merchantId, admins }: Props) => {
   };
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-4 border-t border-border pt-7">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold">Admins da loja</h2>
-          <p className="text-sm text-muted-foreground mt-4">
+          <p className="mt-1 text-sm text-muted-foreground">
             Gerencie quem pode administrar esta loja.
           </p>
         </div>
@@ -63,7 +63,7 @@ const MerchantAdminsSection = ({ merchantId, admins }: Props) => {
           Nenhum admin cadastrado para esta loja.
         </p>
       ) : (
-        <div className="rounded-lg border border-border bg-card">
+        <div className="overflow-x-auto rounded-lg border border-border bg-card">
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">

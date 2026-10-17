@@ -117,8 +117,8 @@ const EditMerchantPage = () => {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="space-y-3">
+    <div className="mx-auto max-w-6xl space-y-8">
+      <header className="space-y-4">
         <Button
           type="button"
           variant="ghost"
@@ -128,35 +128,57 @@ const EditMerchantPage = () => {
           <ArrowLeft size={16} />
           Lojas
         </Button>
-        <div>
-          <h1 className="text-xl font-semibold">Editar Loja</h1>
-          <p className="text-sm text-muted-foreground">{merchant.name}</p>
+        <div className="flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
+          <div className="space-y-1">
+            <h1 className="font-sans text-2xl font-semibold tracking-normal">Editar loja</h1>
+            <p className="text-sm text-muted-foreground">
+              Gerencie os dados e os acessos de {merchant.name}.
+            </p>
+          </div>
+          <span
+            className={`w-fit rounded-md px-3 py-1 text-sm font-medium ${
+              form.isActive
+                ? "bg-emerald-100 text-emerald-800"
+                : "bg-muted text-muted-foreground"
+            }`}
+          >
+            {form.isActive ? "Loja ativa" : "Loja inativa"}
+          </span>
         </div>
-      </div>
+      </header>
 
       <form
         onSubmit={handleSubmit}
-        className="max-w-3xl space-y-5 rounded-lg border border-border bg-card p-5"
+        className="overflow-hidden rounded-lg border border-border bg-card shadow-sm"
       >
-        <MerchantForm
-          form={form}
-          errors={errors}
-          onChange={handleChange}
-          onAttributesChange={handleAttributesChange}
-          codeDisabled
-        />
-        <div className="flex justify-end gap-2 border-t border-border pt-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => navigate("/lojas")}
-            disabled={isSaving}
-          >
-            Cancelar
-          </Button>
-          <Button type="submit" disabled={isSaving}>
-            Salvar Alterações
-          </Button>
+        <div className="border-b border-border px-5 py-4 sm:px-6">
+          <h2 className="font-sans text-lg font-semibold tracking-normal">Dados da loja</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Informações de identificação, contato e catálogo.
+          </p>
+        </div>
+        <div className="space-y-6 p-4 sm:p-6">
+          <MerchantForm
+            form={form}
+            errors={errors}
+            onChange={handleChange}
+            onAttributesChange={handleAttributesChange}
+            codeDisabled
+          />
+          <div className="flex flex-col-reverse gap-2 border-t border-border pt-5 sm:flex-row sm:justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full sm:w-auto"
+              onClick={() => navigate("/lojas")}
+              disabled={isSaving}
+            >
+              Cancelar
+            </Button>
+            <Button type="submit" className="w-full sm:w-auto" disabled={isSaving}>
+              Salvar alterações
+            </Button>
+          </div>
         </div>
       </form>
 

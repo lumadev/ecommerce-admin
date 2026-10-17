@@ -34,7 +34,7 @@ const MerchantForm = ({
   codeDisabled = false,
 }: MerchantFormProps) => {
   return (
-    <div className="grid gap-3 py-1">
+    <div className="grid grid-cols-1 gap-x-5 gap-y-5 py-1 sm:grid-cols-2">
       <div className="flex flex-col gap-2">
         <Label htmlFor="merchant-code" className="text-sm font-medium">
           Código
@@ -47,7 +47,7 @@ const MerchantForm = ({
           disabled={codeDisabled}
           aria-invalid={!!errors.code}
           aria-describedby={errors.code ? "merchant-code-error" : undefined}
-          className="bg-background"
+          className="bg-background disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground"
         />
         <FieldError id="merchant-code-error" message={errors.code} />
       </div>
@@ -102,20 +102,27 @@ const MerchantForm = ({
       </div>
 
       <MerchantAttributesField
-        value={form.attributes}
-        onChange={onAttributesChange}
-        error={errors.attributes}
-      />
+          value={form.attributes}
+          onChange={onAttributesChange}
+          error={errors.attributes}
+        />
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between gap-4 rounded-md border border-border bg-muted/50 p-4 sm:col-span-2">
+        <div className="space-y-1">
+          <Label htmlFor="merchant-active" className="text-sm font-medium">
+            Loja ativa
+          </Label>
+          <p className="text-sm text-muted-foreground">
+            {form.isActive
+              ? "A loja pode operar normalmente."
+              : "A loja fica indisponível para operações."}
+          </p>
+        </div>
         <Switch
           id="merchant-active"
           checked={form.isActive}
           onCheckedChange={(checked) => onChange("isActive", checked)}
         />
-        <Label htmlFor="merchant-active" className="text-sm font-medium">
-          Loja ativa
-        </Label>
       </div>
     </div>
   );
