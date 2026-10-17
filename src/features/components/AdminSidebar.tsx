@@ -60,7 +60,11 @@ const AdminSidebar = (_props: AdminSidebarProps) => {
           <SidebarGroupContent>
             <SidebarMenu>
               {adminNavigationItems
-                .filter((item) => item.key !== "lojas" || user?.role === "SUPER_ADMIN")
+                .filter(
+                  (item) =>
+                    (item.key !== "lojas" || user?.role === "SUPER_ADMIN") &&
+                    (item.key !== "variantes" || Boolean(user?.merchant?.id))
+                )
                 .map((item) => (
                 <SidebarMenuItem key={item.key}>
                   <SidebarMenuButton

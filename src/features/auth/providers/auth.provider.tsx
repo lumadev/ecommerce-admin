@@ -8,6 +8,7 @@ import {
   CredentialsByRole,
   ClientAuthContext,
 } from "../auth.context";
+import { setActiveMerchantId } from "@/infra/http/httpClient";
 
 const AUTHENTICATED_SESSION_KEY = "auth:authenticated";
 
@@ -28,21 +29,34 @@ export function createAuthProvider<R extends AuthType>(
     const [user, setUser] = useState<SessionUser | null>(null);
     const [isCheckingSession, setIsCheckingSession] = useState(true);
 
+    const updateUser = (sessionUser: SessionUser | null) => {
+      if (role === "ADMIN") {
+        const isSuperAdminWithoutImpersonation =
+          sessionUser?.role === "SUPER_ADMIN" && !sessionUser.impersonatedBy;
+        setActiveMerchantId(
+          isSuperAdminWithoutImpersonation
+            ? undefined
+            : sessionUser?.merchant?.id ?? sessionUser?.merchantId
+        );
+      }
+      setUser(sessionUser);
+    };
+
     const refreshSession = async () => {
       try {
         const sessionUser = await authRepository.checkSession();
 
         if (!assertRole(sessionUser, role)) {
           window.localStorage.removeItem(AUTHENTICATED_SESSION_KEY);
-          setUser(null);
+          updateUser(null);
           return null;
         }
 
-        setUser(sessionUser);
+        updateUser(sessionUser);
         return sessionUser;
       } catch {
         window.localStorage.removeItem(AUTHENTICATED_SESSION_KEY);
-        setUser(null);
+        updateUser(null);
         return null;
       } finally {
         setIsCheckingSession(false);
@@ -56,7 +70,7 @@ export function createAuthProvider<R extends AuthType>(
 
       if (!assertRole(sessionUser, role)) {
         window.localStorage.removeItem(AUTHENTICATED_SESSION_KEY);
-        setUser(null);
+        updateUser(null);
         return null;
       }
 
@@ -66,7 +80,7 @@ export function createAuthProvider<R extends AuthType>(
           : sessionUser;
 
       window.localStorage.setItem(AUTHENTICATED_SESSION_KEY, "true");
-      setUser(authenticatedUser);
+      updateUser(authenticatedUser);
 
       return authenticatedUser;
     };
@@ -78,7 +92,7 @@ export function createAuthProvider<R extends AuthType>(
         // Ignora erros caso a chamada de logout falhe
       } finally {
         window.localStorage.removeItem(AUTHENTICATED_SESSION_KEY);
-        setUser(null);
+        updateUser(null);
       }
     };
 
