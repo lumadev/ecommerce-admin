@@ -89,5 +89,50 @@ export const httpClientPublic = axios.create({
   withCredentials: false,
 });
 
+let activeMerchantId: string | undefined;
+const MERCHANT_SCOPED_ENDPOINTS = [
+  "/admins",
+  "/categories",
+  "/highlights",
+  "/products",
+  "/upload",
+  "/users",
+  "/variants",
+];
+
+export const setActiveMerchantId = (merchantId?: string | null) => {
+  activeMerchantId = merchantId ?? undefined;
+};
+
+const registerMerchantIdParam = (client: AxiosInstance) => {
+  client.interceptors.request.use((config) => {
+    const requestPath = config.url?.split("?")[0];
+    const isMerchantScopedEndpoint = MERCHANT_SCOPED_ENDPOINTS.some(
+      (endpoint) =>
+        requestPath === endpoint || requestPath?.startsWith(`${endpoint}/`),
+    );
+
+    if (!activeMerchantId || !isMerchantScopedEndpoint) {
+      return config;
+    }
+
+    if (config.params instanceof URLSearchParams) {
+      if (!config.params.has("merchantId")) {
+        config.params.set("merchantId", activeMerchantId);
+      }
+      return config;
+    }
+
+    const params = config.params as Record<string, unknown> | undefined;
+    config.params = {
+      ...params,
+      merchantId: params?.merchantId ?? activeMerchantId,
+    };
+    return config;
+  });
+};
+
 registerColdStartRetry(httpClientAuth);
 registerColdStartRetry(httpClientPublic);
+registerMerchantIdParam(httpClientAuth);
+registerMerchantIdParam(httpClientPublic);
