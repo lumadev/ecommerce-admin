@@ -11,8 +11,8 @@
   --popover: 220 18% 10%;
   --popover-foreground: 200 20% 92%;
 
-  --primary: 185 80% 55%;
-  --primary-foreground: 220 20% 6%;
+  --primary: 214 35% 42%;
+  --primary-foreground: 0 0% 98%;
 
   --secondary: 220 15% 16%;
   --secondary-foreground: 200 20% 85%;
@@ -20,20 +20,20 @@
   --muted: 220 15% 14%;
   --muted-foreground: 215 12% 55%;
 
-  --accent: 280 70% 60%;
-  --accent-foreground: 200 20% 95%;
+  --accent: 214 28% 50%;
+  --accent-foreground: 0 0% 96%;
 
   --destructive: 0 72% 55%;
   --destructive-foreground: 210 40% 98%;
 
   --border: 220 15% 18%;
   --input: 220 15% 18%;
-  --ring: 185 80% 55%;
+  --ring: 214 35% 62%;
 
   --radius: 0.75rem;
 
-  --glow-primary: 185 80% 55%;
-  --glow-accent: 280 70% 60%;
+  --glow-primary: 214 35% 42%;
+  --glow-accent: 214 28% 50%;
 
   --gradient-hero: linear-gradient(
     135deg,
@@ -50,21 +50,21 @@
 
   --gradient-cta: linear-gradient(
     135deg,
-    hsl(185 80% 55%) 0%,
-    hsl(280 70% 60%) 100%
+    hsl(214 35% 42%) 0%,
+    hsl(214 28% 50%) 100%
   );
 
-  --shadow-glow: 0 0 20px hsl(185 80% 55% / 0.15);
-  --shadow-glow-strong: 0 0 40px hsl(185 80% 55% / 0.25);
+  --shadow-glow: 0 0 20px hsl(214 35% 42% / 0.12);
+  --shadow-glow-strong: 0 0 40px hsl(214 35% 42% / 0.18);
 
   --sidebar-background: 220 18% 8%;
   --sidebar-foreground: 200 20% 85%;
-  --sidebar-primary: 185 80% 55%;
-  --sidebar-primary-foreground: 220 20% 6%;
+  --sidebar-primary: 214 35% 42%;
+  --sidebar-primary-foreground: 0 0% 98%;
   --sidebar-accent: 220 15% 16%;
   --sidebar-accent-foreground: 200 20% 85%;
   --sidebar-border: 220 15% 18%;
-  --sidebar-ring: 185 80% 55%;
+  --sidebar-ring: 214 35% 62%;
 }
 
 /* Base styles */
@@ -159,14 +159,14 @@
   }
 
   .bg-primary {
-    background: var(--gradient-cta);
+    background: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
   }
 
   /* hover automático no botão */
   .hover\:bg-primary\/90:hover {
-    opacity: 0.9;
-    box-shadow: var(--shadow-glow);
+    background-color: hsl(var(--primary) / 0.9);
+    box-shadow: none;
   }
 
   /* =========================

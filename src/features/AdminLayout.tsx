@@ -10,11 +10,15 @@ import {
 import AdminSidebar from "@/features/components/AdminSidebar";
 import { ImpersonationSelect } from "@/features/components/ImpersonationSelect";
 import { VariantProvider } from "@/features/variant/variant.provider";
+import { AdminTheme } from "@/features/theme/AdminTheme";
 
 export const AdminLayout = () => {
   const { user } = useAdminAuth();
 
   return (
+    <AdminTheme
+      merchantId={user?.role === "SUPER_ADMIN" ? null : user?.merchantId}
+    >
     <VariantProvider>
     <SidebarProvider>
       <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
@@ -31,7 +35,7 @@ export const AdminLayout = () => {
                     Loja
                   </p>
                   <p className="truncate text-sm font-semibold text-foreground">
-                    {user?.name || "Painel administrativo"}
+                    {user?.merchant?.name}
                   </p>
                 </div>
               )}
@@ -54,5 +58,6 @@ export const AdminLayout = () => {
       </div>
     </SidebarProvider>
     </VariantProvider>
+    </AdminTheme>
   );
 };
