@@ -3,14 +3,14 @@ import { useLayoutEffect, type ReactNode } from "react";
 import { getAdminThemeCssVariables } from "./adminThemeVars";
 
 interface AdminThemeProps {
-  merchantId?: string | null;
+  merchantCode?: string | null;
   children: ReactNode;
 }
 
-export const AdminTheme = ({ merchantId, children }: AdminThemeProps) => {
+export const AdminTheme = ({ merchantCode, children }: AdminThemeProps) => {
   useLayoutEffect(() => {
     const root = document.documentElement;
-    const variables = getAdminThemeCssVariables(merchantId);
+    const variables = getAdminThemeCssVariables(merchantCode);
     const previousValues = new Map<string, string>();
 
     for (const [name, value] of Object.entries(variables)) {
@@ -27,7 +27,7 @@ export const AdminTheme = ({ merchantId, children }: AdminThemeProps) => {
         }
       }
     };
-  }, [merchantId]);
+  }, [merchantCode]);
 
   return <>{children}</>;
 };

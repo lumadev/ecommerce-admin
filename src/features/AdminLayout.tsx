@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
+import { useMerchant } from "@/features/merchant/hooks/useMerchant";
 
 import {
   SidebarProvider,
@@ -14,11 +15,14 @@ import { AdminTheme } from "@/features/theme/AdminTheme";
 
 export const AdminLayout = () => {
   const { user } = useAdminAuth();
+  const isSuperAdminWithoutImpersonation =
+    user?.role === "SUPER_ADMIN" && !user.impersonatedBy;
+  const { merchant } = useMerchant(
+    isSuperAdminWithoutImpersonation ? undefined : user?.merchantId ?? undefined
+  );
 
   return (
-    <AdminTheme
-      merchantId={user?.role === "SUPER_ADMIN" ? null : user?.merchantId}
-    >
+    <AdminTheme merchantCode={merchant?.code}>
     <VariantProvider>
     <SidebarProvider>
       <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
