@@ -32,6 +32,35 @@ const defineTheme = (tokens: AdminThemeTokens): AdminThemeTokens => tokens;
 
 export const ADMIN_THEMES = {
   default: defineTheme({}),
+  ecommerce3d: defineTheme({
+    background: "220 20% 6%",
+    foreground: "200 20% 92%",
+    card: "220 18% 10%",
+    cardForeground: "200 20% 92%",
+    popover: "220 18% 10%",
+    popoverForeground: "200 20% 92%",
+    primary: "185 80% 55%",
+    primaryForeground: "220 20% 6%",
+    secondary: "220 15% 16%",
+    secondaryForeground: "200 20% 85%",
+    muted: "220 15% 14%",
+    mutedForeground: "215 12% 55%",
+    accent: "280 70% 60%",
+    accentForeground: "200 20% 95%",
+    destructive: "0 72% 55%",
+    destructiveForeground: "210 40% 98%",
+    border: "220 15% 18%",
+    input: "220 15% 18%",
+    ring: "185 80% 55%",
+    sidebarBackground: "220 18% 8%",
+    sidebarForeground: "200 20% 85%",
+    sidebarPrimary: "185 80% 55%",
+    sidebarPrimaryForeground: "220 20% 6%",
+    sidebarAccent: "220 15% 16%",
+    sidebarAccentForeground: "200 20% 85%",
+    sidebarBorder: "220 15% 18%",
+    sidebarRing: "185 80% 55%",
+  }),
   miliInfantil: defineTheme({
     background: "80 24% 96%",
     foreground: "90 10% 18%",
@@ -66,6 +95,7 @@ export const ADMIN_THEMES = {
 export type AdminThemeName = keyof typeof ADMIN_THEMES;
 
 export const ADMIN_THEME_BY_MERCHANT_CODE: Record<string, AdminThemeName> = {
+  "ecommerce-3d": "ecommerce3d",
   "loja-da-mili": "miliInfantil",
 };
 

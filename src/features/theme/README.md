@@ -83,3 +83,9 @@ tema.
   visual da loja: fundo claro suave, verde sálvia para ações principais e rosa
   pálido para realces. Para ajustar a paleta, altere os tokens de
   `miliInfantil` em `adminThemeVars.ts`.
+
+## Tema Ecommerce 3D
+
+- O código `ecommerce-3d` usa `ecommerce3d`, com a paleta escura original do
+  sistema: fundo carvão, texto claro, ciano como cor primária e roxo como
+  realce. Essa definição é independente do tema padrão atual do Admin.
