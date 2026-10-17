@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
-import { useMerchant } from "@/features/merchant/hooks/useMerchant";
 
 import {
   SidebarProvider,
@@ -10,20 +9,18 @@ import {
 
 import AdminSidebar from "@/features/components/AdminSidebar";
 import { ImpersonationSelect } from "@/features/components/ImpersonationSelect";
-import { VariantProvider } from "@/features/variant/variant.provider";
 import { AdminTheme } from "@/features/theme/AdminTheme";
 
 export const AdminLayout = () => {
   const { user } = useAdminAuth();
   const isSuperAdminWithoutImpersonation =
     user?.role === "SUPER_ADMIN" && !user.impersonatedBy;
-  const { merchant } = useMerchant(
-    isSuperAdminWithoutImpersonation ? undefined : user?.merchantId ?? undefined
-  );
+  const activeMerchantCode = isSuperAdminWithoutImpersonation
+    ? undefined
+    : user?.merchant?.code;
 
   return (
-    <AdminTheme merchantCode={merchant?.code}>
-    <VariantProvider>
+    <AdminTheme merchantCode={activeMerchantCode}>
     <SidebarProvider>
       <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
         <AdminSidebar className="hidden md:flex" />
@@ -61,7 +58,6 @@ export const AdminLayout = () => {
         </div>
       </div>
     </SidebarProvider>
-    </VariantProvider>
     </AdminTheme>
   );
 };

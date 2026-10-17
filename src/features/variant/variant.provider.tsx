@@ -9,7 +9,7 @@ import { VariantContext } from "./variant.context";
 export const VariantProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
   const { user } = useAdminAuth();
-  const merchantId = user?.merchantId ?? null;
+  const merchantId = user?.merchant?.id ?? null;
 
   const [variants, setVariants] = useState<Variant[]>([]);
   const [isLoading, setIsLoading] = useState(false);

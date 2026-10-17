@@ -2,7 +2,6 @@ import { LogOut } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
 import { adminNavigationItems } from "@/features//admin-navigation";
-import { useVariants } from "@/features/variant/hooks/useVariants";
 import CurrentUserProfile from "./CurrentUserProfile";
 export type { AdminSection } from "@/features//admin-navigation";
 import {
@@ -32,7 +31,6 @@ const AdminSidebar = (_props: AdminSidebarProps) => {
   
   const { state } = useSidebar();
   const { logout, user } = useAdminAuth();
-  const { variants } = useVariants();
 
   const handleLogout = () => {
     logout();
@@ -62,11 +60,7 @@ const AdminSidebar = (_props: AdminSidebarProps) => {
           <SidebarGroupContent>
             <SidebarMenu>
               {adminNavigationItems
-                .filter(
-                  (item) =>
-                    (item.key !== "lojas" || user?.role === "SUPER_ADMIN") &&
-                    (item.key !== "variantes" || variants.length > 0)
-                )
+                .filter((item) => item.key !== "lojas" || user?.role === "SUPER_ADMIN")
                 .map((item) => (
                 <SidebarMenuItem key={item.key}>
                   <SidebarMenuButton
