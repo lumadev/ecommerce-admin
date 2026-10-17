@@ -19,8 +19,6 @@ const CurrentUserProfile = ({ collapsed }: Props) => {
 
   if (!user || collapsed) return null;
 
-  const canEdit = user.role === "SUPER_ADMIN";
-
   const currentAdmin: MerchantAdmin = {
     id: user.id,
     name: user.name,
@@ -53,28 +51,26 @@ const CurrentUserProfile = ({ collapsed }: Props) => {
               {user.role === "SUPER_ADMIN" ? "Super admin" : "Admin"}
             </p>
           </div>
-          {canEdit && (
-            <button
-              type="button"
-              onClick={() => setOpen(true)}
-              aria-label="Editar meus dados"
-              title="Editar meus dados"
-              className="shrink-0 rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-primary"
-            >
-              <Pencil size={14} />
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            aria-label="Editar meus dados"
+            title="Editar meus dados"
+            className="shrink-0 rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-primary"
+          >
+            <Pencil size={14} />
+          </button>
         </div>
       </div>
 
-      {canEdit && (
-        <EditMerchantAdminDialog
-          open={open}
-          admin={currentAdmin}
-          onClose={() => setOpen(false)}
-          onUpdate={handleUpdate}
-        />
-      )}
+      <EditMerchantAdminDialog
+        open={open}
+        admin={currentAdmin}
+        allowPasswordChange={user.role !== "SUPER_ADMIN"}
+        confirmBeforeSave
+        onClose={() => setOpen(false)}
+        onUpdate={handleUpdate}
+      />
     </>
   );
 };

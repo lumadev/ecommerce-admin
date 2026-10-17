@@ -15,6 +15,10 @@ type RetryableRequestConfig = InternalAxiosRequestConfig & {
 };
 
 const isRetryableError = (error: AxiosError): boolean => {
+  if (axios.isCancel(error)) {
+    return false;
+  }
+
   const method = error.config?.method?.toLowerCase();
   if (method !== "get") {
     return false;
