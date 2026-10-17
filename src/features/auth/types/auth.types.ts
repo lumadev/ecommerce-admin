@@ -40,6 +40,7 @@ export interface SessionUser {
   username?: string;
   role: UserRole;
   merchantId?: string | null;
+  merchant?: { id: string; name: string } | null;
   impersonatedBy?: string | null;
 }
 

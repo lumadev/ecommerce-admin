@@ -77,12 +77,12 @@ const AdminLogin = () => {
             <ShieldCheck size={24} />
           </div>
 
-          <h1 className="font-display text-2xl font-bold text-primary">
-            JOANES<span className="text-foreground">3D</span>
+          <h1 className="font-display text-2xl font-bold text-foreground">
+            Painel de Gestão
           </h1>
 
           <p className="mt-1 text-sm text-muted-foreground">
-            Painel Administrativo
+            Acesso administrativo
           </p>
         </div>
 

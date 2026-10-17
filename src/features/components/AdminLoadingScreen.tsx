@@ -44,8 +44,8 @@ export const AdminLoadingScreen = () => {
           </motion.span>
         </div>
 
-        <h1 className="font-display text-xl font-bold text-primary">
-          JOANES<span className="text-foreground">3D</span>
+        <h1 className="font-display text-xl font-bold text-foreground">
+          Painel de Gestão
         </h1>
 
         <p className="mt-2 text-sm text-muted-foreground">
