@@ -21,14 +21,11 @@ const CategoryForm = ({
 }: CategoryFormProps) => {
 
   return (
-    <div className="grid gap-5 py-1 md:grid-cols-[300px_1fr] lg:grid-cols-[320px_1fr]">
+    <div className="grid gap-5 py-1">
       <CategoryImageUploadField
         label="Foto da categoria"
         value={form.url}
         picturePublicId={form.picturePublicId}
-        name={form.name}
-        description={form.description}
-        hashtags={form.hashtags}
         onChange={(v) => onChange("url", v)}
         onUploadComplete={(data) => onChange("picturePublicId", data.picturePublicId)}
         onRemove={() => onChange("picturePublicId", "")}
