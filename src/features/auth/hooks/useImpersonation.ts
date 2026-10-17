@@ -13,15 +13,23 @@ export const useImpersonation = () => {
   const canImpersonate = user?.role === "SUPER_ADMIN" || isImpersonating;
 
   useEffect(() => {
-    if (!canImpersonate) return;
+    if (!canImpersonate) {
+      setTargets([]);
+      return;
+    }
+
+    const controller = new AbortController();
 
     authRepository
-      .getImpersonationTargets()
+      .getImpersonationTargets(controller.signal)
       .then(setTargets)
       .catch((error) => {
+        if (controller.signal.aborted) return;
         console.error("Falha ao listar admins para impersonate", error);
         setTargets([]);
       });
+
+    return () => controller.abort();
   }, [canImpersonate]);
 
   const run = useCallback(

@@ -58,8 +58,13 @@ export const authRepository = {
     return response.data;
   },
 
-  getImpersonationTargets: async (): Promise<ImpersonationTarget[]> => {
-    const response = await httpClientAuth.get(`${BASE_URL}/impersonate/targets`);
+  getImpersonationTargets: async (
+    signal?: AbortSignal
+  ): Promise<ImpersonationTarget[]> => {
+    const response = await httpClientAuth.get(
+      `${BASE_URL}/impersonate/targets`,
+      { signal }
+    );
     const payload = response.data;
 
     if (Array.isArray(payload)) return payload;
