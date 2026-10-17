@@ -30,7 +30,7 @@ export const AdminLayout = () => {
     <VariantProvider>
     <SidebarProvider>
       <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
-        <AdminSidebar className="hidden md:flex" />
+        <AdminSidebar className="hidden md:flex" merchantCode={merchantCode} />
 
         <div className="flex min-w-0 flex-1 flex-col">
           <header className="shrink-0 border-b border-border bg-background/80 backdrop-blur-xl">
@@ -59,7 +59,7 @@ export const AdminLayout = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <Outlet />
+              <Outlet context={{ merchantCode }} />
             </motion.div>
           </main>
         </div>

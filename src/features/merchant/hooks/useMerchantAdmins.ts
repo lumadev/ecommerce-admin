@@ -40,5 +40,16 @@ export const useMerchantAdmins = (
     }
   };
 
-  return { adminList, createAdmin, updateAdmin };
+  const removeAdmin = async (id: string) => {
+    try {
+      await merchantAdminRepository.remove(id);
+      setAdminList((previous) => previous.filter((admin) => admin.id !== id));
+      toast({ variant: "success", description: "Admin removido com sucesso." });
+    } catch (error) {
+      toast({ description: "Não foi possível remover o admin." });
+      throw error;
+    }
+  };
+
+  return { adminList, createAdmin, updateAdmin, removeAdmin };
 };

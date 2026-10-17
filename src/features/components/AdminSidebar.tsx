@@ -23,9 +23,10 @@ import {
 
 interface AdminSidebarProps {
   className?: string;
+  merchantCode?: string;
 }
 
-const AdminSidebar = (_props: AdminSidebarProps) => {
+const AdminSidebar = ({ merchantCode }: AdminSidebarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -63,7 +64,8 @@ const AdminSidebar = (_props: AdminSidebarProps) => {
                 .filter(
                   (item) =>
                     (item.key !== "lojas" || user?.role === "SUPER_ADMIN") &&
-                    (item.key !== "variantes" || Boolean(user?.merchant?.id))
+                    (item.key !== "variantes" || Boolean(user?.merchant?.id)) &&
+                    (item.key !== "roadmap" || merchantCode === "loja-da-mili")
                 )
                 .map((item) => (
                 <SidebarMenuItem key={item.key}>
