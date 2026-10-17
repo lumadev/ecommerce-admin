@@ -7,7 +7,11 @@ import { adminNavigationItems } from "@/features/admin-navigation";
 const AdminHome = () => {
   const { user } = useAdminAuth();
   const navigationItems = adminNavigationItems
-    .filter((item) => item.key !== "lojas" || user?.role === "SUPER_ADMIN")
+    .filter(
+      (item) =>
+        (item.key !== "lojas" || user?.role === "SUPER_ADMIN") &&
+        (item.key !== "variantes" || Boolean(user?.merchant?.id))
+    )
     .map((item) => ({ ...item, path: `/${item.key}` }));
 
   return (

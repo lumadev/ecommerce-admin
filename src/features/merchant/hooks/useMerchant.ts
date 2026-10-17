@@ -20,6 +20,7 @@ export const useMerchant = (merchantId?: string) => {
       }
 
       setIsLoading(true);
+      setMerchant(null);
 
       try {
         const details = await merchantRepository.findById(

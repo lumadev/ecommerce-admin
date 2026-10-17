@@ -14,7 +14,7 @@ interface Props {
 
 const CurrentUserProfile = ({ collapsed }: Props) => {
   const { user, refreshSession } = useAdminAuth();
-  const { updateAdmin } = useMerchantAdmins(user?.merchantId ?? "", []);
+  const { updateAdmin } = useMerchantAdmins(user?.merchant?.id ?? "", []);
   const [open, setOpen] = useState(false);
 
   if (!user || collapsed) return null;
@@ -25,7 +25,7 @@ const CurrentUserProfile = ({ collapsed }: Props) => {
     email: user.email,
     username: user.username ?? "",
     role: "ADMIN",
-    merchantId: user.merchantId ?? "",
+    merchantId: user.merchant?.id ?? "",
     createdAt: "",
     updatedAt: "",
   };
