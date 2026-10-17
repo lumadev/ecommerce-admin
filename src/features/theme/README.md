@@ -7,15 +7,16 @@ Os componentes do Admin usam classes semânticas do Tailwind, como
 pelas classes utilitárias; as variáveis fornecem os valores que podem mudar por
 tema.
 
-`AdminTheme` recebe o `merchantId` da sessão e aplica os overrides ao elemento
-raiz do documento. Assim, os componentes da tela e conteúdos em portais, como
-menus e diálogos, usam as mesmas variáveis. Ao trocar a loja personificada, o
-componente restaura os valores anteriores antes de aplicar o tema seguinte.
+`AdminLayout` usa o `merchantId` da sessão para carregar os dados da loja,
+incluindo seu `code`. `AdminTheme` seleciona o tema por esse código e aplica os
+overrides ao elemento raiz do documento. Assim, componentes da tela e
+conteúdos em portais, como menus e diálogos, usam as mesmas variáveis. Ao trocar
+a loja personificada, o código carregado muda e o tema acompanha.
 
 ## Adicionar um tema
 
 1. Crie uma entrada em `ADMIN_THEMES` usando `defineTheme` e tokens semânticos.
-2. Associe os IDs das lojas em `ADMIN_THEME_BY_MERCHANT_ID`.
+2. Associe os códigos das lojas em `ADMIN_THEME_BY_MERCHANT_CODE`.
 3. Deixe tokens omitidos no valor padrão definido em `src/index.css`.
 
 ```ts
@@ -29,8 +30,8 @@ export const ADMIN_THEMES = {
   }),
 };
 
-export const ADMIN_THEME_BY_MERCHANT_ID = {
-  "id-da-loja": "neutral",
+export const ADMIN_THEME_BY_MERCHANT_CODE = {
+  "codigo-da-loja": "neutral",
 } satisfies Record<string, AdminThemeName>;
 ```
 
@@ -76,8 +77,9 @@ acompanham essas cores. Ao alterar `background` ou `card`, os gradientes de
 fundo e card são atualizados. Os tokens de tipografia não são alterados pelo
 tema.
 
-## Temas planejados
+## Tema Mili
 
-- `loja-da-mili`: criar futuramente um tema infantil. Ainda não há paleta nem
-  associação em `ADMIN_THEME_BY_MERCHANT_ID`; a loja continua usando o tema
-  padrão até essa definição ser feita.
+- O código `loja-da-mili` usa o tema `miliInfantil`, inspirado na referência
+  visual da loja: fundo claro suave, verde sálvia para ações principais e rosa
+  pálido para realces. Para ajustar a paleta, altere os tokens de
+  `miliInfantil` em `adminThemeVars.ts`.

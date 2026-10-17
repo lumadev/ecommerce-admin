@@ -32,11 +32,42 @@ const defineTheme = (tokens: AdminThemeTokens): AdminThemeTokens => tokens;
 
 export const ADMIN_THEMES = {
   default: defineTheme({}),
+  miliInfantil: defineTheme({
+    background: "80 24% 96%",
+    foreground: "90 10% 18%",
+    card: "60 33% 99%",
+    cardForeground: "90 10% 18%",
+    popover: "60 33% 99%",
+    popoverForeground: "90 10% 18%",
+    primary: "105 18% 35%",
+    primaryForeground: "60 20% 98%",
+    secondary: "90 24% 91%",
+    secondaryForeground: "95 12% 24%",
+    muted: "90 16% 92%",
+    mutedForeground: "95 8% 40%",
+    accent: "350 25% 86%",
+    accentForeground: "350 18% 25%",
+    destructive: "0 58% 48%",
+    destructiveForeground: "0 0% 100%",
+    border: "90 13% 83%",
+    input: "90 13% 83%",
+    ring: "105 18% 35%",
+    sidebarBackground: "84 24% 93%",
+    sidebarForeground: "90 10% 22%",
+    sidebarPrimary: "105 18% 35%",
+    sidebarPrimaryForeground: "60 20% 98%",
+    sidebarAccent: "90 24% 89%",
+    sidebarAccentForeground: "95 12% 24%",
+    sidebarBorder: "90 13% 83%",
+    sidebarRing: "105 18% 35%",
+  }),
 };
 
 export type AdminThemeName = keyof typeof ADMIN_THEMES;
 
-export const ADMIN_THEME_BY_MERCHANT_ID: Record<string, AdminThemeName> = {};
+export const ADMIN_THEME_BY_MERCHANT_CODE: Record<string, AdminThemeName> = {
+  "loja-da-mili": "miliInfantil",
+};
 
 const CSS_VARIABLE_BY_TOKEN: Record<keyof AdminThemeTokens, `--${string}`> = {
   background: "--background",
@@ -69,10 +100,10 @@ const CSS_VARIABLE_BY_TOKEN: Record<keyof AdminThemeTokens, `--${string}`> = {
 };
 
 export const getAdminThemeCssVariables = (
-  merchantId?: string | null,
+  merchantCode?: string | null,
 ): Record<string, string> => {
-  const themeName = merchantId
-    ? ADMIN_THEME_BY_MERCHANT_ID[merchantId]
+  const themeName = merchantCode
+    ? ADMIN_THEME_BY_MERCHANT_CODE[merchantCode]
     : undefined;
   const theme = ADMIN_THEMES[themeName ?? "default"];
   const variables: Record<string, string> = {};
