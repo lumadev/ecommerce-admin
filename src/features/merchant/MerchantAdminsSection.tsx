@@ -29,6 +29,12 @@ interface Props {
   admins: MerchantAdmin[];
 }
 
+const formatCreatedAt = (value?: string | null) => {
+  const date = value ? new Date(value) : null;
+  if (!date || Number.isNaN(date.getTime())) return "-";
+  return date.toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" });
+};
+
 const MerchantAdminsSection = ({ merchantId, admins }: Props) => {
   const {
     adminList,
@@ -108,7 +114,7 @@ const MerchantAdminsSection = ({ merchantId, admins }: Props) => {
                     {admin.email}
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
-                    {new Date(admin.createdAt).toLocaleDateString("pt-BR")}
+                    {formatCreatedAt(admin.createdAt)}
                   </TableCell>
                   <TableCell className="text-center">
                     <div className="flex items-center justify-center gap-1">

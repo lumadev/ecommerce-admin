@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { Button } from "@/shared/components/ui/button/button";
 import { useProducts } from "./hooks/useProducts";
@@ -12,8 +11,7 @@ import EditProductDialog from "./form/dialog/EditProductDialog";
 import CreateProductDialog from "./form/dialog/CreateProductDialog";
 
 const AdminProducts = () => {
-  const { merchantCode } = useOutletContext<{ merchantCode?: string }>();
-  const { productList, isLoading, updateProduct, createProduct, removeProduct } = useProducts(merchantCode);
+  const { productList, isLoading, updateProduct, createProduct, removeProduct } = useProducts();
 
   const [editingProduct, setEditingProduct] = useState<ProductListItem | null>(
     null

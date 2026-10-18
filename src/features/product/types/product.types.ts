@@ -36,10 +36,6 @@ export interface CreateProductData {
   categoryIds: string[];
 }
 
-export interface CreateProductPayload extends CreateProductData {
-  merchantCode: string;
-}
-
 export interface UpdateProductData {
   name?: string;
   description?: string;
