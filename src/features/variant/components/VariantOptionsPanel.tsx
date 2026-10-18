@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { Loader2, Plus, Trash2 } from "lucide-react";
+import { Check, Info, Loader2, Plus, TextCursorInput, Trash2 } from "lucide-react";
 import { Button } from "@/shared/components/ui/button/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
@@ -22,6 +22,41 @@ const VariantOptionsPanel = ({ variant, onAdd, onRemove }: Props) => {
     setDescription("");
     setError("");
   }, [variant.id]);
+
+  if (variant.type === "free_text") {
+    return (
+      <section
+        aria-labelledby="variant-panel-title"
+        className="rounded-md border border-border bg-card p-5 sm:p-6"
+      >
+        <div className="flex flex-wrap items-start justify-between gap-4 border-b border-border pb-4">
+          <div>
+            <p className="text-xs font-medium uppercase text-muted-foreground">
+              Texto livre
+            </p>
+            <h3 id="variant-panel-title" className="mt-1 text-lg font-semibold">
+              {variant.key}
+            </h3>
+          </div>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
+            <Check size={14} />
+            {variant.isRequired ? "Obrigatória" : "Opcional"}
+          </span>
+        </div>
+        <div className="mt-5 flex gap-3 rounded-md border border-border bg-muted/40 p-4">
+          <TextCursorInput className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" />
+          <div>
+            <p className="text-sm font-medium">O valor é informado em cada produto</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              O lojista digita o conteúdo no cadastro do produto, por exemplo,
+              a composição ou instruções de cuidado. Não é necessário criar
+              opções nesta tela.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,21 +83,30 @@ const VariantOptionsPanel = ({ variant, onAdd, onRemove }: Props) => {
   return (
     <section
       aria-labelledby="variant-panel-title"
-      className="rounded-lg border border-border bg-card p-5"
+      className="rounded-md border border-border bg-card p-5 sm:p-6"
     >
-      <h3 id="variant-panel-title" className="text-base font-semibold">
-        {pluralizeVariantName(variant.key)}
-      </h3>
-      <p className="mb-4 text-sm text-muted-foreground">
-        {variant.values.length === 0
-          ? "Nenhuma opção cadastrada."
-          : `${variant.values.length} opç${variant.values.length === 1 ? "ão cadastrada" : "ões cadastradas"}.`}
-      </p>
+      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-border pb-4">
+        <div>
+          <p className="text-xs font-medium uppercase text-muted-foreground">
+            Lista de opções
+          </p>
+          <h3 id="variant-panel-title" className="mt-1 text-lg font-semibold">
+            {pluralizeVariantName(variant.key)}
+          </h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Cadastre os valores que poderão ser selecionados nos produtos.
+          </p>
+        </div>
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
+          <Check size={14} />
+          {variant.isRequired ? "Obrigatória" : "Opcional"}
+        </span>
+      </div>
 
-      <form onSubmit={handleSubmit} className="flex items-start gap-2" noValidate>
+      <form onSubmit={handleSubmit} className="mt-5 flex flex-col items-stretch gap-2 sm:flex-row sm:items-start" noValidate>
         <div className="flex flex-1 flex-col gap-2">
           <Label htmlFor="variant-option-description" className="sr-only">
-            Descrição
+            Nova opção
           </Label>
           <Input
             id="variant-option-description"
@@ -71,7 +115,7 @@ const VariantOptionsPanel = ({ variant, onAdd, onRemove }: Props) => {
               setDescription(e.target.value);
               if (error) setError("");
             }}
-            placeholder={`Descrição (ex: ${variant.key})`}
+            placeholder={variant.key === "Tamanho" ? "Ex: P, M ou G" : `Nova opção de ${variant.key}`}
             aria-invalid={Boolean(error)}
             aria-describedby={error ? "variant-option-error" : undefined}
             className="bg-background"
@@ -84,13 +128,23 @@ const VariantOptionsPanel = ({ variant, onAdd, onRemove }: Props) => {
           )}
         </div>
 
-        <Button type="submit" className="gap-2" disabled={isSaving}>
+        <Button type="submit" className="gap-2 sm:shrink-0" disabled={isSaving}>
           {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />}
-          Adicionar
+          Adicionar opção
         </Button>
       </form>
 
-      {variant.values.length > 0 && (
+      {variant.values.length === 0 ? (
+        <div className="mt-5 flex gap-3 rounded-md border border-dashed border-border px-4 py-5">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+          <div>
+            <p className="text-sm font-medium">Ainda não há opções</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Adicione os valores usados nos produtos, como P, M e G para tamanhos.
+            </p>
+          </div>
+        </div>
+      ) : (
         <ul className="mt-4 divide-y divide-border rounded-md border border-border">
           {variant.values.map((option) => (
             <li

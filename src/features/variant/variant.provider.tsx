@@ -23,7 +23,7 @@ export const VariantProvider = ({ children }: { children: ReactNode }) => {
       }
 
       const list = await variantRepository.findAll(merchantId, signal);
-      setVariants(list.filter((variant) => variant.type === "preset"));
+      setVariants(list);
     },
     [merchantId]
   );

@@ -11,7 +11,7 @@ import {
 } from "@/shared/components/ui/select";
 import { MerchantAttributeFormItem } from "../types/merchant-form.types";
 import { MerchantAttributeType } from "../types/merchant.types";
-import VariantsHelpDialog from "./VariantsHelpDialog";
+import VariantsHelpDialog from "@/features/variant/components/VariantsHelpDialog";
 
 interface Props {
   value: MerchantAttributeFormItem[];

@@ -9,5 +9,6 @@ export interface Variant {
   id: string;
   key: string;
   type: VariantType;
+  isRequired?: boolean;
   values: VariantOption[];
 }

@@ -24,16 +24,30 @@ const VariantList = ({ variants, selectedId, onSelect }: Props) => (
           aria-current={isSelected ? "true" : undefined}
           onClick={() => onSelect(variant.id)}
           className={cn(
-            "flex shrink-0 items-center justify-between gap-3 rounded-md border px-3 py-2 text-left text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            "flex w-[220px] shrink-0 items-center justify-between gap-3 rounded-md border border-l-[3px] px-3 py-3 text-left text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:w-full",
             isSelected
-              ? "border-primary bg-primary/10 font-medium text-foreground"
-              : "border-border bg-card text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+              ? "border-y-primary border-r-primary border-l-primary bg-primary/5 text-foreground shadow-sm"
+              : "border-border border-l-transparent bg-card text-muted-foreground hover:border-l-muted-foreground/40 hover:bg-secondary/40 hover:text-foreground"
           )}
         >
-          <span>{pluralizeVariantName(variant.key)}</span>
-          <Badge variant="secondary" className="text-[11px]">
-            {variant.values.length}
-          </Badge>
+          <span className="min-w-0 flex-1">
+            <span className="block truncate font-medium">
+              {pluralizeVariantName(variant.key)}
+            </span>
+            <span className="mt-2 flex flex-wrap items-center gap-1.5">
+              <Badge variant="outline" className="px-1.5 py-0 text-[10px] font-normal">
+                {variant.type === "free_text" ? "Texto livre" : "Opções"}
+              </Badge>
+              <span className="text-[11px] text-muted-foreground">
+                {variant.isRequired ? "Obrigatória" : "Opcional"}
+              </span>
+            </span>
+          </span>
+          {variant.type === "preset" && (
+            <Badge variant="secondary" className="shrink-0 text-[11px]">
+              {variant.values.length}
+            </Badge>
+          )}
         </button>
       );
     })}
