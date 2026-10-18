@@ -11,6 +11,7 @@ import {
 } from "@/shared/components/ui/select";
 import { MerchantAttributeFormItem } from "../types/merchant-form.types";
 import { MerchantAttributeType } from "../types/merchant.types";
+import VariantsHelpDialog from "./VariantsHelpDialog";
 
 interface Props {
   value: MerchantAttributeFormItem[];
@@ -27,13 +28,14 @@ const createItem = (): MerchantAttributeFormItem => ({
   uid: crypto.randomUUID(),
   key: "",
   type: "preset",
+  isRequired: false,
   productCount: 0,
 });
 
 const MerchantAttributesField = ({ value, onChange, error }: Props) => {
   const update = (
     uid: string,
-    patch: Partial<Pick<MerchantAttributeFormItem, "key" | "type">>
+    patch: Partial<Pick<MerchantAttributeFormItem, "key" | "type" | "isRequired">>
   ) => onChange(value.map((a) => (a.uid === uid ? { ...a, ...patch } : a)));
 
   const remove = (uid: string) => onChange(value.filter((a) => a.uid !== uid));
@@ -42,7 +44,10 @@ const MerchantAttributesField = ({ value, onChange, error }: Props) => {
     <div className="flex flex-col gap-3 sm:col-span-2">
       <div className="flex items-center justify-between">
         <div>
-          <Label className="text-sm font-medium">Variantes</Label>
+          <div className="flex items-center gap-1">
+            <Label className="text-sm font-medium">Variantes</Label>
+            <VariantsHelpDialog />
+          </div>
           <p className="mt-1 text-sm text-muted-foreground">
             Defina as opções disponíveis no catálogo.
           </p>
@@ -70,7 +75,7 @@ const MerchantAttributesField = ({ value, onChange, error }: Props) => {
         return (
           <div
             key={attribute.uid}
-            className="grid grid-cols-1 gap-2 rounded-md border border-border bg-background p-3 sm:grid-cols-[minmax(0,1fr)_180px_auto] sm:items-center sm:border-0 sm:bg-transparent sm:p-0"
+            className="grid grid-cols-1 gap-2 rounded-md border border-border bg-background p-3 sm:grid-cols-[minmax(0,1fr)_180px_160px_auto] sm:items-center sm:border-0 sm:bg-transparent sm:p-0"
           >
             <Input
               value={attribute.key}
@@ -100,6 +105,24 @@ const MerchantAttributesField = ({ value, onChange, error }: Props) => {
                     </SelectItem>
                   )
                 )}
+              </SelectContent>
+            </Select>
+
+            <Select
+              value={attribute.isRequired ? "required" : "optional"}
+              onValueChange={(v) =>
+                update(attribute.uid, { isRequired: v === "required" })
+              }
+            >
+              <SelectTrigger
+                className="w-full bg-background sm:w-[160px]"
+                aria-label={`Obrigatoriedade da variante ${index + 1}`}
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="required">Obrigatória</SelectItem>
+                <SelectItem value="optional">Não obrigatória</SelectItem>
               </SelectContent>
             </Select>
 

@@ -4,6 +4,7 @@ export interface MerchantAttributeFormItem {
   uid: string;
   key: string;
   type: MerchantAttributeType;
+  isRequired: boolean;
   productCount: number;
 }
 

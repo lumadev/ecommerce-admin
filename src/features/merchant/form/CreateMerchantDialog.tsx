@@ -86,6 +86,7 @@ const CreateMerchantDialog = ({ open, onClose, onCreate }: Props) => {
       attributes: form.attributes.map((a) => ({
         key: a.key.trim(),
         type: a.type,
+        isRequired: a.isRequired,
       })),
       ...(email && { email }),
       ...(domain && { domain }),

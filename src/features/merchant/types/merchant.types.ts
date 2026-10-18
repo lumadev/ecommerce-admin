@@ -6,12 +6,14 @@ export interface MerchantAttribute {
   id: string;
   key: string;
   type: MerchantAttributeType;
+  isRequired?: boolean;
   _count?: { products: number };
 }
 
 export interface MerchantAttributeInput {
   key: string;
   type: MerchantAttributeType;
+  isRequired: boolean;
 }
 
 export interface Merchant {

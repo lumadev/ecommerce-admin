@@ -11,8 +11,17 @@ const EMPTY = "(vazio)";
 
 const orEmpty = (value: string) => (value.trim() ? value.trim() : EMPTY);
 
-const formatAttributes = (attrs: { key: string; type: string }[]) =>
-  attrs.length ? attrs.map((a) => `${a.key.trim()} (${a.type})`).join(", ") : EMPTY;
+const formatAttributes = (
+  attrs: { key: string; type: string; isRequired?: boolean }[]
+) =>
+  attrs.length
+    ? attrs
+        .map(
+          (a) =>
+            `${a.key.trim()} (${a.type}, ${a.isRequired ? "obrigatória" : "não obrigatória"})`
+        )
+        .join(", ")
+    : EMPTY;
 
 export const getMerchantChanges = (
   merchant: Merchant,

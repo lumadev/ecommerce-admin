@@ -26,6 +26,7 @@ const toFormState = (merchant: Merchant | null): MerchantFormState => ({
     uid: attribute.id,
     key: attribute.key,
     type: attribute.type,
+    isRequired: attribute.isRequired ?? false,
     productCount: attribute._count?.products ?? 0,
   })),
 });
@@ -85,6 +86,7 @@ const EditMerchantPage = () => {
       attributes: form.attributes.map((attribute) => ({
         key: attribute.key.trim(),
         type: attribute.type,
+        isRequired: attribute.isRequired,
       })),
       ...(email && { email }),
       ...(domain && { domain }),
@@ -117,7 +119,7 @@ const EditMerchantPage = () => {
   }
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8">
+    <div className="mx-auto max-w-6xl space-y-8 pb-16">
       <header className="space-y-4">
         <Button
           type="button"
