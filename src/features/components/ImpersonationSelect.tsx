@@ -9,7 +9,13 @@ import { useImpersonation } from "@/features/auth/hooks/useImpersonation";
 
 const SELF_VALUE = "__self__";
 
-export const ImpersonationSelect = () => {
+interface ImpersonationSelectProps {
+  onBeforeChange: () => void;
+}
+
+export const ImpersonationSelect = ({
+  onBeforeChange,
+}: ImpersonationSelectProps) => {
   const {
     canImpersonate,
     isImpersonating,
@@ -23,6 +29,8 @@ export const ImpersonationSelect = () => {
   if (!canImpersonate) return null;
 
   const handleChange = (value: string) => {
+    onBeforeChange();
+
     if (value === SELF_VALUE) {
       void stopImpersonation();
       return;
