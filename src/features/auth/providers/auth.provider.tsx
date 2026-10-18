@@ -8,7 +8,7 @@ import {
   CredentialsByRole,
   ClientAuthContext,
 } from "../auth.context";
-import { setActiveMerchantId } from "@/infra/http/httpClient";
+import { setActiveMerchantCode } from "@/infra/http/httpClient";
 
 const AUTHENTICATED_SESSION_KEY = "auth:authenticated";
 
@@ -33,10 +33,10 @@ export function createAuthProvider<R extends AuthType>(
       if (role === "ADMIN") {
         const isSuperAdminWithoutImpersonation =
           sessionUser?.role === "SUPER_ADMIN" && !sessionUser.impersonatedBy;
-        setActiveMerchantId(
+        setActiveMerchantCode(
           isSuperAdminWithoutImpersonation
             ? undefined
-            : sessionUser?.merchant?.id ?? sessionUser?.merchantId
+            : sessionUser?.merchant?.code
         );
       }
       setUser(sessionUser);

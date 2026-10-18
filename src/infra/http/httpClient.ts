@@ -89,9 +89,8 @@ export const httpClientPublic = axios.create({
   withCredentials: false,
 });
 
-let activeMerchantId: string | undefined;
+let activeMerchantCode: string | undefined;
 const MERCHANT_SCOPED_ENDPOINTS = [
-  "/admins",
   "/categories",
   "/highlights",
   "/products",
@@ -100,11 +99,11 @@ const MERCHANT_SCOPED_ENDPOINTS = [
   "/variants",
 ];
 
-export const setActiveMerchantId = (merchantId?: string | null) => {
-  activeMerchantId = merchantId ?? undefined;
+export const setActiveMerchantCode = (merchantCode?: string | null) => {
+  activeMerchantCode = merchantCode ?? undefined;
 };
 
-const registerMerchantIdParam = (client: AxiosInstance) => {
+const registerMerchantCodeParam = (client: AxiosInstance) => {
   client.interceptors.request.use((config) => {
     const requestPath = config.url?.split("?")[0];
     const isMerchantScopedEndpoint = MERCHANT_SCOPED_ENDPOINTS.some(
@@ -112,13 +111,13 @@ const registerMerchantIdParam = (client: AxiosInstance) => {
         requestPath === endpoint || requestPath?.startsWith(`${endpoint}/`),
     );
 
-    if (!activeMerchantId || !isMerchantScopedEndpoint) {
+    if (!activeMerchantCode || !isMerchantScopedEndpoint) {
       return config;
     }
 
     if (config.params instanceof URLSearchParams) {
-      if (!config.params.has("merchantId")) {
-        config.params.set("merchantId", activeMerchantId);
+      if (!config.params.has("merchantCode")) {
+        config.params.set("merchantCode", activeMerchantCode);
       }
       return config;
     }
@@ -126,7 +125,7 @@ const registerMerchantIdParam = (client: AxiosInstance) => {
     const params = config.params as Record<string, unknown> | undefined;
     config.params = {
       ...params,
-      merchantId: params?.merchantId ?? activeMerchantId,
+      merchantCode: params?.merchantCode ?? activeMerchantCode,
     };
     return config;
   });
@@ -134,5 +133,5 @@ const registerMerchantIdParam = (client: AxiosInstance) => {
 
 registerColdStartRetry(httpClientAuth);
 registerColdStartRetry(httpClientPublic);
-registerMerchantIdParam(httpClientAuth);
-registerMerchantIdParam(httpClientPublic);
+registerMerchantCodeParam(httpClientAuth);
+registerMerchantCodeParam(httpClientPublic);

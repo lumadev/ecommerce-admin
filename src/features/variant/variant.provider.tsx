@@ -1,15 +1,20 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
-import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
 import { variantRepository } from "./repositories/variantRepository";
 import { Variant } from "./types/variant.types";
 import { VariantContext } from "./variant.context";
 
-export const VariantProvider = ({ children }: { children: ReactNode }) => {
+interface VariantProviderProps {
+  children: ReactNode;
+  merchantCode?: string;
+}
+
+export const VariantProvider = ({
+  children,
+  merchantCode,
+}: VariantProviderProps) => {
   const { toast } = useToast();
-  const { user } = useAdminAuth();
-  const merchantId = user?.merchant?.id ?? null;
 
   const [variants, setVariants] = useState<Variant[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,22 +22,22 @@ export const VariantProvider = ({ children }: { children: ReactNode }) => {
 
   const load = useCallback(
     async (signal?: AbortSignal) => {
-      if (!merchantId) {
+      if (!merchantCode) {
         setVariants([]);
         return;
       }
 
-      const list = await variantRepository.findAll(merchantId, signal);
+      const list = await variantRepository.findAll(merchantCode, signal);
       setVariants(list);
     },
-    [merchantId]
+    [merchantCode]
   );
 
   useEffect(() => {
     const controller = new AbortController();
     setIsLoading(true);
     setLoadError(
-      merchantId ? null : "Não foi possível identificar a loja do usuário."
+      merchantCode ? null : "Não foi possível identificar a loja do usuário."
     );
 
     load(controller.signal)

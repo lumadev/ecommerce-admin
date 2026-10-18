@@ -5,7 +5,7 @@ import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
 import { useMerchant } from "@/features/merchant/hooks/useMerchant";
 import type { Merchant } from "@/features/merchant/types/merchant.types";
 import type { SessionUser } from "@/features/auth/types/auth.types";
-import { setActiveMerchantId } from "@/infra/http/httpClient";
+import { setActiveMerchantCode } from "@/infra/http/httpClient";
 
 import {
   SidebarProvider,
@@ -23,6 +23,7 @@ const STORE_DATA_ROUTES = new Set(["/produtos", "/categorias", "/destaques"]);
 interface AdminLayoutState {
   user: SessionUser | null;
   merchantCode?: string;
+  themeMerchantCode?: string;
   selectedMerchant: Merchant | null;
   setSelectedMerchant: (merchant: Merchant) => void;
   showStoreSelector: boolean;
@@ -41,11 +42,6 @@ const useAdminLayoutState = (): AdminLayoutState => {
   const showStoreSelector = isSuperAdminActingAsSelf && isStoreDataRoute;
   const accountMerchantId = user?.merchant?.id ?? user?.merchantId ?? undefined;
 
-  const activeMerchantId = isSuperAdminActingAsSelf
-    ? isStoreDataRoute
-      ? selectedMerchant?.id
-      : undefined
-    : accountMerchantId;
   const merchantIdToFetch = isSuperAdminActingAsSelf
     ? undefined
     : accountMerchantId;
@@ -55,14 +51,23 @@ const useAdminLayoutState = (): AdminLayoutState => {
   const merchantCode = showStoreSelector
     ? selectedMerchant?.code
     : user?.merchant?.code ?? fetchedMerchant?.code;
+  const activeMerchantCode = isSuperAdminActingAsSelf
+    ? isStoreDataRoute
+      ? selectedMerchant?.code
+      : undefined
+    : merchantCode;
+  const themeMerchantCode = isSuperAdminActingAsSelf
+    ? undefined
+    : user?.merchant?.code ?? fetchedMerchant?.code;
 
   useLayoutEffect(() => {
-    setActiveMerchantId(activeMerchantId);
-  }, [activeMerchantId]);
+    setActiveMerchantCode(activeMerchantCode);
+  }, [activeMerchantCode]);
 
   return {
     user,
     merchantCode,
+    themeMerchantCode,
     selectedMerchant,
     setSelectedMerchant,
     showStoreSelector,
@@ -138,8 +143,8 @@ export const AdminLayout = () => {
   const layout = useAdminLayoutState();
 
   return (
-    <AdminTheme merchantCode={layout.merchantCode}>
-    <VariantProvider>
+    <AdminTheme merchantCode={layout.themeMerchantCode}>
+    <VariantProvider merchantCode={layout.merchantCode}>
     <SidebarProvider>
       <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
         <AdminSidebar className="hidden md:flex" merchantCode={layout.merchantCode} />

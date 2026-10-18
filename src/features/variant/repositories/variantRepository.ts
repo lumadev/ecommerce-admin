@@ -5,11 +5,11 @@ const BASE_URL = "/variants";
 
 export const variantRepository = {
   findAll: async (
-    merchantId: string,
+    merchantCode: string,
     signal?: AbortSignal
   ): Promise<Variant[]> => {
     const response = await httpClientAuth.get<Variant[]>(BASE_URL, {
-      params: { merchantId },
+      params: { merchantCode },
       signal,
     });
     return Array.isArray(response.data) ? response.data : [];

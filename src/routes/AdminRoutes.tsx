@@ -14,7 +14,6 @@ import AdminMerchants from "@/features/merchant/AdminMerchants";
 import EditMerchantPage from "@/features/merchant/EditMerchantPage";
 import AdminCustomers from "@/features/customer/AdminCustomers";
 import AdminVariants from "@/features/variant/AdminVariants";
-import { VariantProvider } from "@/features/variant/variant.provider";
 import RoadmapPage from "@/features/roadmap/RoadmapPage";
 import NotFound from "@/pages/NotFound";
 
@@ -74,14 +73,7 @@ export const AdminRoutes = () => (
         <Route path="categorias" element={<AdminCategories />} />
         <Route path="destaques" element={<AdminHighlights />} />
         <Route path="clientes" element={<AdminCustomers />} />
-        <Route
-          path="variantes"
-          element={
-            <VariantProvider>
-              <AdminVariants />
-            </VariantProvider>
-          }
-        />
+        <Route path="variantes" element={<AdminVariants />} />
         <Route path="roadmap" element={<RoadmapPage />} />
         <Route path="lojas" element={<RequireSuperAdmin />}>
           <Route index element={<AdminMerchants />} />
