@@ -70,12 +70,15 @@ quando necessário para manter contraste legível.
 | `sidebarAccentForeground` | Texto sobre o realce da barra lateral. |
 | `sidebarBorder` | Bordas da barra lateral. |
 | `sidebarRing` | Indicador de foco na barra lateral. |
+| `brand` | Cor de marca para pequenos detalhes (seleção de texto). Sem valor, usa `primary`. |
+| `fontDisplay` | Fonte dos títulos (`h1`–`h6`, `font-display`). Ex.: `'"Fredoka"'`. |
+| `fontBody` | Fonte do texto corrido. A fonte precisa estar carregada em `index.html`. |
 
 Os botões primários usam `primary` como cor sólida. As classes de gradiente
 explícitas continuam usando `primary` e `accent`; os efeitos de brilho também
 acompanham essas cores. Ao alterar `background` ou `card`, os gradientes de
-fundo e card são atualizados. Os tokens de tipografia não são alterados pelo
-tema.
+fundo e card são atualizados. As fontes só mudam quando o tema define
+`fontDisplay`/`fontBody`; caso contrário valem Orbitron e Inter.
 
 ## Tema Mili
 
@@ -83,6 +86,9 @@ tema.
   visual da loja: fundo claro suave, verde sálvia para ações principais e rosa
   pálido para realces. Para ajustar a paleta, altere os tokens de
   `miliInfantil` em `adminThemeVars.ts`.
+- Tipografia: títulos em Baloo 2 (arredondada e encorpada, como o letreiro da
+  logo) e texto em Figtree, que tem x-height maior e lê melhor em tamanhos
+  pequenos. O vermelho da joaninha (`brand`) aparece na seleção de texto.
 
 ## Tema Ecommerce 3D
 

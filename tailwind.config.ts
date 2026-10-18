@@ -20,8 +20,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Orbitron", "sans-serif"],
-        body: ["Inter", "sans-serif"],
+        display: ["var(--font-display-family, Orbitron)", "sans-serif"],
+        body: ["var(--font-body-family, Inter)", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -78,8 +78,12 @@
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    font-family: Inter, sans-serif;
+    font-family: var(--font-body-family, Inter), sans-serif;
     -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: hsl(var(--brand, var(--primary)) / 0.2);
   }
 
   h1,
@@ -88,7 +92,7 @@
   h4,
   h5,
   h6 {
-    font-family: Orbitron, sans-serif;
+    font-family: var(--font-display-family, Orbitron), sans-serif;
   }
 
   button {
@@ -97,8 +101,8 @@
 }
 
 @theme {
-  --font-display: "Orbitron", sans-serif;
-  --font-body: "Inter", sans-serif;
+  --font-display: var(--font-display-family, "Orbitron"), sans-serif;
+  --font-body: var(--font-body-family, "Inter"), sans-serif;
 
   /* base */
   --color-border: hsl(var(--border));

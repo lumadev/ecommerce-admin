@@ -26,6 +26,12 @@ export interface AdminThemeTokens {
   sidebarAccentForeground?: string;
   sidebarBorder?: string;
   sidebarRing?: string;
+  /** Cor de marca para pequenos detalhes (tripleto HSL). */
+  brand?: string;
+  /** Família tipográfica dos títulos, ex.: '"Fredoka"'. */
+  fontDisplay?: string;
+  /** Família tipográfica do texto corrido. */
+  fontBody?: string;
 }
 
 const defineTheme = (tokens: AdminThemeTokens): AdminThemeTokens => tokens;
@@ -89,6 +95,9 @@ export const ADMIN_THEMES = {
     sidebarAccentForeground: "95 12% 24%",
     sidebarBorder: "90 13% 83%",
     sidebarRing: "105 18% 35%",
+    brand: "355 72% 50%",
+    fontDisplay: '"Baloo 2"',
+    fontBody: '"Figtree"',
   }),
 };
 
@@ -127,6 +136,9 @@ const CSS_VARIABLE_BY_TOKEN: Record<keyof AdminThemeTokens, `--${string}`> = {
   sidebarAccentForeground: "--sidebar-accent-foreground",
   sidebarBorder: "--sidebar-border",
   sidebarRing: "--sidebar-ring",
+  brand: "--brand",
+  fontDisplay: "--font-display-family",
+  fontBody: "--font-body-family",
 };
 
 export const getAdminThemeCssVariables = (
