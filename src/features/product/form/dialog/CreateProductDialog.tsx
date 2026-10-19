@@ -124,9 +124,18 @@ const CreateProductDialog = ({
       onOpenChange={(isOpen) => !isOpen && void handleCancel()}
     >
       <DialogContent
-        className="flex h-[min(680px,calc(100vh_-_2rem))] max-h-[calc(100vh_-_2rem)] flex-col overflow-hidden border-border bg-card text-card-foreground sm:max-w-[960px]"
+        className={`flex max-h-[calc(100vh_-_2rem)] flex-col overflow-hidden border-border bg-card text-card-foreground ${
+          hasNoCategories
+            ? "h-auto sm:max-w-xl"
+            : "h-[min(680px,calc(100vh_-_2rem))] sm:max-w-[960px]"
+        }`}
       >
-        <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col overflow-hidden">
+        <form
+          onSubmit={handleSubmit}
+          className={`flex min-h-0 flex-col overflow-hidden ${
+            hasNoCategories ? "flex-none" : "flex-1"
+          }`}
+        >
           <DialogHeader className="shrink-0 border-b border-border pb-4">
             <DialogTitle className="text-xl">Novo Produto</DialogTitle>
             <DialogDescription className="text-muted-foreground">

@@ -43,7 +43,7 @@ const ProductCreationContent = ({
 
   if (hasNoCategories) {
     return (
-      <div className="flex min-h-[280px] flex-1 items-center justify-center px-2 py-8">
+      <div className="flex items-center justify-center px-2 py-2">
         <div
           role="alert"
           className="flex max-w-lg flex-col items-center gap-3 rounded-lg border border-destructive/30 bg-destructive/5 px-6 py-5 text-center"
