@@ -1,36 +1,36 @@
 import { useCallback, useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAdminAuth } from "./useAdminAuth";
 import { authRepository } from "../repositories/authRepository";
-import { ImpersonationTarget } from "../types/auth.types";
+import {
+  impersonationQueryKeys,
+  impersonationTargetsQueryOptions,
+} from "./impersonationQueries";
 
 export const useImpersonation = () => {
   const { user, refreshSession } = useAdminAuth();
-  const [targets, setTargets] = useState<ImpersonationTarget[]>([]);
+  const queryClient = useQueryClient();
   const [isSwitching, setIsSwitching] = useState(false);
 
   const impersonatedBy = user?.impersonatedBy ?? null;
   const isImpersonating = Boolean(impersonatedBy);
   const canImpersonate = user?.role === "SUPER_ADMIN" || isImpersonating;
+  const {
+    data: targets = [],
+    isLoading,
+    isFetching,
+    isError,
+    error,
+  } = useQuery({
+    ...impersonationTargetsQueryOptions(),
+    enabled: canImpersonate,
+  });
 
   useEffect(() => {
-    if (!canImpersonate) {
-      setTargets([]);
-      return;
+    if (isError) {
+      console.error("Falha ao listar admins para impersonate", error);
     }
-
-    const controller = new AbortController();
-
-    authRepository
-      .getImpersonationTargets(controller.signal)
-      .then(setTargets)
-      .catch((error) => {
-        if (controller.signal.aborted) return;
-        console.error("Falha ao listar admins para impersonate", error);
-        setTargets([]);
-      });
-
-    return () => controller.abort();
-  }, [canImpersonate]);
+  }, [error, isError]);
 
   const run = useCallback(
     async (request: () => Promise<void>) => {
@@ -38,11 +38,14 @@ export const useImpersonation = () => {
       try {
         await request();
         await refreshSession();
+        await queryClient.invalidateQueries({
+          queryKey: impersonationQueryKeys.targets(),
+        });
       } finally {
         setIsSwitching(false);
       }
     },
-    [refreshSession]
+    [queryClient, refreshSession]
   );
 
   const impersonate = (adminId: string) =>
@@ -54,7 +57,9 @@ export const useImpersonation = () => {
     canImpersonate,
     isImpersonating,
     impersonatedAdminId: isImpersonating ? user?.id ?? null : null,
-    targets,
+    targets: canImpersonate ? targets : [],
+    isLoading,
+    isRefreshing: isFetching && !isLoading,
     isSwitching,
     impersonate,
     stopImpersonation,
