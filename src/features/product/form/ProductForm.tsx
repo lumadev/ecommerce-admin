@@ -11,10 +11,13 @@ import {
 import { ProductFormState } from "../types/product-form.types";
 import { CategoriesSelect } from "./CategoriesSelect";
 import ProductMediaGallery from "./ProductMediaGallery";
-import { useProductCategories } from "../hooks/useProductCategories";
+import { ProductCategory } from "../hooks/useProductCategories";
 
 interface Props {
   form: ProductFormState;
+  categories: ProductCategory[];
+  isLoadingCategories: boolean;
+  hasErrorCategories: boolean;
   onChange: <K extends keyof ProductFormState>(
     field: K,
     value: ProductFormState[K],
@@ -25,12 +28,13 @@ interface Props {
 
 const ProductForm = ({
   form,
+  categories,
+  isLoadingCategories,
+  hasErrorCategories,
   onChange,
   onMediaUploadingChange,
   hasMediaError,
 }: Props) => {
-  const { categories, isLoading, hasError: hasErrorCategories } = useProductCategories();
-
   return (
     <Tabs
       defaultValue="data"
@@ -63,10 +67,10 @@ const ProductForm = ({
             </div>
 
             <div className="grid content-start gap-2">
-              {categories?.length > 0 && (
+              {(categories.length > 0 || hasErrorCategories) && (
                 <CategoriesSelect
                   categories={categories}
-                  isLoading={isLoading}
+                  isLoading={isLoadingCategories}
                   hasError={hasErrorCategories}
                   value={form.categoryIds}
                   onChange={(categoryIds) => onChange("categoryIds", categoryIds)}

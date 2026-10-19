@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { mediaUploadRepository } from "@/features/file/repositories/imageUploadRepository";
 import { ProductListItem, UpdateProductData } from "../../types/product.types";
 import { ProductFormState } from "../../types/product-form.types";
+import { useProductCategories } from "../../hooks/useProductCategories";
 import ProductForm from "../ProductForm";
 import { validateProductForm } from "../../helpers/product-form.helpers";
 
@@ -46,7 +47,16 @@ const toFormState = (p: ProductListItem | null): ProductFormState => ({
   categoryIds: p?.categories ? p.categories.map((c) => c.id) : [],
 });
 
-const EditProductDialog = ({ product, onClose, onSave }: Props) => {
+const EditProductDialog = ({
+  product,
+  onClose,
+  onSave,
+}: Props) => {
+  const {
+    categories,
+    isLoading: isLoadingCategories,
+    hasError: hasErrorCategories,
+  } = useProductCategories(!!product);
   const { toast } = useToast();
   const [form, setForm] = useState<ProductFormState>(() => toFormState(product));
   const [isLoading, setIsLoading] = useState(false);
@@ -126,6 +136,9 @@ const EditProductDialog = ({ product, onClose, onSave }: Props) => {
 
           <ProductForm
             form={form}
+            categories={categories}
+            isLoadingCategories={isLoadingCategories}
+            hasErrorCategories={hasErrorCategories}
             onChange={handleFormChange}
             onMediaUploadingChange={setIsMediaUploading}
             hasMediaError={hasMediaError}

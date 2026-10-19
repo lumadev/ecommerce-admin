@@ -13,7 +13,8 @@ import { mediaUploadRepository } from "@/features/file/repositories/imageUploadR
 import { useToast } from "@/hooks/use-toast";
 import { ProductFormState } from "../../types/product-form.types";
 import { Product, CreateProductData } from "../../types/product.types";
-import ProductForm from "../ProductForm";
+import { useProductCategories } from "../../hooks/useProductCategories";
+import ProductCreationContent from "../ProductCreationContent";
 import { validateProductForm } from "../../helpers/product-form.helpers";
 
 interface Props {
@@ -31,13 +32,25 @@ const emptyForm: ProductFormState = {
   categoryIds: [],
 };
 
-const CreateProductDialog = ({ open, onClose, onCreate }: Props) => {
+const CreateProductDialog = ({
+  open,
+  onClose,
+  onCreate,
+}: Props) => {
+  const {
+    categories,
+    isLoading: isLoadingCategories,
+    hasError: hasErrorCategories,
+  } = useProductCategories(open);
   const { toast } = useToast();
   const [form, setForm] = useState<ProductFormState>(emptyForm);
   const [isLoading, setIsLoading] = useState(false);
   const [isMediaUploading, setIsMediaUploading] = useState(false);
   const [isCanceling, setIsCanceling] = useState(false);
   const [hasMediaError, setHasMediaError] = useState(false);
+  const hasNoCategories =
+    !isLoadingCategories && !hasErrorCategories && categories.length === 0;
+  const canCreate = !isLoadingCategories && !hasNoCategories;
 
   const handleFormChange = <K extends keyof ProductFormState>(
     field: K,
@@ -108,16 +121,23 @@ const CreateProductDialog = ({ open, onClose, onCreate }: Props) => {
       open={open}
       onOpenChange={(isOpen) => !isOpen && void handleCancel()}
     >
-      <DialogContent className="flex h-fit max-h-[calc(100vh-2rem)] flex-col overflow-hidden border-border bg-card text-card-foreground sm:max-w-[960px]">
+      <DialogContent
+        className="flex h-[min(680px,calc(100vh_-_2rem))] max-h-[calc(100vh_-_2rem)] flex-col overflow-hidden border-border bg-card text-card-foreground sm:max-w-[960px]"
+      >
         <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col overflow-hidden">
           <DialogHeader className="shrink-0 border-b border-border pb-4">
             <DialogTitle className="text-xl">Novo Produto</DialogTitle>
             <DialogDescription className="text-muted-foreground">
-              Preencha os dados do produto e adicione as fotos ou vídeos da vitrine.
+              Para cadastrar um produto, selecione uma categoria e preencha os
+              dados da vitrine.
             </DialogDescription>
           </DialogHeader>
 
-          <ProductForm
+          <ProductCreationContent
+            hasNoCategories={hasNoCategories}
+            categories={categories}
+            isLoadingCategories={isLoadingCategories}
+            hasErrorCategories={hasErrorCategories}
             form={form}
             onChange={handleFormChange}
             onMediaUploadingChange={setIsMediaUploading}
@@ -133,13 +153,15 @@ const CreateProductDialog = ({ open, onClose, onCreate }: Props) => {
             >
               {isCanceling ? "Limpando..." : "Cancelar"}
             </Button>
-            <Button
-              type="submit"
-              disabled={isLoading || isMediaUploading || isCanceling}
-            >
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isLoading ? "Salvando..." : "Criar"}
-            </Button>
+            {canCreate && (
+              <Button
+                type="submit"
+                disabled={isLoading || isMediaUploading || isCanceling}
+              >
+                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {isLoading ? "Salvando..." : "Criar"}
+              </Button>
+            )}
           </DialogFooter>
         </form>
       </DialogContent>

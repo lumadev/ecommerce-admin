@@ -2,17 +2,23 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { categoryRepository } from "@/features/product/repositories/categoryRepository";
 
-type ProductCategory = {
+export type ProductCategory = {
   id: string;
   name: string;
 };
 
-export const useProductCategories = () => {
+export const useProductCategories = (enabled: boolean) => {
   const [categories, setCategories] = useState<ProductCategory[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
+    if (!enabled) {
+      setIsLoading(false);
+      return;
+    }
+
     const controller = new AbortController();
 
     const loadCategories = async () => {
@@ -22,6 +28,7 @@ export const useProductCategories = () => {
       try {
         const response = await categoryRepository.findAll(controller.signal);
         setCategories(response.map(({ id, name }) => ({ id, name })));
+        setHasLoaded(true);
       } catch (error) {
         if (axios.isCancel(error)) {
           return;
@@ -40,11 +47,11 @@ export const useProductCategories = () => {
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [enabled]);
 
   return {
     categories,
-    isLoading,
+    isLoading: enabled && (isLoading || (!hasLoaded && !hasError)),
     hasError,
   };
 };
