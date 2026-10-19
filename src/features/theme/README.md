@@ -83,13 +83,12 @@ fundo e card são atualizados. As fontes só mudam quando o tema define
 
 ## Tema Mili
 
-- O código `loja-da-mili` usa o tema `miliInfantil`, inspirado na referência
-  visual da loja: fundo claro suave, verde sálvia para ações principais e rosa
-  pálido para realces. Para ajustar a paleta, altere os tokens de
-  `miliInfantil` em `adminThemeVars.ts`.
+- O código `milii-babystore` usa o tema `miliInfantil`. Por enquanto, as cores
+  seguem os valores padrão do Super Admin; não defina overrides de cores nesse
+  tema.
 - Tipografia: títulos em Baloo 2 (arredondada e encorpada, como o letreiro da
   logo) e texto em Figtree, que tem x-height maior e lê melhor em tamanhos
-  pequenos. O vermelho da joaninha (`brand`) aparece na seleção de texto.
+  pequenos.
 
 ## Tema Ecommerce 3D
 

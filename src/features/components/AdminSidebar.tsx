@@ -65,7 +65,7 @@ const AdminSidebar = ({ merchantCode }: AdminSidebarProps) => {
                   (item) =>
                     (item.key !== "lojas" || user?.role === "SUPER_ADMIN") &&
                     (item.key !== "variantes" || Boolean(user?.merchant?.id)) &&
-                    (item.key !== "roadmap" || merchantCode === "loja-da-mili")
+                    (item.key !== "roadmap" || merchantCode === "milii-babystore")
                 )
                 .map((item) => (
                 <SidebarMenuItem key={item.key}>

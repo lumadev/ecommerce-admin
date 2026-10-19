@@ -59,6 +59,6 @@ export const doneTasks: RoadmapTask[] = [
   {
     id: "13",
     title: "Criar tema ADMIN para a loja da Mili",
-    note: "Tema associado ao código loja-da-mili.",
+    note: "Tema associado ao código milii-babystore.",
   },
 ];

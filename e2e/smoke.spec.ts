@@ -10,7 +10,7 @@ const adminSession = {
   merchant: {
     id: "smoke-merchant",
     name: "Loja da Mili",
-    code: "loja-da-mili",
+    code: "milii-babystore",
   },
 };
 

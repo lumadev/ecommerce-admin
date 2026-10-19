@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { doneTasks, todoTasks } from "./roadmap.data";
 import { RoadmapTaskItem } from "./components/RoadmapTaskItem";
 
-const MILI_MERCHANT_CODE = "loja-da-mili";
+const MILI_MERCHANT_CODE = "milii-babystore";
 
 const RoadmapPage = () => {
   const { merchantCode } = useOutletContext<{ merchantCode?: string }>();

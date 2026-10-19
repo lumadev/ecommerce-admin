@@ -9,9 +9,9 @@ atuais.
 
 | Loja | Código (`merchant.code`) | ID (`merchant.id`) |
 | --- | --- | --- |
-| Loja da Mili | `loja-da-mili` | Obtido em tempo de execução pela API |
+| Loja da Mili | `milii-babystore` | Obtido em tempo de execução pela API |
 
-O código `loja-da-mili` é o único código de loja encontrado versionado no
+O código `milii-babystore` é o único código de loja encontrado versionado no
 frontend. Ele é usado para associar o tema Mili e restringir o roadmap dessa
 loja. Esta lista não representa necessariamente todas as lojas cadastradas no
 backend; para a relação atual, consulte `GET /merchants`.
