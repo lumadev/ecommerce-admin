@@ -18,7 +18,12 @@ import { StoreSelect } from "@/features/components/StoreSelect";
 import { VariantProvider } from "@/features/variant/variant.provider";
 import { AdminTheme } from "@/features/theme/AdminTheme";
 
-const STORE_DATA_ROUTES = new Set(["/produtos", "/categorias", "/destaques"]);
+const STORE_DATA_ROUTES = new Set([
+  "/produtos",
+  "/categorias",
+  "/destaques",
+  "/clientes",
+]);
 
 interface AdminLayoutState {
   user: SessionUser | null;
