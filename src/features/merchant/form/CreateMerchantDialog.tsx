@@ -107,7 +107,7 @@ const CreateMerchantDialog = ({ open, onClose, onCreate }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleCancel()}>
-      <DialogContent className="max-h-[calc(100vh-2rem)] overflow-y-auto border-border bg-card text-card-foreground sm:max-w-[520px]">
+      <DialogContent className="max-h-[calc(100vh-2rem)] overflow-y-auto border-border bg-card text-card-foreground sm:max-w-[760px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader className="border-b border-border pb-4">
             <DialogTitle className="text-xl">Nova Loja</DialogTitle>
