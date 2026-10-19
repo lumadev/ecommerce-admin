@@ -153,7 +153,7 @@ const ensureDatabase = async () => {
 
   if (!isDockerUp()) {
     const exe = resolveDockerDesktopExe();
-    if (!existsSync(exe)) {
+    if (!exe) {
       throw new Error(
         "Docker não está rodando e o Docker Desktop não foi encontrado nos caminhos padrão nem ao lado do docker.exe no PATH. Inicie o Docker Desktop ou o daemon e tente novamente.",
       );
