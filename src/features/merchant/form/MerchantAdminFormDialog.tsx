@@ -196,7 +196,7 @@ const MerchantAdminFormDialog = ({
             />
           )}
 
-          <DialogFooter className="border-t border-border pt-4">
+          <DialogFooter className="pt-4">
             {isConfirming ? (
               <>
                 <Button type="button" variant="outline" onClick={() => setIsConfirming(false)} disabled={isSaving}>

@@ -123,7 +123,7 @@ const CreateMerchantDialog = ({ open, onClose, onCreate }: Props) => {
             onAttributesChange={handleAttributesChange}
           />
 
-          <DialogFooter className="border-t border-border pt-4">
+          <DialogFooter className="pt-4">
             <Button type="button" variant="outline" onClick={handleCancel} disabled={isLoading}>
               Cancelar
             </Button>

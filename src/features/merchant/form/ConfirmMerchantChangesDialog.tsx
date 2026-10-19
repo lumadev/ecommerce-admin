@@ -75,7 +75,7 @@ const ConfirmMerchantChangesDialog = ({
           </table>
         </div>
 
-        <DialogFooter className="border-t border-border pt-4">
+        <DialogFooter className="pt-4">
           <Button variant="outline" onClick={onCancel} disabled={isLoading}>
             Voltar
           </Button>

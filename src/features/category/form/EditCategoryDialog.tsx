@@ -101,7 +101,7 @@ const EditCategoryDialog = ({ category, onClose, onSave }: Props) => {
             onChange={(field, value) => setForm((f) => ({ ...f, [field]: value }))}
           />
 
-          <DialogFooter className="border-t border-border pt-4">
+          <DialogFooter className="pt-4">
             <Button type="button" variant="outline" onClick={handleCancel} disabled={isBusy}>
               Cancelar
             </Button>

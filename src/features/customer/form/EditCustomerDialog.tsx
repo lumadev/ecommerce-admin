@@ -98,7 +98,7 @@ const EditCustomerDialog = ({ customer, onClose, onSave }: Props) => {
             passwordOptional
           />
 
-          <DialogFooter className="border-t border-border pt-4">
+          <DialogFooter className="pt-4">
             <Button type="button" variant="outline" onClick={onClose} disabled={isLoading}>
               Cancelar
             </Button>

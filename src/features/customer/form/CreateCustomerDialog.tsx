@@ -96,7 +96,7 @@ const CreateCustomerDialog = ({ open, onClose, onCreate }: Props) => {
 
           <CustomerForm form={form} errors={errors} onChange={handleChange} />
 
-          <DialogFooter className="border-t border-border pt-4">
+          <DialogFooter className="pt-4">
             <Button type="button" variant="outline" onClick={handleCancel} disabled={isLoading}>
               Cancelar
             </Button>
