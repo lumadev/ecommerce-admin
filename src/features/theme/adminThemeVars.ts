@@ -11,6 +11,7 @@ export interface AdminThemeTokens {
   secondaryForeground?: string;
   muted?: string;
   mutedForeground?: string;
+  skeletonHighlight?: string;
   accent?: string;
   accentForeground?: string;
   destructive?: string;
@@ -51,6 +52,7 @@ export const ADMIN_THEMES = {
     secondaryForeground: "200 20% 85%",
     muted: "220 15% 14%",
     mutedForeground: "215 12% 55%",
+    skeletonHighlight: "220 15% 22%",
     accent: "280 70% 60%",
     accentForeground: "200 20% 95%",
     destructive: "0 72% 55%",
@@ -80,6 +82,7 @@ export const ADMIN_THEMES = {
     secondaryForeground: "95 12% 24%",
     muted: "90 16% 92%",
     mutedForeground: "95 8% 40%",
+    skeletonHighlight: "350 25% 96%",
     accent: "350 25% 86%",
     accentForeground: "350 18% 25%",
     destructive: "0 58% 48%",
@@ -121,6 +124,7 @@ const CSS_VARIABLE_BY_TOKEN: Record<keyof AdminThemeTokens, `--${string}`> = {
   secondaryForeground: "--secondary-foreground",
   muted: "--muted",
   mutedForeground: "--muted-foreground",
+  skeletonHighlight: "--skeleton-highlight",
   accent: "--accent",
   accentForeground: "--accent-foreground",
   destructive: "--destructive",
