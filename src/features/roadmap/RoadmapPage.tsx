@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { Check, ClipboardList, Search, Sparkles } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  ClipboardList,
+  Search,
+  Sparkles,
+} from "lucide-react";
 
 import { Input } from "@/shared/components/ui/input";
 import { doneTasks, nextStepTasks, todoTasks } from "./roadmap.data";
@@ -14,6 +20,9 @@ const normalizeSearchText = (value: string) =>
 const RoadmapPage = () => {
   const { merchantCode } = useOutletContext<{ merchantCode?: string }>();
   const [searchTerm, setSearchTerm] = useState("");
+  const [isTodoExpanded, setIsTodoExpanded] = useState(true);
+  const [isDoneExpanded, setIsDoneExpanded] = useState(true);
+  const [areNextStepsExpanded, setAreNextStepsExpanded] = useState(true);
 
   if (merchantCode !== MILI_MERCHANT_CODE) {
     return (
@@ -92,16 +101,36 @@ const RoadmapPage = () => {
         </div>
 
         <section className="mb-7 rounded-2xl border border-amber-200/80 bg-amber-50/70 p-5 sm:p-6">
-          <h2 className="mb-4 flex items-center gap-3 text-sm font-extrabold uppercase tracking-widest text-amber-900">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
-              <ClipboardList className="h-5 w-5" aria-hidden="true" />
-            </span>
-            A fazer
-            <span className="rounded-full bg-amber-200 px-2.5 py-1 text-xs font-bold text-amber-900">
-              {filteredTodoTasks.length}
-            </span>
+          <h2 className="text-sm font-extrabold uppercase tracking-widest text-amber-900">
+            <button
+              type="button"
+              className={`flex w-full items-center gap-3 rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 ${
+                isTodoExpanded ? "mb-4" : ""
+              }`}
+              aria-expanded={isTodoExpanded}
+              aria-controls="roadmap-todo-list"
+              onClick={() => setIsTodoExpanded((expanded) => !expanded)}
+            >
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
+                <ClipboardList className="h-5 w-5" aria-hidden="true" />
+              </span>
+              A fazer
+              <span className="rounded-full bg-amber-200 px-2.5 py-1 text-xs font-bold text-amber-900">
+                {filteredTodoTasks.length}
+              </span>
+              <ChevronDown
+                className={`ml-auto h-5 w-5 transition-transform ${
+                  isTodoExpanded ? "rotate-180" : ""
+                }`}
+                aria-hidden="true"
+              />
+            </button>
           </h2>
-          <ul className="space-y-3">
+          <ul
+            id="roadmap-todo-list"
+            className="space-y-3"
+            hidden={!isTodoExpanded}
+          >
             {filteredTodoTasks.map((task) => (
               <RoadmapTaskItem key={task.id} task={task} />
             ))}
@@ -114,16 +143,36 @@ const RoadmapPage = () => {
         </section>
 
         <section className="rounded-2xl border border-emerald-200/80 bg-emerald-50/60 p-5 sm:p-6">
-          <h2 className="mb-4 flex items-center gap-3 text-sm font-extrabold uppercase tracking-widest text-emerald-900">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
-              <Check className="h-5 w-5" aria-hidden="true" />
-            </span>
-            Concluído
-            <span className="rounded-full bg-emerald-200 px-2.5 py-1 text-xs font-bold text-emerald-900">
-              {filteredDoneTasks.length}
-            </span>
+          <h2 className="text-sm font-extrabold uppercase tracking-widest text-emerald-900">
+            <button
+              type="button"
+              className={`flex w-full items-center gap-3 rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2 ${
+                isDoneExpanded ? "mb-4" : ""
+              }`}
+              aria-expanded={isDoneExpanded}
+              aria-controls="roadmap-done-list"
+              onClick={() => setIsDoneExpanded((expanded) => !expanded)}
+            >
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+                <Check className="h-5 w-5" aria-hidden="true" />
+              </span>
+              Concluído
+              <span className="rounded-full bg-emerald-200 px-2.5 py-1 text-xs font-bold text-emerald-900">
+                {filteredDoneTasks.length}
+              </span>
+              <ChevronDown
+                className={`ml-auto h-5 w-5 transition-transform ${
+                  isDoneExpanded ? "rotate-180" : ""
+                }`}
+                aria-hidden="true"
+              />
+            </button>
           </h2>
-          <ul className="space-y-3">
+          <ul
+            id="roadmap-done-list"
+            className="space-y-3"
+            hidden={!isDoneExpanded}
+          >
             {filteredDoneTasks.map((task) => (
               <RoadmapTaskItem key={task.id} task={task} done />
             ))}
@@ -136,28 +185,51 @@ const RoadmapPage = () => {
         </section>
 
         <section className="mt-7 rounded-2xl border border-violet-200/80 bg-violet-50/70 p-5 sm:p-6">
-          <h2 className="mb-4 flex items-center gap-3 text-sm font-extrabold uppercase tracking-widest text-violet-900">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 text-violet-700">
-              <Sparkles className="h-5 w-5" aria-hidden="true" />
-            </span>
-            Próximos passos
-            <span className="rounded-full bg-violet-200 px-2.5 py-1 text-xs font-bold text-violet-900">
-              {filteredNextStepTasks.length}
-            </span>
+          <h2 className="text-sm font-extrabold uppercase tracking-widest text-violet-900">
+            <button
+              type="button"
+              className={`flex w-full items-center gap-3 rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-700 focus-visible:ring-offset-2 ${
+                areNextStepsExpanded ? "mb-4" : ""
+              }`}
+              aria-expanded={areNextStepsExpanded}
+              aria-controls="roadmap-next-steps-list"
+              onClick={() =>
+                setAreNextStepsExpanded((expanded) => !expanded)
+              }
+            >
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 text-violet-700">
+                <Sparkles className="h-5 w-5" aria-hidden="true" />
+              </span>
+              Próximos passos
+              <span className="rounded-full bg-violet-200 px-2.5 py-1 text-xs font-bold text-violet-900">
+                {filteredNextStepTasks.length}
+              </span>
+              <ChevronDown
+                className={`ml-auto h-5 w-5 transition-transform ${
+                  areNextStepsExpanded ? "rotate-180" : ""
+                }`}
+                aria-hidden="true"
+              />
+            </button>
           </h2>
-          <p className="mb-4 text-sm text-violet-800">
-            Próximas tarefas para a Mili desenvolver com vibe code.
-          </p>
-          <ul className="space-y-3">
-            {filteredNextStepTasks.map((task) => (
-              <RoadmapTaskItem key={task.id} task={task} />
-            ))}
-            {filteredNextStepTasks.length === 0 && (
-              <li className="rounded-xl border border-dashed border-violet-300 bg-white/60 p-4 text-sm text-muted-foreground">
-                Nenhum próximo passo corresponde à busca.
-              </li>
-            )}
-          </ul>
+          <div
+            id="roadmap-next-steps-list"
+            hidden={!areNextStepsExpanded}
+          >
+            <p className="mb-4 text-sm text-violet-800">
+              Próximas tarefas para a Mili desenvolver com vibe code.
+            </p>
+            <ul className="space-y-3">
+              {filteredNextStepTasks.map((task) => (
+                <RoadmapTaskItem key={task.id} task={task} />
+              ))}
+              {filteredNextStepTasks.length === 0 && (
+                <li className="rounded-xl border border-dashed border-violet-300 bg-white/60 p-4 text-sm text-muted-foreground">
+                  Nenhum próximo passo corresponde à busca.
+                </li>
+              )}
+            </ul>
+          </div>
         </section>
       </div>
     </main>

@@ -12,20 +12,12 @@ export const todoTasks: RoadmapTask[] = [
     note: "Com filtros de produto consignado.",
   },
   {
-    id: "4",
-    title: "Cadastrar variante \"Código\" para a loja Mili",
-    note: "Testar se vincula corretamente no cadastro do produto. O código não será obrigatório.",
-  },
-  {
     id: "6",
     title: "Criar lógica do produto consignado",
     note: "Backend e frontend.",
   },
-  {
-    id: "9",
-    title: "Definir vínculo do Cloudinary e do Resend à loja",
-    note: "Cloudinary para fotos e Resend para e-mails.",
-  },
+  { id: "19", title: "Definir vínculo do Resend à loja" },
+  { id: "20", title: "Enviar email para cliente quando alterar o status do pedido" },
   {
     id: "17",
     title: "Definir fluxo de cobrança automatizada",
@@ -43,6 +35,12 @@ export const todoTasks: RoadmapTask[] = [
 ];
 
 export const doneTasks: RoadmapTask[] = [
+  {
+    id: "4",
+    title: "Cadastrar variante \"Código\" para a loja Mili",
+    note: "Testar se vincula corretamente no cadastro do produto. O código não será obrigatório.",
+  },
+  { id: "18", title: "Definir vínculo do Cloudinary à loja" },
   { id: "3", title: "Criar área para cadastro de Tamanhos", note: "Na área ADMIN." },
   { id: "10", title: "Criar lógica de Tamanho no backend" },
   {
