@@ -1,4 +1,4 @@
-import { httpClientAuth } from "@/infra/http/httpClient";
+import { httpClientAuth, httpClientPublic } from "@/infra/http/httpClient";
 import {
   Category,
   CreateCategoryData,
@@ -9,7 +9,7 @@ const BASE_URL = "/categories";
 
 export const categoryRepository = {
   findAll: async (signal?: AbortSignal): Promise<Category[]> => {
-    const response = await httpClientAuth.get<Category[]>(BASE_URL, {
+    const response = await httpClientPublic.get<Category[]>(BASE_URL, {
       signal,
     });
     return response.data;

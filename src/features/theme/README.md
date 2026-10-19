@@ -55,6 +55,7 @@ quando necessário para manter contraste legível.
 | `secondaryForeground` | Texto e ícones sobre a cor secundária. |
 | `muted` | Áreas discretas, campos e conteúdo auxiliar. |
 | `mutedForeground` | Legendas, placeholders e texto secundário. |
+| `skeletonHighlight` | Cor de realce da animação suave dos skeleton loaders. |
 | `accent` | Realce complementar; participa do gradiente de ação existente. |
 | `accentForeground` | Texto e ícones sobre o realce. |
 | `destructive` | Ações destrutivas e estados de erro. |
