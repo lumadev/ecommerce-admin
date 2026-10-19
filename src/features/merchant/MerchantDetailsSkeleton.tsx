@@ -2,7 +2,7 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 
 const MerchantDetailsSkeleton = () => (
   <div
-    className="space-y-8"
+    className="mx-auto max-w-6xl space-y-8 pb-16"
     role="status"
     aria-live="polite"
     aria-label="Carregando detalhes da loja"
@@ -15,7 +15,7 @@ const MerchantDetailsSkeleton = () => (
       </div>
     </div>
 
-    <div className="max-w-3xl space-y-5 rounded-lg border border-border bg-card p-5">
+    <div className="space-y-5 rounded-lg border border-border bg-card p-5">
       <div className="grid gap-4">
         {Array.from({ length: 4 }, (_, index) => (
           <div key={index} className="space-y-2">
