@@ -90,14 +90,13 @@ export const httpClientPublic = axios.create({
 });
 
 let activeMerchantCode: string | undefined;
-const MERCHANT_SCOPED_ENDPOINTS = [
+const MERCHANT_SCOPED_COLLECTIONS = new Set([
   "/categories",
   "/highlights",
   "/products",
-  "/upload",
   "/users",
   "/variants",
-];
+]);
 
 export const setActiveMerchantCode = (merchantCode?: string | null) => {
   activeMerchantCode = merchantCode ?? undefined;
@@ -106,27 +105,56 @@ export const setActiveMerchantCode = (merchantCode?: string | null) => {
 const registerMerchantCodeParam = (client: AxiosInstance) => {
   client.interceptors.request.use((config) => {
     const requestPath = config.url?.split("?")[0];
-    const isMerchantScopedEndpoint = MERCHANT_SCOPED_ENDPOINTS.some(
-      (endpoint) =>
-        requestPath === endpoint || requestPath?.startsWith(`${endpoint}/`),
-    );
+    const method = config.method?.toLowerCase();
+    const isUserById = Boolean(requestPath && /^\/users\/[^/]+$/.test(requestPath));
+    const usesMerchantCodeQuery =
+      (method === "get" &&
+        requestPath !== undefined &&
+        MERCHANT_SCOPED_COLLECTIONS.has(requestPath)) ||
+      (requestPath === "/users/admin" && method === "post") ||
+      (isUserById && ["get", "patch", "delete"].includes(method ?? ""));
+    const usesMerchantCodeBody =
+      ((requestPath === "/categories" || requestPath === "/products") &&
+        method === "post") ||
+      (requestPath === "/upload" && ["post", "delete"].includes(method ?? ""));
 
-    if (!activeMerchantCode || !isMerchantScopedEndpoint) {
+    if (!activeMerchantCode) {
       return config;
     }
 
-    if (config.params instanceof URLSearchParams) {
-      if (!config.params.has("merchantCode")) {
-        config.params.set("merchantCode", activeMerchantCode);
+    if (usesMerchantCodeQuery) {
+      if (config.params instanceof URLSearchParams) {
+        if (!config.params.has("merchantCode")) {
+          config.params.set("merchantCode", activeMerchantCode);
+        }
+        return config;
       }
-      return config;
+
+      const params = config.params as Record<string, unknown> | undefined;
+      config.params = {
+        ...params,
+        merchantCode: params?.merchantCode ?? activeMerchantCode,
+      };
     }
 
-    const params = config.params as Record<string, unknown> | undefined;
-    config.params = {
-      ...params,
-      merchantCode: params?.merchantCode ?? activeMerchantCode,
-    };
+    if (usesMerchantCodeBody) {
+      if (typeof FormData !== "undefined" && config.data instanceof FormData) {
+        if (!config.data.has("merchantCode")) {
+          config.data.append("merchantCode", activeMerchantCode);
+        }
+      } else if (
+        config.data &&
+        typeof config.data === "object" &&
+        !Array.isArray(config.data)
+      ) {
+        const body = config.data as Record<string, unknown>;
+        config.data = {
+          ...body,
+          merchantCode: body.merchantCode ?? activeMerchantCode,
+        };
+      }
+    }
+
     return config;
   });
 };
