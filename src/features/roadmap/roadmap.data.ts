@@ -27,17 +27,16 @@ export const todoTasks: RoadmapTask[] = [
     note: "Cloudinary para fotos e Resend para e-mails.",
   },
   {
+    id: "17",
+    title: "Definir fluxo de cobrança automatizada",
+  },
+  {
     id: "10",
     title: "Criar documentação dos endpoints do ecommerce backend",
   },
   {
     id: "11",
     title: "Lógica de observabilidade da aplicação",
-  },
-  {
-    id: "14",
-    title: "Fazer o deploy da área Admin em outro projeto",
-    note: "O domínio irá mudar.",
   },
   { id: "15", title: "Testar cadastro de variantes em produto" },
   { id: "16", title: "Pensar em forma de dar baixa em Produtos (físicos)" },
@@ -58,7 +57,20 @@ export const doneTasks: RoadmapTask[] = [
   },
   {
     id: "13",
-    title: "Criar tema ADMIN para a loja da Mili",
+    title: "Definir tema para loja da Mili",
     note: "Tema associado ao código milii-babystore.",
+  },
+  {
+    id: "14",
+    title: "Fazer o deploy da área Admin em outro projeto",
+    note: "O domínio irá mudar.",
+  },
+];
+
+export const nextStepTasks: RoadmapTask[] = [
+  { id: "next-1", title: "Criar formulário de contato" },
+  {
+    id: "next-2",
+    title: "Criar área logada para usuário poder acompanhar os seus pedidos",
   },
 ];
