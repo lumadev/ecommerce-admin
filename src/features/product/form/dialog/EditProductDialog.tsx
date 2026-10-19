@@ -20,6 +20,7 @@ interface Props {
   product: ProductListItem | null;
   onClose: () => void;
   onSave: (id: string, data: UpdateProductData) => Promise<ProductListItem>;
+  merchantCode?: string;
 }
 
 const toFormState = (p: ProductListItem | null): ProductFormState => ({
@@ -51,12 +52,13 @@ const EditProductDialog = ({
   product,
   onClose,
   onSave,
+  merchantCode,
 }: Props) => {
   const {
     categories,
     isLoading: isLoadingCategories,
     hasError: hasErrorCategories,
-  } = useProductCategories(!!product);
+  } = useProductCategories(!!product, merchantCode);
   const { toast } = useToast();
   const [form, setForm] = useState<ProductFormState>(() => toFormState(product));
   const [isLoading, setIsLoading] = useState(false);

@@ -21,6 +21,7 @@ interface Props {
   open: boolean;
   onClose: () => void;
   onCreate: (data: CreateProductData) => Promise<Product>;
+  merchantCode?: string;
 }
 
 const emptyForm: ProductFormState = {
@@ -36,12 +37,13 @@ const CreateProductDialog = ({
   open,
   onClose,
   onCreate,
+  merchantCode,
 }: Props) => {
   const {
     categories,
     isLoading: isLoadingCategories,
     hasError: hasErrorCategories,
-  } = useProductCategories(open);
+  } = useProductCategories(open, merchantCode);
   const { toast } = useToast();
   const [form, setForm] = useState<ProductFormState>(emptyForm);
   const [isLoading, setIsLoading] = useState(false);

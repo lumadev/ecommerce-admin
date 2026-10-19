@@ -1,6 +1,5 @@
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Alert, AlertDescription, AlertTitle } from "@/shared/components/ui/alert";
 import { Button } from "@/shared/components/ui/button/button";
 import { ProductCategory } from "../hooks/useProductCategories";
 import { ProductFormState } from "../types/product-form.types";
@@ -30,26 +29,38 @@ const ProductCreationContent = ({
   onMediaUploadingChange,
   hasMediaError,
 }: Props) => {
+  if (isLoadingCategories) {
+    return (
+      <div
+        className="flex min-h-[280px] flex-1 flex-col items-center justify-center gap-3 text-muted-foreground"
+        role="status"
+      >
+        <Loader2 className="h-8 w-8 animate-spin" />
+        <p className="text-sm">Carregando categorias...</p>
+      </div>
+    );
+  }
+
   if (hasNoCategories) {
     return (
       <div className="flex min-h-[280px] flex-1 items-center justify-center px-2 py-8">
-        <Alert
-          variant="destructive"
-          className="max-w-lg border-destructive/30 bg-destructive/5 px-6 py-5 text-center [&>svg]:left-1/2 [&>svg]:top-5 [&>svg]:-translate-x-1/2 [&>svg~*]:pl-0 [&>svg+div]:translate-y-0"
+        <div
+          role="alert"
+          className="flex max-w-lg flex-col items-center gap-3 rounded-lg border border-destructive/30 bg-destructive/5 px-6 py-5 text-center"
         >
-          <AlertCircle className="h-5 w-5" />
-          <AlertTitle className="mt-8 text-base">
+          <AlertCircle className="h-5 w-5 text-destructive" />
+          <h3 className="font-medium leading-none tracking-tight text-destructive">
             Cadastre uma categoria primeiro
-          </AlertTitle>
-          <AlertDescription className="mt-2">
+          </h3>
+          <p className="text-sm text-muted-foreground">
             Para cadastrar um produto, é necessário ter pelo menos uma
             categoria. Acesse a página de categorias e crie a primeira para
             continuar.
-          </AlertDescription>
-          <Button asChild className="mt-5">
+          </p>
+          <Button asChild className="mt-2">
             <Link to="/categorias">Ir para categorias</Link>
           </Button>
-        </Alert>
+        </div>
       </div>
     );
   }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { Button } from "@/shared/components/ui/button/button";
 import { useProducts } from "./hooks/useProducts";
@@ -12,6 +13,7 @@ import CreateProductDialog from "./form/dialog/CreateProductDialog";
 
 const AdminProducts = () => {
   const { productList, isLoading, updateProduct, createProduct, removeProduct } = useProducts();
+  const { merchantCode } = useOutletContext<{ merchantCode?: string }>();
 
   const [editingProduct, setEditingProduct] = useState<ProductListItem | null>(
     null
@@ -46,12 +48,14 @@ const AdminProducts = () => {
         product={editingProduct}
         onClose={() => setEditingProduct(null)}
         onSave={updateProduct}
+        merchantCode={merchantCode}
       />
 
       <CreateProductDialog
         open={createOpen}
         onClose={() => setCreateOpen(false)}
         onCreate={createProduct}
+        merchantCode={merchantCode}
       />
     </div>
   );

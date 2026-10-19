@@ -1,57 +1,28 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { categoryRepository } from "@/features/product/repositories/categoryRepository";
+import { useQuery } from "@tanstack/react-query";
+import { categoryListQueryOptions } from "@/features/category/hooks/categoryQueries";
+import { Category } from "@/features/category/types/category.types";
 
 export type ProductCategory = {
   id: string;
   name: string;
 };
 
-export const useProductCategories = (enabled: boolean) => {
-  const [categories, setCategories] = useState<ProductCategory[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
-  const [hasLoaded, setHasLoaded] = useState(false);
-
-  useEffect(() => {
-    if (!enabled) {
-      setIsLoading(false);
-      return;
-    }
-
-    const controller = new AbortController();
-
-    const loadCategories = async () => {
-      setIsLoading(true);
-      setHasError(false);
-
-      try {
-        const response = await categoryRepository.findAll(controller.signal);
-        setCategories(response.map(({ id, name }) => ({ id, name })));
-        setHasLoaded(true);
-      } catch (error) {
-        if (axios.isCancel(error)) {
-          return;
-        }
-
-        setHasError(true);
-      } finally {
-        if (!controller.signal.aborted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    void loadCategories();
-
-    return () => {
-      controller.abort();
-    };
-  }, [enabled]);
+export const useProductCategories = (
+  enabled: boolean,
+  merchantCode?: string,
+) => {
+  const {
+    data: categories = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    ...categoryListQueryOptions(merchantCode),
+    enabled: enabled && Boolean(merchantCode),
+  });
 
   return {
-    categories,
-    isLoading: enabled && (isLoading || (!hasLoaded && !hasError)),
-    hasError,
+    categories: categories.map(({ id, name }: Category) => ({ id, name })),
+    isLoading: enabled && (!merchantCode || isLoading),
+    hasError: isError,
   };
 };
