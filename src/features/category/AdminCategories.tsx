@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { Button } from "@/shared/components/ui/button/button";
 import { Category } from "@/data/categories";
@@ -12,6 +13,7 @@ import CreateCategoryDialog from "./form/CreateCategoryDialog";
 
 const AdminCategories = () => {
   const { categoryList, isLoading, updateCategory, createCategory, removeCategory } = useCategories();
+  const { merchantCode } = useOutletContext<{ merchantCode?: string }>();
 
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
@@ -43,12 +45,14 @@ const AdminCategories = () => {
         category={editingCategory}
         onClose={() => setEditingCategory(null)}
         onSave={updateCategory}
+        merchantCode={merchantCode}
       />
 
       <CreateCategoryDialog
         open={createOpen}
         onClose={() => setCreateOpen(false)}
         onCreate={createCategory}
+        merchantCode={merchantCode}
       />
     </div>
   );

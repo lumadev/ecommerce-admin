@@ -33,9 +33,16 @@ export const mediaUploadRepository = {
   delete: async (
     publicId: string,
     mediaType: ProductMediaType = "image",
+    folder: UploadFolder = "products",
+    merchantCode?: string,
   ): Promise<void> => {
     const response = await httpClientAuth.delete<{ result: string }>("/upload", {
-      data: { public_id: publicId, media_type: mediaType },
+      data: {
+        public_id: publicId,
+        media_type: mediaType,
+        folder,
+        merchantCode,
+      },
     });
     if (response.data.result === "error") {
       throw new Error(`Could not delete ${mediaType} media ${publicId}.`);

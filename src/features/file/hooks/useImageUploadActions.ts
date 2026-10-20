@@ -42,7 +42,7 @@ export function useImageUploadActions({
 
     try {
       if (picturePublicId) {
-        await imageUploadRepository.delete(picturePublicId);
+        await imageUploadRepository.delete(picturePublicId, "image", folder);
       }
 
       onRemove();

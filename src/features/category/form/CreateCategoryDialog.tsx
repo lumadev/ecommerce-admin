@@ -21,6 +21,7 @@ interface Props {
   open: boolean;
   onClose: () => void;
   onCreate: (category: CreateCategoryData) => Promise<Category>;
+  merchantCode?: string;
 }
 
 const emptyForm: CategoryFormState = {
@@ -31,24 +32,33 @@ const emptyForm: CategoryFormState = {
   hashtags: [],
 };
 
-const CreateCategoryDialog = ({ open, onClose, onCreate }: Props) => {
+const CreateCategoryDialog = ({ open, onClose, onCreate, merchantCode }: Props) => {
   const { toast } = useToast();
   const [form, setForm] = useState<CategoryFormState>(emptyForm);
   const [isLoading, setIsLoading] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
   const handleCancel = async () => {
-    try {
-      setIsClosing(true);
+    if (isLoading || isClosing) return;
+    setIsClosing(true);
 
+    try {
       if (form.picturePublicId) {
-        await imageUploadRepository.delete(form.picturePublicId);
+        await imageUploadRepository.delete(
+          form.picturePublicId,
+          "image",
+          "categories",
+          merchantCode,
+        );
       }
-    } catch (error) {
-      console.error("Erro ao remover imagem no cancelamento:", error);
-    } finally {
       onClose();
       setForm(emptyForm);
+    } catch (error) {
+      console.error("Erro ao remover imagem no cancelamento:", error);
+      toast({
+        description: "Não foi possível limpar a imagem enviada. Tente cancelar novamente.",
+      });
+    } finally {
       setIsClosing(false);
     }
   };
@@ -67,8 +77,13 @@ const CreateCategoryDialog = ({ open, onClose, onCreate }: Props) => {
       });
       return;
     }
+    if (!merchantCode) {
+      toast({ description: "Não foi possível identificar a loja." });
+      return;
+    }
 
     const newCategory: CreateCategoryData = {
+      merchantCode,
       name: form.name.trim(),
       description: form.description.trim(),
       picturePublicId: form.picturePublicId,
@@ -96,7 +111,7 @@ const CreateCategoryDialog = ({ open, onClose, onCreate }: Props) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && void handleCancel()}>
       <DialogContent className="max-h-[calc(100vh-2rem)] overflow-hidden border-border bg-card text-card-foreground sm:max-w-[980px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader className="border-b border-border pb-4">

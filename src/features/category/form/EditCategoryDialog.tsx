@@ -10,6 +10,7 @@ import {
 import { Button } from "@/shared/components/ui/button/button";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { imageUploadRepository } from "@/features/file/repositories/imageUploadRepository";
 import { Category } from "@/data/categories";
 import { CategoryFormState } from "@/features//category/types/category-form.types";
 import { UpdateCategoryData } from "@/features//category/types/category.types";
@@ -20,6 +21,7 @@ interface Props {
   category: Category | null;
   onClose: () => void;
   onSave: (id: string, category: UpdateCategoryData) => Promise<UpdateCategoryData>;
+  merchantCode?: string;
 }
 
 const emptyForm: CategoryFormState = {
@@ -38,7 +40,7 @@ const toFormState = (c: Category | null): CategoryFormState => ({
   hashtags: c?.hashtags ?? [],
 });
 
-const EditCategoryDialog = ({ category, onClose, onSave }: Props) => {
+const EditCategoryDialog = ({ category, onClose, onSave, merchantCode }: Props) => {
   const { toast } = useToast();
   const [form, setForm] = useState<CategoryFormState>(() => toFormState(category));
   const [isLoading, setIsLoading] = useState(false);
@@ -54,7 +56,24 @@ const EditCategoryDialog = ({ category, onClose, onSave }: Props) => {
     void onSaveEdit();
   };
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
+    if (form.picturePublicId && form.picturePublicId !== category?.picturePublicId) {
+      try {
+        await imageUploadRepository.delete(
+          form.picturePublicId,
+          "image",
+          "categories",
+          merchantCode,
+        );
+      } catch (error) {
+        console.error("Erro ao remover imagem no cancelamento:", error);
+        toast({
+          description: "Não foi possível limpar a imagem enviada. Tente cancelar novamente.",
+        });
+        return;
+      }
+    }
+
     onClose();
     setForm(emptyForm);
   };
@@ -86,7 +105,7 @@ const EditCategoryDialog = ({ category, onClose, onSave }: Props) => {
   };
 
   return (
-    <Dialog open={!!category} onOpenChange={(open) => !open && onClose()}>
+    <Dialog open={!!category} onOpenChange={(open) => !open && void handleCancel()}>
       <DialogContent className="max-h-[calc(100vh-2rem)] overflow-hidden border-border bg-card text-card-foreground sm:max-w-[980px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader className="border-b border-border pb-4">
@@ -102,7 +121,7 @@ const EditCategoryDialog = ({ category, onClose, onSave }: Props) => {
           />
 
           <DialogFooter className="pt-4">
-            <Button type="button" variant="outline" onClick={handleCancel} disabled={isBusy}>
+            <Button type="button" variant="outline" onClick={() => void handleCancel()} disabled={isBusy}>
               Cancelar
             </Button>
             <Button type="submit" disabled={isBusy}>

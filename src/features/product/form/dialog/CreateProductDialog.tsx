@@ -66,7 +66,12 @@ const CreateProductDialog = ({
     setIsCanceling(true);
     try {
       for (const media of form.media.filter((item) => !item.persisted)) {
-        await mediaUploadRepository.delete(media.publicId, media.type);
+        await mediaUploadRepository.delete(
+          media.publicId,
+          media.type,
+          "products",
+          merchantCode,
+        );
       }
     } catch (error) {
       console.error("Erro ao remover mídias temporárias no cancelamento:", error);
