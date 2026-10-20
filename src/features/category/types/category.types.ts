@@ -8,6 +8,7 @@ export interface Category {
 }
 
 export interface CreateCategoryData {
+  merchantCode: string;
   name: string;
   description: string;
   picturePublicId: string;

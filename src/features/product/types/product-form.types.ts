@@ -9,6 +9,12 @@ export interface ProductFormMedia {
   persisted: boolean;
 }
 
+export interface ProductFormVariant {
+  attributeId: string;
+  optionId?: string;
+  value: string;
+}
+
 export interface ProductFormState {
   name: string;
   description: string;
@@ -16,4 +22,5 @@ export interface ProductFormState {
   stock: string;
   media: ProductFormMedia[];
   categoryIds: string[];
+  variants: ProductFormVariant[];
 }

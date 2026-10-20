@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { useVariants } from "./hooks/useVariants";
 import VariantList from "./components/VariantList";
@@ -6,8 +6,14 @@ import VariantOptionsPanel from "./components/VariantOptionsPanel";
 import VariantsHelpDialog from "./components/VariantsHelpDialog";
 
 const AdminVariants = () => {
-  const { variants, isLoading, loadError, addOption, removeOption } = useVariants();
+  const { variants, isLoading, loadError, load, addOption, removeOption } = useVariants();
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    void load(controller.signal);
+    return () => controller.abort();
+  }, [load]);
 
   const selected =
     variants.find((variant) => variant.id === selectedId) ?? variants[0];

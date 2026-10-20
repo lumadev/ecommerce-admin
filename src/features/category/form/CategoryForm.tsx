@@ -1,6 +1,7 @@
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { Label } from "@/shared/components/ui/label";
+import FieldCompletionIndicator from "@/shared/components/ui/FieldCompletionIndicator";
 import { CategoryFormState } from "@/features//category/types/category-form.types";
 
 import HashtagsField from "../components/HashtagsField";
@@ -23,7 +24,7 @@ const CategoryForm = ({
   return (
     <div className="grid gap-5 py-1">
       <CategoryImageUploadField
-        label="Foto da categoria"
+        label="Foto da categoria (opcional)"
         value={form.url}
         picturePublicId={form.picturePublicId}
         onChange={(v) => onChange("url", v)}
@@ -34,20 +35,27 @@ const CategoryForm = ({
       <div className="grid gap-3">
         <div className="flex flex-col gap-2">
           <Label htmlFor="cat-name" className="text-sm font-medium">
-            Nome
+            Nome <span className="text-xs font-normal text-muted-foreground">Obrigatório</span>
           </Label>
-          <Input
-            id="cat-name"
-            value={form.name}
-            onChange={(e) => onChange("name", e.target.value)}
-            placeholder={namePlaceholder}
-            className="bg-background"
-          />
+          <div className="relative">
+            <Input
+              id="cat-name"
+              value={form.name}
+              onChange={(e) => onChange("name", e.target.value)}
+              placeholder={namePlaceholder}
+              aria-required="true"
+              className="bg-background pr-10"
+            />
+            {form.name.trim() && (
+              <FieldCompletionIndicator label="Nome preenchido corretamente" />
+            )}
+          </div>
         </div>
 
         <div className="flex flex-col gap-2">
-          <Label htmlFor="cat-description" className="text-sm font-medium">
-            Descrição
+          <Label htmlFor="cat-description" className="flex items-center justify-between text-sm font-medium">
+            <span>Descrição</span>
+            <span className="text-xs font-normal text-muted-foreground">Opcional</span>
           </Label>
           <Textarea
             id="cat-description"

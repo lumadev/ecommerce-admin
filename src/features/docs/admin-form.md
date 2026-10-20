@@ -77,19 +77,19 @@ O produto já está alinhado ao padrão de categoria: possui um componente de
 formulário compartilhado entre criação e edição, diálogos independentes, tipo
 de estado próprio e componentes auxiliares para campos específicos.
 
-O formulário do produto organiza os campos em abas de **Dados do produto** e
-**Fotos e vídeos**. A galeria permite múltiplos arquivos e reordenação; a
+O formulário do produto organiza os campos em abas de **Dados do produto**,
+**Variantes** e **Fotos e vídeos**. Nome, preço e estoque são obrigatórios na
+criação e edição; uma ou mais categorias são obrigatórias na criação e
+opcionais na edição. Um check verde indica quando um campo obrigatório está
+preenchido corretamente. Erros de validação permanecem visíveis em um resumo
+com atalhos para a aba que precisa de correção. A aba de variantes carrega as
+definições da loja ao abrir a modal e exige os valores marcados como
+obrigatórios pela loja. A galeria permite múltiplos arquivos e reordenação; a
 primeira mídia é a capa. Cada arquivo mantém tipo e identificador no estado do
 formulário, e o backend persiste os itens em uma tabela relacionada ao produto
 com uma posição própria. Vídeos aceitam até 100 MB e 60 segundos; imagens
-mantêm o limite de 5 MB.
-
-O formulário do produto organiza os campos em abas de **Dados do produto** e
-**Fotos e vídeos**. A galeria permite múltiplos arquivos e reordenação; a
-primeira mídia é a capa. Cada arquivo mantém tipo e identificador no estado do
-formulário, e o backend persiste os itens em uma tabela relacionada ao produto
-com uma posição própria. Vídeos aceitam até 100 MB e 60 segundos; imagens
-mantêm o limite de 5 MB.
+mantêm o limite de 5 MB. Embora a API aceite mídia opcional, o formulário de
+criação exige ao menos uma foto do produto.
 
 ## Regras de implementação
 

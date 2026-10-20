@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { variantRepository } from "./repositories/variantRepository";
@@ -33,25 +33,25 @@ export const VariantProvider = ({
     [merchantCode]
   );
 
-  useEffect(() => {
-    const controller = new AbortController();
-    setIsLoading(true);
-    setLoadError(
-      merchantCode ? null : "Não foi possível identificar a loja do usuário."
-    );
+  const loadVariants = useCallback(
+    async (signal?: AbortSignal) => {
+      setIsLoading(true);
+      setLoadError(
+        merchantCode ? null : "Não foi possível identificar a loja do usuário."
+      );
 
-    load(controller.signal)
-      .catch((error) => {
-        if (axios.isCancel(error)) return;
+      try {
+        await load(signal);
+      } catch (error) {
+        if (axios.isCancel(error) || signal?.aborted) return;
         setVariants([]);
         setLoadError("Não foi possível carregar as variantes.");
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setIsLoading(false);
-      });
-
-    return () => controller.abort();
-  }, [load]);
+      } finally {
+        if (!signal?.aborted) setIsLoading(false);
+      }
+    },
+    [load, merchantCode]
+  );
 
   const addOption = useCallback(
     async (variantId: string, value: string) => {
@@ -84,8 +84,15 @@ export const VariantProvider = ({
   );
 
   const value = useMemo(
-    () => ({ variants, isLoading, loadError, addOption, removeOption }),
-    [variants, isLoading, loadError, addOption, removeOption]
+    () => ({
+      variants,
+      isLoading,
+      loadError,
+      load: loadVariants,
+      addOption,
+      removeOption,
+    }),
+    [variants, isLoading, loadError, loadVariants, addOption, removeOption]
   );
 
   return (

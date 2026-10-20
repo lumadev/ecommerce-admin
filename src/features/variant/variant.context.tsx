@@ -5,6 +5,7 @@ export interface VariantContextValue {
   variants: Variant[];
   isLoading: boolean;
   loadError: string | null;
+  load: (signal?: AbortSignal) => Promise<void>;
   addOption: (variantId: string, value: string) => Promise<boolean>;
   removeOption: (variantId: string, optionId: string) => Promise<boolean>;
 }

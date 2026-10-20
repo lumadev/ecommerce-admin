@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,8 +14,10 @@ import { useToast } from "@/hooks/use-toast";
 import { ProductFormState } from "../../types/product-form.types";
 import { Product, CreateProductData } from "../../types/product.types";
 import { useProductCategories } from "../../hooks/useProductCategories";
+import { useVariants } from "@/features/variant/hooks/useVariants";
 import ProductCreationContent from "../ProductCreationContent";
 import { validateProductForm } from "../../helpers/product-form.helpers";
+import type { ProductFormErrors } from "../../helpers/product-form.helpers";
 
 interface Props {
   open: boolean;
@@ -31,6 +33,7 @@ const emptyForm: ProductFormState = {
   stock: "",
   media: [],
   categoryIds: [],
+  variants: [],
 };
 
 const CreateProductDialog = ({
@@ -44,21 +47,53 @@ const CreateProductDialog = ({
     isLoading: isLoadingCategories,
     hasError: hasErrorCategories,
   } = useProductCategories(open, merchantCode);
+  const {
+    variants,
+    isLoading: isLoadingVariants,
+    loadError: variantsError,
+    load: loadVariants,
+  } = useVariants();
   const { toast } = useToast();
   const [form, setForm] = useState<ProductFormState>(emptyForm);
+  const [errors, setErrors] = useState<ProductFormErrors>({});
+  const [activeTab, setActiveTab] = useState("data");
   const [isLoading, setIsLoading] = useState(false);
   const [isMediaUploading, setIsMediaUploading] = useState(false);
   const [isCanceling, setIsCanceling] = useState(false);
-  const [hasMediaError, setHasMediaError] = useState(false);
-  const hasNoCategories =
-    !isLoadingCategories && !hasErrorCategories && categories.length === 0;
-  const canCreate = !isLoadingCategories && !hasNoCategories;
+  useEffect(() => {
+    if (!open) return;
+    const controller = new AbortController();
+    void loadVariants(controller.signal);
+    return () => controller.abort();
+  }, [open, loadVariants]);
 
   const handleFormChange = <K extends keyof ProductFormState>(
     field: K,
     value: ProductFormState[K],
   ) => {
     setForm((state) => ({ ...state, [field]: value }));
+    setErrors((state) => {
+      const nextErrors = { ...state };
+      if (field === "variants") {
+        nextErrors.variants = undefined;
+      } else if (field === "media") {
+        if (
+          Array.isArray(value) &&
+          value.some((media) => media.type === "image")
+        ) {
+          nextErrors.media = undefined;
+        }
+      } else if (field === "name") {
+        nextErrors.name = undefined;
+      } else if (field === "price") {
+        nextErrors.price = undefined;
+      } else if (field === "stock") {
+        nextErrors.stock = undefined;
+      } else if (field === "categoryIds") {
+        nextErrors.categoryIds = undefined;
+      }
+      return nextErrors;
+    });
   };
 
   const handleCancel = async () => {
@@ -84,20 +119,42 @@ const CreateProductDialog = ({
 
     onClose();
     setForm(emptyForm);
+    setErrors({});
+    setActiveTab("data");
     setIsCanceling(false);
   };
 
   const onSaveCreate = async () => {
-    setHasMediaError(!form.media.some((item) => item.type === "image"));
-    const validatedForm = validateProductForm(form, (description) =>
-      toast({ description }),
-    );
-    if (!validatedForm) {
+    if (!merchantCode) {
+      setErrors({ merchantCode: "Não foi possível identificar a loja." });
+      setActiveTab("data");
+      return;
+    }
+
+    const validation = validateProductForm(form, variants, {
+      requireCategories: true,
+      requirePhoto: true,
+    });
+    setErrors(validation.errors);
+    if (!validation.data) {
+      setActiveTab(
+        validation.errors.name ||
+        validation.errors.price ||
+        validation.errors.stock ||
+        validation.errors.categoryIds
+          ? "data"
+          : validation.errors.variants
+            ? "variants"
+            : "media",
+      );
       return;
     }
 
     const newProduct: CreateProductData = {
-      ...validatedForm,
+      merchantCode,
+      ...validation.data,
+      stock: validation.data.stock,
+      categoryIds: validation.data.categoryIds ?? form.categoryIds,
     };
 
     try {
@@ -111,6 +168,8 @@ const CreateProductDialog = ({
       });
       onClose();
       setForm(emptyForm);
+      setErrors({});
+      setActiveTab("data");
     } catch (error) {
       toast({ description: "Erro ao cadastrar produto." });
     } finally {
@@ -128,36 +187,34 @@ const CreateProductDialog = ({
       open={open}
       onOpenChange={(isOpen) => !isOpen && void handleCancel()}
     >
-      <DialogContent
-        className={`flex max-h-[calc(100vh_-_2rem)] flex-col overflow-hidden border-border bg-card text-card-foreground ${
-          hasNoCategories
-            ? "h-auto sm:max-w-xl"
-            : "h-[min(680px,calc(100vh_-_2rem))] sm:max-w-[960px]"
-        }`}
-      >
+      <DialogContent className="flex h-[min(720px,calc(100vh_-_2rem))] max-h-[calc(100vh_-_2rem)] flex-col overflow-hidden border-border bg-card text-card-foreground sm:max-w-[960px]">
         <form
           onSubmit={handleSubmit}
-          className={`flex min-h-0 flex-col overflow-hidden ${
-            hasNoCategories ? "flex-none" : "flex-1"
-          }`}
+          className="flex min-h-0 flex-1 flex-col overflow-hidden"
         >
           <DialogHeader className="shrink-0 border-b border-border pb-4">
             <DialogTitle className="text-xl">Novo Produto</DialogTitle>
             <DialogDescription className="text-muted-foreground">
-              Para cadastrar um produto, selecione uma categoria e preencha os
-              dados da vitrine.
+              Preencha os dados do produto, configure as variantes aplicáveis e
+              adicione mídias se desejar. Os campos obrigatórios estão indicados.
             </DialogDescription>
           </DialogHeader>
 
           <ProductCreationContent
-            hasNoCategories={hasNoCategories}
+            isCreate
             categories={categories}
             isLoadingCategories={isLoadingCategories}
             hasErrorCategories={hasErrorCategories}
+            variants={variants}
+            isLoadingVariants={isLoadingVariants}
+            variantsError={variantsError}
+            onRetryVariants={() => void loadVariants()}
             form={form}
             onChange={handleFormChange}
             onMediaUploadingChange={setIsMediaUploading}
-            hasMediaError={hasMediaError}
+            errors={errors}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
           />
 
           <DialogFooter className="shrink-0 pt-4">
@@ -169,15 +226,19 @@ const CreateProductDialog = ({
             >
               {isCanceling ? "Limpando..." : "Cancelar"}
             </Button>
-            {canCreate && (
-              <Button
-                type="submit"
-                disabled={isLoading || isMediaUploading || isCanceling}
-              >
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {isLoading ? "Salvando..." : "Criar"}
-              </Button>
-            )}
+            <Button
+              type="submit"
+              disabled={
+                isLoading ||
+                isMediaUploading ||
+                isCanceling ||
+                isLoadingVariants ||
+                Boolean(variantsError)
+              }
+            >
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isLoading ? "Salvando..." : "Criar"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

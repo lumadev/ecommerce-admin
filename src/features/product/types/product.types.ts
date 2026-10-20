@@ -14,8 +14,15 @@ export interface Product {
   mediaTypes?: ProductMediaType[];
   media?: ProductMediaRecord[];
   mediaPublicIds?: string[];
+  variants?: ProductVariantInput[];
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface ProductVariantInput {
+  attributeId: string;
+  optionId?: string;
+  value?: string;
 }
 
 export interface ProductCategory {
@@ -28,12 +35,14 @@ export interface ProductListItem extends Product {
 }
 
 export interface CreateProductData {
+  merchantCode: string;
   name: string;
-  description: string;
+  description?: string;
   price: number;
   stock: number;
-  media: ProductMediaInput[];
+  media?: ProductMediaInput[];
   categoryIds: string[];
+  variants?: ProductVariantInput[];
 }
 
 export interface UpdateProductData {
@@ -43,4 +52,5 @@ export interface UpdateProductData {
   stock?: number;
   media?: ProductMediaInput[];
   categoryIds?: string[];
+  variants?: ProductVariantInput[];
 }

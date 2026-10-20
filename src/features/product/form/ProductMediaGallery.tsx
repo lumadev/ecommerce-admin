@@ -114,12 +114,12 @@ const ProductMediaGallery = ({ value, onChange, onUploadingChange, error }: Prop
             },
           ];
           onChange(nextMedia);
-          toast({
-            variant: "success",
-            description: type === "video"
-              ? "Vídeo enviado com sucesso."
-              : "Imagem enviada com sucesso.",
-          });
+          if (type === "video") {
+            toast({
+              variant: "success",
+              description: "Vídeo enviado com sucesso.",
+            });
+          }
         } catch (error) {
           console.error("Erro ao enviar mídia do produto:", error);
           toast({

@@ -1,8 +1,8 @@
 import { Check, ChevronDown } from "lucide-react";
 
-import { Label } from "@/shared/components/ui/label";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import { Skeleton } from "@/shared/components/ui/skeleton";
+import FieldCompletionIndicator from "@/shared/components/ui/FieldCompletionIndicator";
 import {
   Popover,
   PopoverContent,
@@ -21,7 +21,8 @@ type CategoriesSelectProps = {
   isLoading?: boolean;
   hasError?: boolean;
   placeholder?: string;
-  label?: string;
+  isRequired?: boolean;
+  error?: string;
 };
 
 export function CategoriesSelect({
@@ -31,7 +32,8 @@ export function CategoriesSelect({
   isLoading = false,
   hasError = false,
   placeholder = "Selecione uma ou mais categorias",
-  label = "Categorias",
+  isRequired = false,
+  error,
 }: CategoriesSelectProps) {
   const toggleCategory = (categoryId: string, checked: boolean) => {
     if (checked) {
@@ -43,15 +45,16 @@ export function CategoriesSelect({
 
   return (
     <div className="grid gap-2">
-      <Label className="text-sm font-medium">{label}</Label>
-
       <Popover>
         <PopoverTrigger asChild>
           <button
             type="button"
-            disabled={isLoading}
+            disabled={isLoading || hasError || categories.length === 0}
             aria-busy={isLoading}
-            className={`flex w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-left text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70 ${
+            aria-label="Selecionar categorias"
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? "product-category-error" : undefined}
+            className={`relative flex w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-left text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70 ${
               value.length <= 1 ? "h-10" : "min-h-10"
             }`}
           >
@@ -75,6 +78,12 @@ export function CategoriesSelect({
               <span className="text-muted-foreground">{placeholder}</span>
             )}
 
+            {isRequired && value.length > 0 && !error && (
+              <FieldCompletionIndicator
+                label="Categoria selecionada"
+                className="right-9"
+              />
+            )}
             <ChevronDown size={16} className="ml-2 shrink-0 opacity-50" />
           </button>
         </PopoverTrigger>
@@ -137,6 +146,22 @@ export function CategoriesSelect({
           </div>
         </PopoverContent>
       </Popover>
+      {error && (
+        <p id="product-category-error" role="alert" className="text-sm text-destructive">
+          {error}
+        </p>
+      )}
+      {!isLoading && hasError && (
+        <p role="alert" className="text-sm text-destructive">
+          Não foi possível carregar as categorias.
+        </p>
+      )}
+      {!isLoading && !hasError && categories.length === 0 && !error && (
+        <p className="rounded-md border border-dashed border-border bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
+          Nenhuma categoria encontrada. Cadastre uma categoria antes de criar
+          um produto.
+        </p>
+      )}
     </div>
   );
 }
