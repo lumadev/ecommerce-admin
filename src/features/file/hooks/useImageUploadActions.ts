@@ -26,8 +26,6 @@ export function useImageUploadActions({
         url: result.url,
         picturePublicId: result.public_id,
       });
-
-      toast({ variant: "success", description: "Imagem enviada com sucesso." });
     } catch (error) {
       console.error("Erro ao enviar imagem:", error);
       toast({ description: "Não foi possível enviar a imagem. Tente novamente." });
