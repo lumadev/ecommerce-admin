@@ -40,6 +40,8 @@ const defineTheme = (tokens: AdminThemeTokens): AdminThemeTokens => tokens;
 export const ADMIN_THEMES = {
   default: defineTheme({}),
   ecommerce3d: defineTheme({
+    fontDisplay: '"Orbitron"',
+    fontBody: '"Inter"',
     background: "220 20% 6%",
     foreground: "200 20% 92%",
     card: "220 18% 10%",

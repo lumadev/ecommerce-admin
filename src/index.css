@@ -79,7 +79,7 @@
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    font-family: var(--font-body-family, Inter), sans-serif;
+    font-family: var(--font-body-family, "Inter"), sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -93,7 +93,7 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-display-family, Orbitron), sans-serif;
+    font-family: var(--font-display-family, "Figtree"), sans-serif;
   }
 
   button {
@@ -102,7 +102,7 @@
 }
 
 @theme {
-  --font-display: var(--font-display-family, "Orbitron"), sans-serif;
+  --font-display: var(--font-display-family, "Figtree"), sans-serif;
   --font-body: var(--font-body-family, "Inter"), sans-serif;
 
   /* base */

@@ -79,7 +79,8 @@ Os botões primários usam `primary` como cor sólida. As classes de gradiente
 explícitas continuam usando `primary` e `accent`; os efeitos de brilho também
 acompanham essas cores. Ao alterar `background` ou `card`, os gradientes de
 fundo e card são atualizados. As fontes só mudam quando o tema define
-`fontDisplay`/`fontBody`; caso contrário valem Orbitron e Inter.
+`fontDisplay`/`fontBody`; caso contrário valem Figtree nos títulos e Inter no
+texto corrido. O tema Ecommerce 3D define Orbitron explicitamente.
 
 ## Tema Mili
 
