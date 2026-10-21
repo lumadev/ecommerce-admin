@@ -15,6 +15,7 @@ import EditMerchantPage from "@/features/merchant/EditMerchantPage";
 import AdminCustomers from "@/features/customer/AdminCustomers";
 import AdminVariants from "@/features/variant/AdminVariants";
 import RoadmapPage from "@/features/roadmap/RoadmapPage";
+import ApiDocumentationPage from "@/features/api-docs/ApiDocumentationPage";
 import NotFound from "@/pages/NotFound";
 
 const RequireAdmin = () => {
@@ -75,6 +76,7 @@ export const AdminRoutes = () => (
         <Route path="clientes" element={<AdminCustomers />} />
         <Route path="variantes" element={<AdminVariants />} />
         <Route path="roadmap" element={<RoadmapPage />} />
+        <Route path="documentacao-api" element={<ApiDocumentationPage />} />
         <Route path="lojas" element={<RequireSuperAdmin />}>
           <Route index element={<AdminMerchants />} />
           <Route path=":merchantId/editar" element={<EditMerchantPage />} />
