@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -30,6 +30,17 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoginTakingLong, setIsLoginTakingLong] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading) return;
+
+    const timeout = window.setTimeout(() => {
+      setIsLoginTakingLong(true);
+    }, 5000);
+
+    return () => window.clearTimeout(timeout);
+  }, [isLoading]);
 
   const updateFormData =
     (field: keyof typeof formData) => (value: string) => {
@@ -39,6 +50,7 @@ const AdminLogin = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setIsLoginTakingLong(false);
     setIsLoading(true);
 
     try {
@@ -61,6 +73,7 @@ const AdminLogin = () => {
       setError(getErrorMessage(error));
     } finally {
       setIsLoading(false);
+      setIsLoginTakingLong(false);
     }
   };
 
@@ -147,11 +160,25 @@ const AdminLogin = () => {
             className="flex w-full items-center justify-center rounded-lg bg-primary py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isLoading ? (
-              <Loader2 size={18} className="animate-spin" />
+              <>
+                <Loader2 size={18} className="mr-2 animate-spin" />
+                Entrando...
+              </>
             ) : (
               "Entrar no Painel"
             )}
           </button>
+
+          {isLoginTakingLong && (
+            <p
+              role="status"
+              aria-live="polite"
+              className="text-center text-xs text-muted-foreground"
+            >
+              A autenticação está demorando mais que o normal. Aguarde, a
+              tentativa continua.
+            </p>
+          )}
         </form>
 
       </motion.div>
