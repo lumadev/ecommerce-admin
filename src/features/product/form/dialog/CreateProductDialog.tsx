@@ -16,6 +16,7 @@ import { Product, CreateProductData } from "../../types/product.types";
 import { useProductCategories } from "../../hooks/useProductCategories";
 import { useVariants } from "@/features/variant/hooks/useVariants";
 import ProductCreationContent from "../ProductCreationContent";
+import NoCategoriesNotice from "../../components/NoCategoriesNotice";
 import { validateProductForm } from "../../helpers/product-form.helpers";
 import type { ProductFormErrors } from "../../helpers/product-form.helpers";
 
@@ -66,6 +67,12 @@ const CreateProductDialog = ({
     void loadVariants(controller.signal);
     return () => controller.abort();
   }, [open, loadVariants]);
+
+  const hasNoCategories =
+    open &&
+    !isLoadingCategories &&
+    !hasErrorCategories &&
+    categories.length === 0;
 
   const handleFormChange = <K extends keyof ProductFormState>(
     field: K,
@@ -187,7 +194,7 @@ const CreateProductDialog = ({
       open={open}
       onOpenChange={(isOpen) => !isOpen && void handleCancel()}
     >
-      <DialogContent className="flex h-[min(720px,calc(100vh_-_2rem))] max-h-[calc(100vh_-_2rem)] flex-col overflow-hidden border-border bg-card text-card-foreground sm:max-w-[960px]">
+      <DialogContent className="flex h-[min(720px,calc(100dvh_-_1rem))] max-h-[calc(100dvh_-_1rem)] w-[calc(100%-1rem)] flex-col overflow-hidden border-border bg-card p-4 text-card-foreground sm:max-w-[960px] sm:p-6">
         <form
           onSubmit={handleSubmit}
           className="flex min-h-0 flex-1 flex-col overflow-hidden"
@@ -200,22 +207,28 @@ const CreateProductDialog = ({
             </DialogDescription>
           </DialogHeader>
 
-          <ProductCreationContent
-            isCreate
-            categories={categories}
-            isLoadingCategories={isLoadingCategories}
-            hasErrorCategories={hasErrorCategories}
-            variants={variants}
-            isLoadingVariants={isLoadingVariants}
-            variantsError={variantsError}
-            onRetryVariants={() => void loadVariants()}
-            form={form}
-            onChange={handleFormChange}
-            onMediaUploadingChange={setIsMediaUploading}
-            errors={errors}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-          />
+          {hasNoCategories ? (
+            <div className="min-h-0 flex-1 py-4">
+              <NoCategoriesNotice onNavigate={onClose} />
+            </div>
+          ) : (
+            <ProductCreationContent
+              isCreate
+              categories={categories}
+              isLoadingCategories={isLoadingCategories}
+              hasErrorCategories={hasErrorCategories}
+              variants={variants}
+              isLoadingVariants={isLoadingVariants}
+              variantsError={variantsError}
+              onRetryVariants={() => void loadVariants()}
+              form={form}
+              onChange={handleFormChange}
+              onMediaUploadingChange={setIsMediaUploading}
+              errors={errors}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+            />
+          )}
 
           <DialogFooter className="shrink-0 pt-4">
             <Button
@@ -229,6 +242,7 @@ const CreateProductDialog = ({
             <Button
               type="submit"
               disabled={
+                hasNoCategories ||
                 isLoading ||
                 isMediaUploading ||
                 isCanceling ||
