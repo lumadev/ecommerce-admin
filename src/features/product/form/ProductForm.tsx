@@ -115,22 +115,41 @@ const ProductForm = ({
         </div>
       )}
       <TabsList className="mb-3 grid w-full shrink-0 grid-cols-3">
-        <TabsTrigger value="data" className="gap-1.5">
-          Dados do produto
+        <TabsTrigger
+          value="data"
+          aria-label="Dados do produto"
+          className="gap-1 px-1.5 text-xs sm:gap-1.5 sm:px-3 sm:text-sm"
+        >
+          <span className="sm:hidden">Dados</span>
+          <span className="hidden sm:inline">Dados do produto</span>
           {dataErrors > 0 && (
             <span aria-hidden="true" className="ml-1 h-1.5 w-1.5 rounded-full bg-amber-500" />
           )}
           {dataErrors > 0 && <span className="sr-only">Contém erros</span>}
         </TabsTrigger>
-        <TabsTrigger value="variants" className="gap-1.5">
-          Variantes
+        <TabsTrigger
+          value="variants"
+          aria-label="Variantes"
+          className="gap-1 px-1.5 text-xs sm:gap-1.5 sm:px-3 sm:text-sm"
+        >
+          <span className="sm:hidden">Variantes</span>
+          <span className="hidden sm:inline">Variantes</span>
           {variantHasIssues && (
             <span aria-hidden="true" className="ml-1 h-1.5 w-1.5 rounded-full bg-amber-500" />
           )}
           {variantHasIssues && <span className="sr-only">Contém erros</span>}
         </TabsTrigger>
-        <TabsTrigger value="media" className="gap-1.5">
-          Fotos e vídeos{form.media.length > 0 ? ` (${form.media.length})` : ""}
+        <TabsTrigger
+          value="media"
+          aria-label="Fotos e vídeos"
+          className="gap-1 px-1.5 text-xs sm:gap-1.5 sm:px-3 sm:text-sm"
+        >
+          <span className="sm:hidden">
+            Mídia{form.media.length > 0 ? ` (${form.media.length})` : ""}
+          </span>
+          <span className="hidden sm:inline">
+            Fotos e vídeos{form.media.length > 0 ? ` (${form.media.length})` : ""}
+          </span>
           {mediaErrors > 0 && (
             <span aria-hidden="true" className="ml-1 h-1.5 w-1.5 rounded-full bg-amber-500" />
           )}
