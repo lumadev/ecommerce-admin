@@ -59,6 +59,17 @@ function runCapture(cmd, args) {
   return { ok: res.status === 0, stdout: res.stdout || '', stderr: res.stderr || '' }
 }
 
+function parseJsonOutput(output) {
+  const firstObject = output.indexOf('{')
+  const lastObject = output.lastIndexOf('}')
+
+  if (firstObject === -1 || lastObject < firstObject) {
+    throw new SyntaxError('Nenhum objeto JSON encontrado na saída do comando.')
+  }
+
+  return JSON.parse(output.slice(firstObject, lastObject + 1))
+}
+
 function getDependencyType(pkg, name) {
   if (pkg.dependencies?.[name] !== undefined) return 'dependencies'
   if (pkg.devDependencies?.[name] !== undefined) return 'devDependencies'
@@ -82,7 +93,10 @@ function updatePackageJson(depsToUpdate, pkg) {
 function main() {
   if (!run(pnpmCmd, ['update'])) return
 
-  const { stdout } = runCapture(pnpmCmd, ['outdated', '--format', 'json'])
+  const result = runCapture(pnpmCmd, ['outdated', '--format', 'json'])
+  if (!result.ok) return
+
+  const { stdout } = result
   const out = (stdout || '').trim()
   if (!out) {
     console.error('❌ pnpm outdated não retornou saída.')
@@ -91,7 +105,7 @@ function main() {
 
   let data
   try {
-    data = JSON.parse(out)
+    data = parseJsonOutput(out)
   } catch(err) {
     console.error('❌ Erro ao fazer parse do JSON:', err)
     return
