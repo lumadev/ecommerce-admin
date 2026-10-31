@@ -30,10 +30,22 @@ const AdminSidebar = ({ merchantCode }: AdminSidebarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  const { state } = useSidebar();
+  const { state, isMobile, setOpenMobile } = useSidebar();
   const { logout, user } = useAdminAuth();
 
+  const closeMobileMenu = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
+
+  const handleNavigation = (key: string) => {
+    closeMobileMenu();
+    navigate(`/${key}`);
+  };
+
   const handleLogout = () => {
+    closeMobileMenu();
     logout();
     navigate("/login");
   };
@@ -65,13 +77,14 @@ const AdminSidebar = ({ merchantCode }: AdminSidebarProps) => {
                   (item) =>
                     (item.key !== "lojas" || user?.role === "SUPER_ADMIN") &&
                     (item.key !== "variantes" || Boolean(user?.merchant?.id)) &&
-                    (item.key !== "roadmap" || merchantCode === "milii-babystore")
+                    (item.key !== "roadmap" || merchantCode === "milii-babystore") &&
+                    (item.key !== "documentacao-api" || merchantCode === "milii-babystore")
                 )
                 .map((item) => (
                 <SidebarMenuItem key={item.key}>
                   <SidebarMenuButton
                     isActive={location.pathname.endsWith(item.key)}
-                    onClick={() => navigate(`/${item.key}`)}
+                    onClick={() => handleNavigation(item.key)}
                     tooltip={item.title}
                     size="default"
                     className="h-9 text-sm md:pr-30"
