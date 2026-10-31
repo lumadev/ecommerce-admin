@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Pencil } from "lucide-react";
 import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
-import { useMerchantAdmins } from "@/features/merchant/hooks/useMerchantAdmins";
-import EditMerchantAdminDialog from "@/features/merchant/form/EditMerchantAdminDialog";
+import { useMerchantAdmins } from "@/features/admin/merchant/hooks/useMerchantAdmins";
+import EditMerchantAdminDialog from "@/features/admin/merchant/form/EditMerchantAdminDialog";
 import {
   MerchantAdmin,
   UpdateMerchantAdminData,
-} from "@/features/merchant/types/merchant-admin.types";
+} from "@/features/admin/merchant/types/merchant-admin.types";
 
 interface Props {
   collapsed: boolean;

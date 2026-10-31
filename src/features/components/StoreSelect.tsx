@@ -5,8 +5,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
-import { useMerchants } from "@/features/merchant/hooks/useMerchants";
-import type { Merchant } from "@/features/merchant/types/merchant.types";
+import { useMerchants } from "@/features/admin/merchant/hooks/useMerchants";
+import type { Merchant } from "@/features/admin/merchant/types/merchant.types";
 
 interface StoreSelectProps {
   selectedMerchant: Merchant | null;

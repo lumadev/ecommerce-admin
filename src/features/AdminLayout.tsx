@@ -2,8 +2,8 @@ import { Outlet, useLocation } from "react-router-dom";
 import { useLayoutEffect, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
-import { useMerchant } from "@/features/merchant/hooks/useMerchant";
-import type { Merchant } from "@/features/merchant/types/merchant.types";
+import { useMerchant } from "@/features/admin/merchant/hooks/useMerchant";
+import type { Merchant } from "@/features/admin/merchant/types/merchant.types";
 import type { SessionUser } from "@/features/auth/types/auth.types";
 import { setActiveMerchantCode } from "@/infra/http/httpClient";
 
