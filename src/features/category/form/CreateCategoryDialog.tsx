@@ -112,7 +112,7 @@ const CreateCategoryDialog = ({ open, onClose, onCreate, merchantCode }: Props) 
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && void handleCancel()}>
-      <DialogContent className="max-h-[calc(100vh-2rem)] overflow-hidden border-border bg-card text-card-foreground sm:max-w-[980px]">
+      <DialogContent className="max-h-[calc(100vh-2rem)] overflow-y-auto border-border bg-card text-card-foreground sm:max-w-[980px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader className="border-b border-border pb-4">
             <DialogTitle className="text-xl">Nova Categoria</DialogTitle>

@@ -22,7 +22,7 @@ const CategoryForm = ({
 }: CategoryFormProps) => {
 
   return (
-    <div className="grid gap-5 py-1">
+    <div className="grid gap-6 py-5 md:grid-cols-[minmax(240px,0.8fr)_minmax(0,1.2fr)] md:items-start">
       <CategoryImageUploadField
         label="Foto da categoria (opcional)"
         value={form.url}
