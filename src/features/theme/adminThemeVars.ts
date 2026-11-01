@@ -29,6 +29,9 @@ export interface AdminThemeTokens {
   sidebarRing?: string;
   /** Cor de marca para pequenos detalhes (tripleto HSL). */
   brand?: string;
+  toastSuccessBackground?: string;
+  toastSuccessForeground?: string;
+  toastSuccessBorder?: string;
   /** Família tipográfica dos títulos, ex.: '"Fredoka"'. */
   fontDisplay?: string;
   /** Família tipográfica do texto corrido. */
@@ -70,10 +73,45 @@ export const ADMIN_THEMES = {
     sidebarAccentForeground: "200 20% 85%",
     sidebarBorder: "220 15% 18%",
     sidebarRing: "185 80% 55%",
+    toastSuccessBackground: "150 24% 14%",
+    toastSuccessForeground: "145 42% 82%",
+    toastSuccessBorder: "145 30% 28%",
   }),
   miliInfantil: defineTheme({
     fontDisplay: '"Baloo 2"',
     fontBody: '"Figtree"',
+  }),
+  pessegoSuave: defineTheme({
+    fontDisplay: '"Baloo 2"',
+    fontBody: '"Figtree"',
+    background: "38 48% 97%",
+    foreground: "345 16% 20%",
+    card: "40 60% 99%",
+    cardForeground: "345 16% 20%",
+    popover: "40 60% 99%",
+    popoverForeground: "345 16% 20%",
+    primary: "350 34% 44%",
+    primaryForeground: "40 60% 99%",
+    secondary: "350 38% 93%",
+    secondaryForeground: "345 26% 30%",
+    muted: "38 30% 94%",
+    mutedForeground: "345 10% 42%",
+    accent: "22 58% 89%",
+    accentForeground: "20 34% 28%",
+    border: "24 24% 86%",
+    input: "24 22% 82%",
+    ring: "350 34% 48%",
+    sidebarBackground: "350 36% 96%",
+    sidebarForeground: "345 16% 24%",
+    sidebarPrimary: "350 34% 44%",
+    sidebarPrimaryForeground: "40 60% 99%",
+    sidebarAccent: "350 38% 91%",
+    sidebarAccentForeground: "345 26% 30%",
+    sidebarBorder: "24 24% 86%",
+    sidebarRing: "350 34% 48%",
+    toastSuccessBackground: "112 32% 94%",
+    toastSuccessForeground: "120 28% 28%",
+    toastSuccessBorder: "112 24% 82%",
   }),
 };
 
@@ -114,6 +152,9 @@ const CSS_VARIABLE_BY_TOKEN: Record<keyof AdminThemeTokens, `--${string}`> = {
   sidebarBorder: "--sidebar-border",
   sidebarRing: "--sidebar-ring",
   brand: "--brand",
+  toastSuccessBackground: "--toast-success-background",
+  toastSuccessForeground: "--toast-success-foreground",
+  toastSuccessBorder: "--toast-success-border",
   fontDisplay: "--font-display-family",
   fontBody: "--font-body-family",
 };

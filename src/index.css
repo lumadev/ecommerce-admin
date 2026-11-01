@@ -30,6 +30,9 @@
   --border: 210 18% 85%;
   --input: 210 18% 82%;
   --ring: 169 70% 36%;
+  --toast-success-background: 142 44% 94%;
+  --toast-success-foreground: 145 32% 26%;
+  --toast-success-border: 142 26% 82%;
 
   --radius: 0.75rem;
 
@@ -98,6 +101,14 @@
 
   button {
     cursor: pointer;
+  }
+}
+
+@layer components {
+  .toast-success {
+    border-color: hsl(var(--toast-success-border, 142 26% 82%));
+    background-color: hsl(var(--toast-success-background, 142 44% 94%));
+    color: hsl(var(--toast-success-foreground, 145 32% 26%));
   }
 }
 

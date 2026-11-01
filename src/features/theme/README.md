@@ -72,6 +72,9 @@ quando necessário para manter contraste legível.
 | `sidebarBorder` | Bordas da barra lateral. |
 | `sidebarRing` | Indicador de foco na barra lateral. |
 | `brand` | Cor de marca para pequenos detalhes (seleção de texto). Sem valor, usa `primary`. |
+| `toastSuccessBackground` | Fundo suave dos toasts de sucesso; sem valor, usa o card. |
+| `toastSuccessForeground` | Texto dos toasts de sucesso; sem valor, usa o texto do card. |
+| `toastSuccessBorder` | Borda dos toasts de sucesso; sem valor, usa a cor primária. |
 | `fontDisplay` | Fonte dos títulos (`h1`–`h6`, `font-display`). Ex.: `'"Fredoka"'`. |
 | `fontBody` | Fonte do texto corrido. A fonte precisa estar carregada em `index.html`. |
 
@@ -84,15 +87,29 @@ texto corrido. O tema Ecommerce 3D define Orbitron explicitamente.
 
 ## Tema Mili
 
-- O código `milii-babystore` usa o tema `miliInfantil`. Por enquanto, as cores
-  seguem os valores padrão do Super Admin; não defina overrides de cores nesse
-  tema.
+- O código `milii-babystore` usa o tema `miliInfantil`, que mantém as cores
+  padrão do Admin.
 - Tipografia: títulos em Baloo 2 (arredondada e encorpada, como o letreiro da
   logo) e texto em Figtree, que tem x-height maior e lê melhor em tamanhos
   pequenos.
+- A opção `pessegoSuave` fica disponível em `ADMIN_THEMES` para uso futuro.
+  Ela combina creme, rosa antigo e pêssego, com toast de sucesso em verde claro,
+  mas não está associada a nenhuma loja.
 
 ## Tema Ecommerce 3D
 
 - O código `ecommerce-3d` usa `ecommerce3d`, com a paleta escura original do
   sistema: fundo carvão, texto claro, ciano como cor primária e roxo como
   realce. Essa definição é independente do tema padrão atual do Admin.
+- A loja do Weslley deve permanecer em tema escuro. O fundo principal atual é
+  `220 20% 6%`, os cards e popovers usam `220 18% 10%` e a barra lateral usa
+  `220 18% 8%`. Ao alterar qualquer cor, não misture esses fundos escuros com
+  tokens claros do tema padrão. Toasts de sucesso também usam fundo verde
+  escuro para permanecer coerentes com o tema.
+- Mudanças no fundo precisam considerar em conjunto os tokens de texto e
+  superfície relacionados: `background`/`foreground`, `card`/`cardForeground`,
+  `popover`/`popoverForeground`, `muted`/`mutedForeground`,
+  `secondary`/`secondaryForeground`, bordas, campos e tokens da barra lateral.
+  Revise também os gradientes de fundo e card, que usam `background` e `card`,
+  para evitar discrepâncias entre áreas da interface. Preserve contraste
+  legível em textos, controles e estados selecionados.
