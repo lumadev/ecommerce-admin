@@ -22,10 +22,13 @@ const AdminProducts = () => {
 
   return (
     <div>
-      <div className="mb-6 flex justify-between">
+      <div className="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-xl font-semibold">Produtos</h2>
 
-        <Button onClick={() => setCreateOpen(true)} className="gap-2">
+        <Button
+          onClick={() => setCreateOpen(true)}
+          className="w-full justify-center gap-2 sm:w-auto"
+        >
           <Plus size={16} />
           Novo Produto
         </Button>

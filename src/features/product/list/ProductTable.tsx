@@ -7,6 +7,7 @@ import {
 } from "@/shared/components/ui/table";
 import { ProductListItem } from "../types/product.types";
 import ProductRow from "./ProductRow";
+import ProductCard from "./ProductCard";
 
 interface Props {
   products: ProductListItem[];
@@ -16,32 +17,46 @@ interface Props {
 
 const ProductTable = ({ products, onEdit, onRemove }: Props) => {
   return (
-    <div className="rounded-lg border bg-card">
-      <Table>
-        <TableHeader>
-          <TableRow className="hover:bg-transparent">
-            <TableHead>Nome</TableHead>
-            <TableHead>Descrição</TableHead>
-            <TableHead>Categoria</TableHead>
-            <TableHead className="text-right">Preço</TableHead>
-            <TableHead className="text-center">Estoque</TableHead>
-            <TableHead className="w-16 text-center">Ações</TableHead>
-          </TableRow>
-        </TableHeader>
+    <>
+      <div className="space-y-3 lg:hidden">
+        {products.map((product, index) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            index={index}
+            onEdit={onEdit}
+            onRemove={onRemove}
+          />
+        ))}
+      </div>
 
-        <TableBody>
-          {products.map((product, index) => (
-            <ProductRow
-              key={product.id}
-              product={product}
-              index={index}
-              onEdit={onEdit}
-              onRemove={onRemove}
-            />
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+      <div className="hidden rounded-lg border bg-card lg:block">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead>Nome</TableHead>
+              <TableHead>Descrição</TableHead>
+              <TableHead>Categoria</TableHead>
+              <TableHead className="text-right">Preço</TableHead>
+              <TableHead className="text-center">Estoque</TableHead>
+              <TableHead className="w-16 text-center">Ações</TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {products.map((product, index) => (
+              <ProductRow
+                key={product.id}
+                product={product}
+                index={index}
+                onEdit={onEdit}
+                onRemove={onRemove}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </>
   );
 };
 
