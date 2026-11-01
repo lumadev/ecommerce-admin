@@ -9,7 +9,7 @@ import {
 } from "@/shared/components/ui/dialog";
 import { Button } from "@/shared/components/ui/button/button";
 import { Loader2 } from "lucide-react";
-import { mediaUploadRepository } from "@/features/file/repositories/imageUploadRepository";
+import { mediaUploadRepository } from "@/infra/media/mediaUploadRepository";
 import { useToast } from "@/hooks/use-toast";
 import { ProductFormState } from "../../types/product-form.types";
 import { Product, CreateProductData } from "../../types/product.types";

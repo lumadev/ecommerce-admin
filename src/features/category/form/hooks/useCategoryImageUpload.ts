@@ -1,8 +1,8 @@
 import type { ChangeEvent } from "react";
 import { useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
-import type { UseImageUploadOptions } from "./imageUpload.types";
-import { useImageUploadActions } from "./useImageUploadActions";
+import type { UseCategoryImageUploadOptions } from "./categoryImageUpload.types";
+import { useCategoryImageUploadActions } from "./useCategoryImageUploadActions";
 
 const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
 
@@ -20,12 +20,11 @@ const validateImageFile = (file: File, notify: (description: string) => void) =>
   return true;
 };
 
-export function useImageUpload({
+export function useCategoryImageUpload({
   picturePublicId,
-  folder,
   onUpload,
   onRemove,
-}: UseImageUploadOptions) {
+}: UseCategoryImageUploadOptions) {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -39,9 +38,8 @@ export function useImageUpload({
     }
   };
 
-  const { isUploading, uploadImage, removeImage } = useImageUploadActions({
+  const { isUploading, uploadImage, removeImage } = useCategoryImageUploadActions({
     picturePublicId,
-    folder,
     onUpload,
     onRemove,
     onFinally: resetFileInput,

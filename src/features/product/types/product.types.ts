@@ -1,8 +1,8 @@
 import type {
-  ProductMediaInput,
-  ProductMediaRecord,
-  ProductMediaType,
-} from "@/features/product/types/product-media.types";
+  MediaInput,
+  MediaRecord,
+  MediaType,
+} from "@/infra/media/media.types";
 
 export interface Product {
   id: string;
@@ -11,8 +11,8 @@ export interface Product {
   price: number;
   stock: number;
   mediaUrls: string[];
-  mediaTypes?: ProductMediaType[];
-  media?: ProductMediaRecord[];
+  mediaTypes?: MediaType[];
+  media?: MediaRecord[];
   mediaPublicIds?: string[];
   variants?: ProductVariantInput[];
   createdAt: Date;
@@ -40,7 +40,7 @@ export interface CreateProductData {
   description?: string;
   price: number;
   stock: number;
-  media?: ProductMediaInput[];
+  media?: MediaInput[];
   categoryIds: string[];
   variants?: ProductVariantInput[];
 }
@@ -50,7 +50,7 @@ export interface UpdateProductData {
   description?: string;
   price?: number;
   stock?: number;
-  media?: ProductMediaInput[];
+  media?: MediaInput[];
   categoryIds?: string[];
   variants?: ProductVariantInput[];
 }

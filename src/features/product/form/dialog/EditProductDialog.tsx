@@ -9,7 +9,7 @@ import {
 import { Button } from "@/shared/components/ui/button/button";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { mediaUploadRepository } from "@/features/file/repositories/imageUploadRepository";
+import { mediaUploadRepository } from "@/infra/media/mediaUploadRepository";
 import { ProductListItem, UpdateProductData } from "../../types/product.types";
 import { ProductFormState } from "../../types/product-form.types";
 import { useProductCategories } from "../../hooks/useProductCategories";

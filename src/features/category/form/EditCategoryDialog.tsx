@@ -10,7 +10,7 @@ import {
 import { Button } from "@/shared/components/ui/button/button";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { imageUploadRepository } from "@/features/file/repositories/imageUploadRepository";
+import { mediaUploadRepository } from "@/infra/media/mediaUploadRepository";
 import { Category } from "@/data/categories";
 import { CategoryFormState } from "@/features//category/types/category-form.types";
 import { UpdateCategoryData } from "@/features//category/types/category.types";
@@ -59,7 +59,7 @@ const EditCategoryDialog = ({ category, onClose, onSave, merchantCode }: Props) 
   const handleCancel = async () => {
     if (form.picturePublicId && form.picturePublicId !== category?.picturePublicId) {
       try {
-        await imageUploadRepository.delete(
+        await mediaUploadRepository.delete(
           form.picturePublicId,
           "image",
           "categories",

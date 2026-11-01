@@ -1,7 +1,7 @@
-import type { ProductMediaType } from "@/features/product/types/product-media.types";
+import type { MediaType } from "@/infra/media/media.types";
 
 export interface ProductFormMedia {
-  type: ProductMediaType;
+  type: MediaType;
   src: string;
   poster?: string;
   publicId: string;

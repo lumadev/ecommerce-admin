@@ -1,21 +1,15 @@
 import { httpClientAuth } from "@/infra/http/httpClient";
-import type { ProductMediaType } from "@/features/product/types/product-media.types";
-
-interface UploadMediaResponse {
-  url: string;
-  public_id: string;
-  media_type: ProductMediaType;
-  format: string;
-  poster?: string;
-}
-
-type UploadFolder = "categories" | "products";
+import type {
+  MediaType,
+  MediaUploadFolder,
+  UploadMediaResponse,
+} from "./media.types";
 
 export const mediaUploadRepository = {
   upload: async (
     file: File,
-    folder: UploadFolder,
-    mediaType: ProductMediaType = "image",
+    folder: MediaUploadFolder,
+    mediaType: MediaType = "image",
   ): Promise<UploadMediaResponse> => {
     const formData = new FormData();
     formData.append("file", file);
@@ -32,8 +26,8 @@ export const mediaUploadRepository = {
   },
   delete: async (
     publicId: string,
-    mediaType: ProductMediaType = "image",
-    folder: UploadFolder = "products",
+    mediaType: MediaType = "image",
+    folder: MediaUploadFolder = "products",
     merchantCode?: string,
   ): Promise<void> => {
     const response = await httpClientAuth.delete<{ result: string }>("/upload", {
@@ -49,5 +43,3 @@ export const mediaUploadRepository = {
     }
   },
 };
-
-export const imageUploadRepository = mediaUploadRepository;

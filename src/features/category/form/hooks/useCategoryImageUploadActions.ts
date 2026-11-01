@@ -1,19 +1,18 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { imageUploadRepository } from "../repositories/imageUploadRepository";
-import type { UseImageUploadOptions } from "./imageUpload.types";
+import { mediaUploadRepository } from "@/infra/media/mediaUploadRepository";
+import type { UseCategoryImageUploadOptions } from "./categoryImageUpload.types";
 
-interface UseImageUploadActionsOptions extends UseImageUploadOptions {
+interface UseCategoryImageUploadActionsOptions extends UseCategoryImageUploadOptions {
   onFinally?: () => void;
 }
 
-export function useImageUploadActions({
+export function useCategoryImageUploadActions({
   picturePublicId,
-  folder,
   onUpload,
   onRemove,
   onFinally,
-}: UseImageUploadActionsOptions) {
+}: UseCategoryImageUploadActionsOptions) {
   const { toast } = useToast();
   const [isUploading, setIsUploading] = useState(false);
 
@@ -21,7 +20,7 @@ export function useImageUploadActions({
     setIsUploading(true);
 
     try {
-      const result = await imageUploadRepository.upload(file, folder);
+      const result = await mediaUploadRepository.upload(file, "categories");
       onUpload({
         url: result.url,
         picturePublicId: result.public_id,
@@ -40,7 +39,7 @@ export function useImageUploadActions({
 
     try {
       if (picturePublicId) {
-        await imageUploadRepository.delete(picturePublicId, "image", folder);
+        await mediaUploadRepository.delete(picturePublicId, "image", "categories");
       }
 
       onRemove();

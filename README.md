@@ -41,5 +41,6 @@ não é montada como rota de entrada da aplicação.
 
 As funcionalidades administrativas ficam em `src/features/`, agrupadas
 por domínio. Rotas e inicialização da aplicação ficam, respectivamente, em
-`src/routes` e `src/App.tsx`; componentes e infraestrutura compartilhados ficam
-em `src/shared` e `src/infra`.
+`src/routes` e `src/App.tsx`; componentes compartilhados ficam em `src/shared`,
+e integrações externas reutilizadas por diferentes funcionalidades ficam em
+`src/infra` (por exemplo, cliente HTTP e upload de mídias).

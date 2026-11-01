@@ -2,7 +2,7 @@ import { Loader2, Upload, X } from "lucide-react";
 
 import { Label } from "@/shared/components/ui/label";
 import { Button } from "@/shared/components/ui/button/button";
-import { useImageUpload } from "@/features/file/hooks/useImageUpload";
+import { useCategoryImageUpload } from "./hooks/useCategoryImageUpload";
 
 interface UploadedImageData {
   url: string;
@@ -28,8 +28,6 @@ const CategoryImageUploadField = ({
 }: Props) => {
   const uploadConfig = {
     picturePublicId,
-    folder: "categories" as const,
-
     onUpload: (data: UploadedImageData) => {
       onChange(data.url);
       onUploadComplete?.(data);
@@ -47,7 +45,7 @@ const CategoryImageUploadField = ({
     handleRemoveImage,
     openFilePicker,
     isUploading,
-  } = useImageUpload(uploadConfig);
+  } = useCategoryImageUpload(uploadConfig);
 
   return (
     <div className="flex flex-col gap-3">

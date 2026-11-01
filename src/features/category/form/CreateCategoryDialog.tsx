@@ -9,7 +9,7 @@ import {
 } from "@/shared/components/ui/dialog";
 import { Button } from "@/shared/components/ui/button/button";
 import { Loader2 } from "lucide-react";
-import { imageUploadRepository } from "@/features/file/repositories/imageUploadRepository";
+import { mediaUploadRepository } from "@/infra/media/mediaUploadRepository";
 import { useToast } from "@/hooks/use-toast";
 
 import { CategoryFormState } from "@/features//category/types/category-form.types";
@@ -44,7 +44,7 @@ const CreateCategoryDialog = ({ open, onClose, onCreate, merchantCode }: Props) 
 
     try {
       if (form.picturePublicId) {
-        await imageUploadRepository.delete(
+        await mediaUploadRepository.delete(
           form.picturePublicId,
           "image",
           "categories",

@@ -29,7 +29,9 @@ src/features/<feature>/
 ```
 
 - Código compartilhado entre features fica em `src/shared`, `src/hooks`,
-  `src/lib` e `src/infra` (ex.: `src/infra/http` para o cliente HTTP).
+  `src/lib` e `src/infra`. Integrações externas usadas por mais de uma feature
+  ficam em `src/infra/<recurso>` (ex.: `src/infra/http` para o cliente HTTP e
+  `src/infra/media` para operações de upload e remoção de mídias).
 - Componentes de página/roteamento ficam em `src/pages` e usam componentes das
   features; evite colocar lógica de negócio diretamente em `src/pages`.
 - Não crie pastas genéricas como `src/utils` ou `src/components` no nível
@@ -48,7 +50,7 @@ src/features/<feature>/
 - **Repositories**: `camelCaseRepository.ts` (ex.: `productRepository.ts`).
 - **Mappers**: `to<Entidade>.ts` para conversão de payload em modelo de
   domínio (ex.: `toProduct.ts`).
-- **Tipos**: `<contexto>.types.ts` (ex.: `product-media.types.ts`,
+- **Tipos**: `<contexto>.types.ts` (ex.: `product-form.types.ts`,
   `cart.types.ts`) ou `<contexto>-form.types.ts` para estado de formulário.
 - **Contexto/Provider**: `<recurso>.context.tsx` e `<recurso>.provider.tsx`
   quando a feature usa Context API (ex.: `cart.context.tsx`,

@@ -1,7 +1,4 @@
-import type {
-  ProductMediaRecord,
-  ProductMediaType,
-} from "@/features/product/types/product-media.types";
+import type { MediaRecord, MediaType } from "@/infra/media/media.types";
 
 export interface HighlightProduct {
   id: string;
@@ -10,8 +7,8 @@ export interface HighlightProduct {
   price: number;
   stock: number;
   mediaUrls: string[];
-  mediaTypes?: ProductMediaType[];
-  media?: ProductMediaRecord[];
+  mediaTypes?: MediaType[];
+  media?: MediaRecord[];
 }
 
 export interface Highlight {

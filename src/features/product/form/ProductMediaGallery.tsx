@@ -3,7 +3,7 @@ import { ArrowDown, ArrowUp, ImagePlus, Loader2, Play, Trash2, Video } from "luc
 import { Button } from "@/shared/components/ui/button/button";
 import { useToast } from "@/hooks/use-toast";
 import type { ProductFormMedia } from "../types/product-form.types";
-import { mediaUploadRepository } from "@/features/file/repositories/imageUploadRepository";
+import { mediaUploadRepository } from "@/infra/media/mediaUploadRepository";
 
 const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
 const MAX_VIDEO_SIZE_BYTES = 100 * 1024 * 1024;
