@@ -122,6 +122,7 @@ const MerchantAdminFormDialog = ({
   const passwordChanged = allowPasswordChange && !!form.password;
   const isPasswordInvalid =
     allowPasswordChange && (!isEdit || !!form.password) && !isStrongPassword(form.password);
+  const hasChanges = changes.length > 0 || passwordChanged;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -134,8 +135,9 @@ const MerchantAdminFormDialog = ({
       return;
     }
 
+    if (isEdit && !hasChanges) return;
+
     if (admin && confirmBeforeSave) {
-      if (changes.length === 0 && !passwordChanged) return;
       setIsConfirming(true);
       return;
     }
@@ -216,7 +218,10 @@ const MerchantAdminFormDialog = ({
                 <Button type="button" variant="outline" onClick={handleClose} disabled={isSaving}>
                   Cancelar
                 </Button>
-                <Button type="submit" disabled={isSaving || isPasswordInvalid}>
+                <Button
+                  type="submit"
+                  disabled={isSaving || isPasswordInvalid || (isEdit && !hasChanges)}
+                >
                   {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   {isSaving ? "Salvando..." : "Salvar"}
                 </Button>
