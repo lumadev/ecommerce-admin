@@ -93,7 +93,7 @@ let activeMerchantCode: string | undefined;
 const MERCHANT_SCOPED_COLLECTIONS = new Set([
   "/categories",
   "/highlights",
-  "/products",
+  "/admin/products",
   "/users",
   "/variants",
 ]);
@@ -114,7 +114,7 @@ const registerMerchantCodeParam = (client: AxiosInstance) => {
       (requestPath === "/users/admin" && method === "post") ||
       (isUserById && ["get", "patch", "delete"].includes(method ?? ""));
     const usesMerchantCodeBody =
-      ((requestPath === "/categories" || requestPath === "/products") &&
+      ((requestPath === "/categories" || requestPath === "/admin/products") &&
         method === "post") ||
       (requestPath === "/upload" && ["post", "delete"].includes(method ?? ""));
 

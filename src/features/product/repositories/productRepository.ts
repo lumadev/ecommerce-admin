@@ -7,9 +7,12 @@ import {
   UpdateProductData,
 } from "../types/product.types";
 
-const BASE_URL = "/products";
+const BASE_URL = "/admin/products";
 
-type ApiProduct = Omit<Product, "price"> & {
+type ApiProduct = Omit<
+  Product,
+  "price" | "mediaUrls" | "mediaTypes" | "mediaPublicIds"
+> & {
   price: number | string;
 };
 
@@ -17,10 +20,17 @@ type ApiProductListItem = ApiProduct & {
   categories?: ProductCategory[];
 };
 
-const normalizeProduct = (product: ApiProduct): Product => ({
-  ...product,
-  price: Number(product.price),
-});
+const normalizeProduct = (product: ApiProduct): Product => {
+  const media = product.media ?? [];
+
+  return {
+    ...product,
+    price: Number(product.price),
+    mediaUrls: media.map((item) => item.src),
+    mediaTypes: media.map((item) => item.type),
+    mediaPublicIds: media.map((item) => item.publicId ?? item.src),
+  };
+};
 
 const normalizeProductListItem = (
   product: ApiProductListItem
