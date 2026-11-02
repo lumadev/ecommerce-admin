@@ -75,6 +75,9 @@ quando necessário para manter contraste legível.
 | `toastSuccessBackground` | Fundo suave dos toasts de sucesso; sem valor, usa o card. |
 | `toastSuccessForeground` | Texto dos toasts de sucesso; sem valor, usa o texto do card. |
 | `toastSuccessBorder` | Borda dos toasts de sucesso; sem valor, usa a cor primária. |
+| `toastErrorBackground` | Fundo dos toasts de erro; sem valor, usa a cor destrutiva. |
+| `toastErrorForeground` | Texto dos toasts de erro; sem valor, usa o texto destrutivo. |
+| `toastErrorBorder` | Borda dos toasts de erro; sem valor, usa a cor destrutiva. |
 | `fontDisplay` | Fonte dos títulos (`h1`–`h6`, `font-display`). Ex.: `'"Fredoka"'`. |
 | `fontBody` | Fonte do texto corrido. A fonte precisa estar carregada em `index.html`. |
 
@@ -92,6 +95,8 @@ texto corrido. O tema Ecommerce 3D define Orbitron explicitamente.
 - Tipografia: títulos em Baloo 2 (arredondada e encorpada, como o letreiro da
   logo) e texto em Figtree, que tem x-height maior e lê melhor em tamanhos
   pequenos.
+- Toasts de erro usam fundo vermelho suave, com texto e borda em tons escuros
+  para manter a mensagem legível.
 - A opção `pessegoSuave` fica disponível em `ADMIN_THEMES` para uso futuro.
   Ela combina creme, rosa antigo e pêssego, com toast de sucesso em verde claro,
   mas não está associada a nenhuma loja.

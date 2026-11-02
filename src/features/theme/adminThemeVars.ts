@@ -32,6 +32,9 @@ export interface AdminThemeTokens {
   toastSuccessBackground?: string;
   toastSuccessForeground?: string;
   toastSuccessBorder?: string;
+  toastErrorBackground?: string;
+  toastErrorForeground?: string;
+  toastErrorBorder?: string;
   /** Família tipográfica dos títulos, ex.: '"Fredoka"'. */
   fontDisplay?: string;
   /** Família tipográfica do texto corrido. */
@@ -80,6 +83,9 @@ export const ADMIN_THEMES = {
   miliInfantil: defineTheme({
     fontDisplay: '"Baloo 2"',
     fontBody: '"Figtree"',
+    toastErrorBackground: "0 75% 96%",
+    toastErrorForeground: "0 55% 36%",
+    toastErrorBorder: "0 50% 86%",
   }),
   pessegoSuave: defineTheme({
     fontDisplay: '"Baloo 2"',
@@ -155,6 +161,9 @@ const CSS_VARIABLE_BY_TOKEN: Record<keyof AdminThemeTokens, `--${string}`> = {
   toastSuccessBackground: "--toast-success-background",
   toastSuccessForeground: "--toast-success-foreground",
   toastSuccessBorder: "--toast-success-border",
+  toastErrorBackground: "--toast-error-background",
+  toastErrorForeground: "--toast-error-foreground",
+  toastErrorBorder: "--toast-error-border",
   fontDisplay: "--font-display-family",
   fontBody: "--font-body-family",
 };

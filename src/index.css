@@ -110,6 +110,28 @@
     background-color: hsl(var(--toast-success-background, 142 44% 94%));
     color: hsl(var(--toast-success-foreground, 145 32% 26%));
   }
+
+  .toast-error {
+    border-color: hsl(var(--toast-error-border, var(--destructive)));
+    background-color: hsl(var(--toast-error-background, var(--destructive)));
+    color: hsl(var(--toast-error-foreground, var(--destructive-foreground)));
+  }
+
+  .toast-close {
+    color: hsl(var(--foreground) / 0.5);
+  }
+
+  .toast-close:hover {
+    color: hsl(var(--foreground));
+  }
+
+  .toast-error .toast-close {
+    color: hsl(var(--toast-error-foreground, var(--destructive-foreground)) / 0.7);
+  }
+
+  .toast-error .toast-close:hover {
+    color: hsl(var(--toast-error-foreground, var(--destructive-foreground)));
+  }
 }
 
 @theme {
