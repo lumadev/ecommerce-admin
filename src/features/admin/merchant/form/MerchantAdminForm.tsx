@@ -41,6 +41,9 @@ const MerchantAdminForm = ({
         value={form.name}
         onChange={(event) => onChange("name", event.target.value)}
         autoComplete="name"
+        clearable
+        clearLabel="Limpar nome"
+        onClear={() => onChange("name", "")}
         aria-invalid={!!errors.name}
         aria-describedby={errors.name ? "merchant-admin-name-error" : undefined}
       />
@@ -54,6 +57,9 @@ const MerchantAdminForm = ({
         value={form.username}
         onChange={(event) => onChange("username", event.target.value)}
         autoComplete="username"
+        clearable
+        clearLabel="Limpar usuário"
+        onClear={() => onChange("username", "")}
         aria-invalid={!!errors.username}
         aria-describedby={errors.username ? "merchant-admin-username-error" : undefined}
       />
@@ -68,6 +74,9 @@ const MerchantAdminForm = ({
         value={form.email}
         onChange={(event) => onChange("email", event.target.value)}
         autoComplete="email"
+        clearable
+        clearLabel="Limpar e-mail"
+        onClear={() => onChange("email", "")}
         aria-invalid={!!errors.email}
         aria-describedby={errors.email ? "merchant-admin-email-error" : undefined}
       />
@@ -84,10 +93,14 @@ const MerchantAdminForm = ({
             id="merchant-admin-password"
             type={passwordVisible ? "text" : "password"}
             autoComplete="new-password"
-            className="pr-10"
+            className={form.password ? "pr-16" : "pr-10"}
+            clearable
+            clearButtonClassName="right-2"
             value={form.password}
             onChange={(event) => onChange("password", event.target.value)}
             placeholder={passwordOptional ? "Deixe em branco para manter a atual" : "Mínimo de 6 caracteres"}
+            clearLabel="Limpar senha"
+            onClear={() => onChange("password", "")}
             aria-invalid={!!errors.password}
             aria-describedby={errors.password ? "merchant-admin-password-error" : undefined}
           />
@@ -95,7 +108,9 @@ const MerchantAdminForm = ({
             type="button"
             onClick={() => setPasswordVisible((visible) => !visible)}
             aria-label={passwordVisible ? "Ocultar senha" : "Mostrar senha"}
-            className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground"
+            className={`absolute ${
+              form.password ? "right-10" : "right-2"
+            } top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground`}
           >
             {passwordVisible ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
