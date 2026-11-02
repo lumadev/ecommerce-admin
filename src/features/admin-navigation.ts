@@ -8,6 +8,7 @@ import {
   Users,
   Map,
   BookOpen,
+  Mail,
 } from "lucide-react";
 
 export const adminNavigationItems = [
@@ -46,6 +47,12 @@ export const adminNavigationItems = [
     description: "Consulte os clientes cadastrados na loja.",
     icon: Users,
     key: "clientes",
+  },
+  {
+    title: "Templates de e-mail",
+    description: "Visualize os e-mails enviados pela sua loja.",
+    icon: Mail,
+    key: "templates-email",
   },
   {
     title: "Lojas",

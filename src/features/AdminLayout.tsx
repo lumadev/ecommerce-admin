@@ -23,6 +23,7 @@ const STORE_DATA_ROUTES = new Set([
   "/categorias",
   "/destaques",
   "/clientes",
+  "/templates-email",
 ]);
 
 interface AdminLayoutState {

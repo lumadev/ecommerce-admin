@@ -16,6 +16,7 @@ import AdminCustomers from "@/features/customer/AdminCustomers";
 import AdminVariants from "@/features/variant/AdminVariants";
 import RoadmapPage from "@/features/roadmap/RoadmapPage";
 import ApiDocumentationPage from "@/features/api-docs/ApiDocumentationPage";
+import AdminEmailTemplates from "@/features/email-templates/AdminEmailTemplates.tsx";
 import NotFound from "@/pages/NotFound";
 
 const RequireAdmin = () => {
@@ -74,6 +75,7 @@ export const AdminRoutes = () => (
         <Route path="categorias" element={<AdminCategories />} />
         <Route path="destaques" element={<AdminHighlights />} />
         <Route path="clientes" element={<AdminCustomers />} />
+        <Route path="templates-email" element={<AdminEmailTemplates />} />
         <Route path="variantes" element={<AdminVariants />} />
         <Route path="roadmap" element={<RoadmapPage />} />
         <Route path="documentacao-api" element={<ApiDocumentationPage />} />
