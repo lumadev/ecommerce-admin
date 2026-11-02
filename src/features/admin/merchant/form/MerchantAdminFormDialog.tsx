@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { Loader2 } from "lucide-react";
 import {
   Dialog,
@@ -51,8 +51,14 @@ const MerchantAdminFormDialog = ({
   const [isSaving, setIsSaving] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
 
-  useEffect(() => {
-    if (!open) return;
+  const [syncedSource, setSyncedSource] = useState<{
+    admin: MerchantAdmin | null;
+    open: boolean;
+  } | null>(null);
+
+  // Reinicia o estado durante a renderização quando o diálogo abre ou o admin muda.
+  if (open && (syncedSource?.admin !== admin || syncedSource?.open !== open)) {
+    setSyncedSource({ admin, open });
     setForm({
       name: admin?.name ?? "",
       email: admin?.email ?? "",
@@ -61,7 +67,9 @@ const MerchantAdminFormDialog = ({
     });
     setErrors({});
     setIsConfirming(false);
-  }, [admin, open]);
+  } else if (!open && syncedSource?.open) {
+    setSyncedSource({ admin, open });
+  }
 
   const handleClose = () => {
     if (!isSaving) onClose();
@@ -147,7 +155,11 @@ const MerchantAdminFormDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleClose()}>
-      <DialogContent className="max-h-[calc(100vh-2rem)] overflow-y-auto border-border bg-card text-card-foreground sm:max-w-[520px]">
+      <DialogContent
+        className={`max-h-[calc(100vh-2rem)] overflow-y-auto border-border bg-card text-card-foreground ${
+          isConfirming ? "sm:max-w-[760px]" : "sm:max-w-[520px]"
+        }`}
+      >
         <form onSubmit={(event) => void handleSubmit(event)}>
           <DialogHeader className="border-b border-border pb-4">
             <DialogTitle className="text-xl">
