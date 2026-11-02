@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/shared/components/ui/dialog";
 import { Button } from "@/shared/components/ui/button/button";
+import { isStrongPassword } from "@/lib/passwordValidation";
 import {
   CreateMerchantAdminData,
   MerchantAdmin,
@@ -117,12 +118,15 @@ const MerchantAdminFormDialog = ({
           : []),
       ]
     : [];
+  const isEdit = !!admin;
   const passwordChanged = allowPasswordChange && !!form.password;
+  const isPasswordInvalid =
+    allowPasswordChange && (!isEdit || !!form.password) && !isStrongPassword(form.password);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const validationErrors = validateMerchantAdminForm(form, {
-      requirePassword: !admin,
+      requirePassword: !isEdit,
     });
 
     if (Object.keys(validationErrors).length > 0) {
@@ -212,7 +216,7 @@ const MerchantAdminFormDialog = ({
                 <Button type="button" variant="outline" onClick={handleClose} disabled={isSaving}>
                   Cancelar
                 </Button>
-                <Button type="submit" disabled={isSaving}>
+                <Button type="submit" disabled={isSaving || isPasswordInvalid}>
                   {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   {isSaving ? "Salvando..." : "Salvar"}
                 </Button>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
+import PasswordStrength from "@/shared/components/PasswordStrength";
 import {
   MerchantAdminFormErrors,
   MerchantAdminFormState,
@@ -99,6 +100,7 @@ const MerchantAdminForm = ({
             {passwordVisible ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         </div>
+        {form.password && <PasswordStrength password={form.password} />}
         <FieldError id="merchant-admin-password-error" message={errors.password} />
       </div>
     )}

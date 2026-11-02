@@ -1,3 +1,4 @@
+import { isStrongPassword } from "@/lib/passwordValidation";
 import { isValidEmail } from "@/lib/validation";
 import {
   MerchantAdminFormErrors,
@@ -24,8 +25,8 @@ export const validateMerchantAdminForm = (
 
   if (!form.password) {
     if (requirePassword) errors.password = "Informe a senha do admin.";
-  } else if (form.password.length < 6) {
-    errors.password = "A senha deve ter pelo menos 6 caracteres.";
+  } else if (!isStrongPassword(form.password)) {
+    errors.password = "A senha deve ter pelo menos 6 caracteres, com letras maiúsculas e minúsculas.";
   }
 
   return errors;
