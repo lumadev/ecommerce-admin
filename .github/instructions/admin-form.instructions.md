@@ -19,6 +19,11 @@ Ao criar ou alterar um formulário em `src/features/`:
   recurso para campos complexos.
 - Preserve estados controlados, loading, reset após sucesso e cancelamento
   seguro de uploads ou efeitos externos.
+- Campos de texto dos formulários devem usar o `Input` compartilhado com a
+  opção `clearable` ativada, tanto nos fluxos de criação quanto nos de edição.
+- Em diálogos de edição, desabilite o botão "Salvar" enquanto não houver
+  alterações efetivas em relação aos valores iniciais. Considere também campos
+  opcionais, como senha, sem tratar valores vazios como alterações.
 - Ao adicionar um campo, atualize todos os pontos: tipo, formulário, estado
   inicial, mapeamento de edição e payload de criação/atualização.
 - Preserve os padrões de importação, nomenclatura e estilização já usados na
