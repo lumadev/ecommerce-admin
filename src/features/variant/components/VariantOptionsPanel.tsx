@@ -110,6 +110,7 @@ const VariantOptionsPanel = ({ variant, onAdd, onRemove }: Props) => {
           </Label>
           <Input
             id="variant-option-description"
+            autoComplete="off"
             value={description}
             onChange={(e) => {
               setDescription(e.target.value);
