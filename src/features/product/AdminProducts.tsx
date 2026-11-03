@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { Button } from "@/shared/components/ui/button/button";
+import { Input } from "@/shared/components/ui/input";
 import { useProducts } from "./hooks/useProducts";
+import { useProductFilter } from "./hooks/useProductFilter";
 import { ProductListItem } from "./types/product.types";
 
 import ProductTableSkeleton from "./list/ProductTableSkeleton";
@@ -14,6 +16,7 @@ import CreateProductDialog from "./form/dialog/CreateProductDialog";
 const AdminProducts = () => {
   const { productList, isLoading, updateProduct, createProduct, removeProduct } = useProducts();
   const { merchantCode } = useOutletContext<{ merchantCode?: string }>();
+  const { search, setSearch, filteredProducts } = useProductFilter(productList);
 
   const [editingProduct, setEditingProduct] = useState<ProductListItem | null>(
     null
@@ -34,13 +37,28 @@ const AdminProducts = () => {
         </Button>
       </div>
 
+      <div className="relative mb-4 sm:max-w-sm">
+        <Search
+          size={16}
+          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+        />
+        <Input
+          type="search"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="Buscar por nome, descrição, categoria ou preço"
+          aria-label="Buscar produtos"
+          className="pl-9"
+        />
+      </div>
+
       {isLoading ? (
         <ProductTableSkeleton />
-      ) : productList.length === 0 ? (
+      ) : filteredProducts.length === 0 ? (
         <p className="text-sm text-muted-foreground">Nenhum produto encontrado.</p>
       ) : (
         <ProductTable 
-          products={productList} 
+          products={filteredProducts} 
           onEdit={setEditingProduct}
           onRemove={removeProduct}
         />

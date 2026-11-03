@@ -87,7 +87,7 @@ const AdminSidebar = ({ merchantCode }: AdminSidebarProps) => {
                     onClick={() => handleNavigation(item.key)}
                     tooltip={item.title}
                     size="default"
-                    className="h-9 text-sm md:pr-30"
+                    className="h-9 text-sm md:pr-20"
                   >
                     <item.icon className="h-4 w-4" />
                     {!collapsed && <span>{item.title}</span>}
