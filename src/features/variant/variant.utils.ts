@@ -8,9 +8,15 @@ const pluralizeWord = (word: string) => {
   return `${word}s`;
 };
 
-// Pluraliza apenas a última palavra do nome.
 export const pluralizeVariantName = (name: string) => {
   const trimmed = name.trim();
+  const prepositionalPhrase = trimmed.match(
+    /^(\S+)(\s+(?:de|da|do|das|dos|em|na|no|nas|nos|por|para|com|sem)\b.*)$/i
+  );
+  if (prepositionalPhrase) {
+    return `${pluralizeWord(prepositionalPhrase[1])}${prepositionalPhrase[2]}`;
+  }
+
   const match = trimmed.match(/^(.*?)(\S+)$/);
   if (!match) return trimmed;
   return `${match[1]}${pluralizeWord(match[2])}`;
