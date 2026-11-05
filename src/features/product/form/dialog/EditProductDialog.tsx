@@ -121,7 +121,6 @@ const EditProductDialog = ({
           media.publicId,
           media.type,
           "products",
-          merchantCode,
         );
       } catch (error) {
         console.error("Erro ao remover mídia temporária no cancelamento:", error);

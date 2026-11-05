@@ -90,13 +90,48 @@ export const httpClientPublic = axios.create({
 });
 
 let activeMerchantCode: string | undefined;
-const MERCHANT_SCOPED_COLLECTIONS = new Set([
-  "/categories",
-  "/highlights",
-  "/admin/products",
-  "/users",
-  "/variants",
-]);
+
+type MerchantCodeQueryRoute = {
+  path: string | RegExp;
+  methods: readonly string[];
+};
+
+const MERCHANT_CODE_QUERY_ROUTES: readonly MerchantCodeQueryRoute[] = [
+  // Usuários
+  { path: "/users", methods: ["get", "post"] },
+  { path: "/users/admin", methods: ["post"] },
+  { path: /^\/users\/[^/]+$/, methods: ["get", "patch", "delete"] },
+
+  // Categorias
+  { path: "/categories", methods: ["get", "post"] },
+  { path: /^\/categories\/[^/]+$/, methods: ["get", "patch", "delete"] },
+
+  // Produtos
+  { path: "/admin/products", methods: ["get", "post"] },
+  { path: /^\/admin\/products\/[^/]+$/, methods: ["get", "patch", "delete"] },
+
+  // Destaques
+  { path: "/highlights", methods: ["get", "post"] },
+  { path: /^\/highlights\/[^/]+$/, methods: ["delete"] },
+  {
+    path: /^\/highlights\/[^/]+\/(?:increase|decrease)$/,
+    methods: ["patch"],
+  },
+
+  // Variantes
+  { path: "/variants", methods: ["get"] },
+  {
+    path: /^\/variants\/[^/]+\/options(?:\/[^/]+)?$/,
+    methods: ["post", "delete"],
+  },
+
+  // Templates de e-mail
+  { path: "/admin/email-templates", methods: ["get"] },
+  { path: /^\/admin\/email-templates\/[^/]+\/preview$/, methods: ["get"] },
+
+  // Uploads
+  { path: "/upload", methods: ["post", "delete"] },
+];
 
 export const setActiveMerchantCode = (merchantCode?: string | null) => {
   activeMerchantCode = merchantCode ?? undefined;
@@ -104,19 +139,17 @@ export const setActiveMerchantCode = (merchantCode?: string | null) => {
 
 const registerMerchantCodeParam = (client: AxiosInstance) => {
   client.interceptors.request.use((config) => {
-    const requestPath = config.url?.split("?")[0];
-    const method = config.method?.toLowerCase();
-    const isUserById = Boolean(requestPath && /^\/users\/[^/]+$/.test(requestPath));
+    const requestPath = config.url?.split("?")[0].replace(/\/$/, "");
+    const method = config.method?.toLowerCase() ?? "get";
     const usesMerchantCodeQuery =
-      (method === "get" &&
-        requestPath !== undefined &&
-        MERCHANT_SCOPED_COLLECTIONS.has(requestPath)) ||
-      (requestPath === "/users/admin" && method === "post") ||
-      (isUserById && ["get", "patch", "delete"].includes(method ?? ""));
-    const usesMerchantCodeBody =
-      ((requestPath === "/categories" || requestPath === "/admin/products") &&
-        method === "post") ||
-      (requestPath === "/upload" && ["post", "delete"].includes(method ?? ""));
+      requestPath !== undefined &&
+      MERCHANT_CODE_QUERY_ROUTES.some(
+        ({ path, methods }) =>
+          methods.includes(method) &&
+          (path instanceof RegExp
+            ? path.test(requestPath)
+            : path === requestPath),
+      );
 
     if (!activeMerchantCode) {
       return config;
@@ -135,24 +168,6 @@ const registerMerchantCodeParam = (client: AxiosInstance) => {
         ...params,
         merchantCode: params?.merchantCode ?? activeMerchantCode,
       };
-    }
-
-    if (usesMerchantCodeBody) {
-      if (typeof FormData !== "undefined" && config.data instanceof FormData) {
-        if (!config.data.has("merchantCode")) {
-          config.data.append("merchantCode", activeMerchantCode);
-        }
-      } else if (
-        config.data &&
-        typeof config.data === "object" &&
-        !Array.isArray(config.data)
-      ) {
-        const body = config.data as Record<string, unknown>;
-        config.data = {
-          ...body,
-          merchantCode: body.merchantCode ?? activeMerchantCode,
-        };
-      }
     }
 
     return config;

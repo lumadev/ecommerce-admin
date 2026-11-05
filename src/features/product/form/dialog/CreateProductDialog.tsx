@@ -112,7 +112,6 @@ const CreateProductDialog = ({
           media.publicId,
           media.type,
           "products",
-          merchantCode,
         );
       }
     } catch (error) {
@@ -158,7 +157,6 @@ const CreateProductDialog = ({
     }
 
     const newProduct: CreateProductData = {
-      merchantCode,
       ...validation.data,
       stock: validation.data.stock,
       categoryIds: validation.data.categoryIds ?? form.categoryIds,
