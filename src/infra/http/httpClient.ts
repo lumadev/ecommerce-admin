@@ -98,9 +98,9 @@ type MerchantCodeQueryRoute = {
 
 const MERCHANT_CODE_QUERY_ROUTES: readonly MerchantCodeQueryRoute[] = [
   // Usuários
-  { path: "/users", methods: ["get", "post"] },
-  { path: "/users/admin", methods: ["post"] },
+  { path: "/users", methods: ["get"] },
   { path: /^\/users\/[^/]+$/, methods: ["get", "patch", "delete"] },
+  { path: "/admin/users", methods: ["post"] },
 
   // Categorias
   { path: "/categories", methods: ["get", "post"] },

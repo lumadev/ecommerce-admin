@@ -6,6 +6,7 @@ import {
 } from "../types/customer.types";
 
 const BASE_URL = "/users";
+const ADMIN_BASE_URL = "/admin/users";
 
 export const customerRepository = {
   findAll: async (signal?: AbortSignal): Promise<Customer[]> => {
@@ -14,10 +15,7 @@ export const customerRepository = {
   },
 
   create: async (data: CreateCustomerData): Promise<Customer> => {
-    const response = await httpClientAuth.post<Customer>(
-      `${BASE_URL}/admin`,
-      data
-    );
+    const response = await httpClientAuth.post<Customer>(ADMIN_BASE_URL, data);
     return response.data;
   },
 
