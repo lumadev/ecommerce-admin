@@ -4,12 +4,12 @@ applyTo: "src/**/*.{ts,tsx}"
 
 # Instruções de arquitetura React
 
-> **Quando ler este arquivo:** consulte estas instruções **somente** ao criar
-> uma nova feature/recurso (nova pasta em `src/features` ou `src/pages`) ou ao
-> implementar lógica complexa (fluxos com múltiplos estados, integrações com
-> API, orquestração de vários hooks, formulários avançados, etc.). Para
-> alterações pequenas e localizadas (ajuste de estilo, texto, prop simples,
-> correção pontual) não é necessário aplicar todas as regras abaixo.
+> **Quando ler este arquivo:** aplique sempre a regra de um componente React
+> por arquivo e as regras de tratamento de superadministrador. Consulte também
+> as demais instruções ao criar uma nova feature/recurso (nova pasta em
+> `src/features` ou `src/pages`) ou implementar lógica complexa (fluxos com
+> múltiplos estados, integrações com API, orquestração de vários hooks,
+> formulários avançados, etc.).
 
 ## Arquitetura de pastas (feature-based)
 
@@ -63,6 +63,10 @@ src/features/<feature>/
 
 ## Divisão de componentes
 
+- Declare cada componente React em seu próprio arquivo, inclusive
+  subcomponentes locais, usando o nome do componente como nome do arquivo.
+  Ao criar ou extrair componentes, não adicione múltiplos componentes ao
+  mesmo arquivo.
 - Prefira componentes pequenos e focados em uma única responsabilidade visual
   em vez de um componente grande com muitas ramificações condicionais.
 - Extraia um subcomponente quando um bloco de JSX tiver lógica própria,
@@ -99,6 +103,32 @@ src/features/<feature>/
 - Hooks genéricos e sem relação com uma feature específica (ex.:
   `use-mobile.tsx`, `use-toast.ts`) ficam em `src/hooks`, não dentro de uma
   feature.
+- Não use `useEffect` para sincronizar estado React com valores que podem ser
+  derivados de props, estado ou dados carregados. Derive o valor durante a
+  renderização ou atualize-o em resposta ao evento que altera a seleção; efeitos
+  devem sincronizar com sistemas externos ou assinaturas.
+
+## Regras de acesso e navegação
+
+- Ao tratar diferenças entre superadministrador e lojista, explicite a
+  verificação em uma variável ou função nomeada, como
+  `isSuperAdmin = user?.role === "SUPER_ADMIN"`, em vez de comparações
+  diretamente no JSX.
+- Considere explicitamente o contexto de loja e de impersonação ao selecionar
+  ou exibir dados: lojistas devem visualizar apenas dados coerentes com a loja
+  da sessão, e a seleção de outra loja deve respeitar as permissões e o
+  contexto efetivo do superadministrador. Não trate visibilidade na interface
+  como substituto da autorização no backend.
+- Mantenha permissões de navegação por perfil e por loja em configurações
+  nomeadas, com arrays explícitos de rotas para cada loja. Identifique as lojas
+  por códigos estáveis e evite espalhar comparações de `merchantCode` ou
+  verificações de `role` em JSX.
+- Extraia a seleção de itens permitidos para uma função nomeada e legível, em
+  vez de encadear várias condições booleanas em um único `.filter()` no
+  componente.
+- Trate a visibilidade do menu como conveniência de interface, não como
+  autorização. Proteja também as rotas e mantenha a autorização efetiva no
+  backend.
 
 ## Estrutura da lógica dos componentes
 
