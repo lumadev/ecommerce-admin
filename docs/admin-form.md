@@ -108,7 +108,11 @@ padrão à direita e o indicador em `right-9`. Reserve espaço no conteúdo do
 trigger para o indicador, sem deslocar a seta: no `SelectTrigger`, aplique
 `pr-6` ao `span` do valor quando o indicador estiver visível; em seletores de
 múltiplas opções, reserve esse espaço no contêiner dos itens. O conteúdo deve
-poder encolher ou quebrar linha, sem encobrir os ícones.
+poder encolher ou quebrar linha, permanecer alinhado à esquerda e não encobrir
+os ícones.
+
+Não inclua a opção "Não selecionar" em seletores obrigatórios. Em seletores
+opcionais, ela pode ser oferecida para remover uma seleção existente.
 
 ## Formulário de produto
 
