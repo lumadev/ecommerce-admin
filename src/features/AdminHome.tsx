@@ -2,16 +2,15 @@ import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
-import { adminNavigationItems } from "@/features/admin-navigation";
+import {
+  adminNavigationItems,
+  isNavigationItemAvailableForUser,
+} from "@/features/admin-navigation";
 
 const AdminHome = () => {
   const { user } = useAdminAuth();
   const navigationItems = adminNavigationItems
-    .filter(
-      (item) =>
-        (item.key !== "lojas" || user?.role === "SUPER_ADMIN") &&
-        (item.key !== "variantes" || Boolean(user?.merchant?.id))
-    )
+    .filter((item) => isNavigationItemAvailableForUser(item.key, user))
     .map((item) => ({ ...item, path: `/${item.key}` }));
 
   return (

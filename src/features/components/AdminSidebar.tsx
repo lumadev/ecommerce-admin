@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
 import {
   adminNavigationItems,
+  isNavigationItemAvailableForUser,
   type AdminSection,
 } from "@/features/admin-navigation";
 import type { SessionUser } from "@/features/auth/types/auth.types";
@@ -51,11 +52,7 @@ const getVisibleNavigationItems = (
     STORE_SPECIFIC_NAVIGATION_ITEMS[merchantCode ?? ""] ?? [];
 
   return adminNavigationItems.filter(({ key }) => {
-    if (key === "lojas" && user?.role !== "SUPER_ADMIN") {
-      return false;
-    }
-
-    if (key === "variantes" && !user?.merchant?.id) {
+    if (!isNavigationItemAvailableForUser(key, user)) {
       return false;
     }
 

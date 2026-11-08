@@ -10,6 +10,7 @@ import { setActiveMerchantCode } from "@/infra/http/httpClient";
 const STORE_DATA_ROUTES = new Set([
   "/produtos",
   "/categorias",
+  "/variantes",
   "/destaques",
   "/clientes",
   "/templates-email",
