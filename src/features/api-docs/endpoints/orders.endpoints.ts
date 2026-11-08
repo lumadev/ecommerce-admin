@@ -7,18 +7,18 @@ export const orderEndpoints: ApiEndpoint[] = [
     method: "POST",
     path: "/orders/checkout",
     title: "Criar checkout",
-    summary: "Cria um pedido; a loja e identificada pelos produtos do carrinho.",
+    summary: "Cria um pedido; a loja é identificada pelos produtos do carrinho.",
     access: "Público",
     details: [
       {
         label: "Body",
         value: "checkoutKey, items, customerEmail",
-        description: "checkoutKey e um UUID unico gerado pelo cliente para idempotencia.",
+        description: "checkoutKey é um UUID único gerado pelo cliente para idempotência.",
       },
       {
         label: "Dados adicionais",
         value: "customerName, customerPhone, shippingAddress",
-        description: "Obrigatorios no checkout integrado; nao envie merchantCode.",
+        description: "Obrigatórios no checkout integrado; não envie merchantCode.",
       },
     ],
     request: `curl -X POST "${API_BASE_URL}orders/checkout" \\
@@ -37,10 +37,10 @@ export const orderEndpoints: ApiEndpoint[] = [
     "shippingAddress": {
       "recipient": "Cliente Exemplo",
       "postalCode": "01001-000",
-      "street": "Praca da Se",
+      "street": "Praça da Sé",
       "number": "100",
-      "neighborhood": "Se",
-      "city": "Sao Paulo",
+      "neighborhood": "Sé",
+      "city": "São Paulo",
       "state": "SP"
     }
   }'`,
@@ -57,7 +57,7 @@ export const orderEndpoints: ApiEndpoint[] = [
   "items": [
     {
       "productId": "3e56c479-fc2c-4c63-a6b8-e6f674d81b22",
-      "name": "Luminaria de mesa",
+      "name": "Luminária de mesa",
       "quantity": 1,
       "unitPrice": 89.9,
       "customNote": null
@@ -96,8 +96,8 @@ export const orderEndpoints: ApiEndpoint[] = [
     id: "orders-payment-config",
     method: "GET",
     path: "/orders/payment-config",
-    title: "Consultar configuracao de pagamento",
-    summary: "Retorna a chave publica e informa se o pagamento integrado esta habilitado.",
+    title: "Consultar configuração de pagamento",
+    summary: "Retorna a chave pública e informa se o pagamento integrado está habilitado.",
     access: "Público",
     details: [],
     request: `curl -X GET "${API_BASE_URL}orders/payment-config" \\
@@ -111,8 +111,8 @@ export const orderEndpoints: ApiEndpoint[] = [
     id: "orders-card-payment",
     method: "POST",
     path: "/orders/{orderId}/payments/card",
-    title: "Pagar pedido com cartao",
-    summary: "Inicia um pagamento de cartao para um pedido em checkout integrado.",
+    title: "Pagar pedido com cartão",
+    summary: "Inicia um pagamento de cartão para um pedido em checkout integrado.",
     access: "Público",
     details: [
       {
@@ -123,7 +123,7 @@ export const orderEndpoints: ApiEndpoint[] = [
       {
         label: "Body",
         value: "attemptKey, token, paymentMethodId, installments",
-        description: "token e gerado pelo SDK do Mercado Pago; nunca envie dados brutos do cartao.",
+        description: "token é gerado pelo SDK do Mercado Pago; nunca envie dados brutos do cartão.",
       },
     ],
     request: `curl -X POST "${API_BASE_URL}orders/6f630fb3-fdcc-4a73-b509-24d2ac4f83e0/payments/card" \\

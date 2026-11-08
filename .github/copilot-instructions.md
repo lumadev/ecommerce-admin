@@ -1,5 +1,7 @@
 # Instruções do Copilot
 
+Escreva os textos em português com ortografia e acentuação corretas, inclusive na interface, na documentação e nos exemplos. Preserve identificadores, URLs, valores técnicos e mensagens literais que façam parte de contratos existentes.
+
 Após realizar alterações no código, não execute automaticamente o lint, o build ou outros comandos de validação do projeto.
 
 Não crie testes, a menos que o usuário solicite explicitamente sua criação.

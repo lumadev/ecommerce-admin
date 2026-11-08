@@ -1,21 +1,21 @@
-# Padrao de `merchantCode` nos exemplos
+# Padrão de `merchantCode` nos exemplos
 
-Os exemplos de requisicao devem usar o codigo da loja efetivamente selecionada no painel administrativo. Nao fixe um codigo de exemplo, nao use `minha-loja` e nao substitua o codigo da loja por seu ID.
+Os exemplos de requisição devem usar o código da loja efetivamente selecionada no painel administrativo. Não fixe um código de exemplo, não use `minha-loja` e não substitua o código da loja por seu ID.
 
-## Origem do codigo
+## Origem do código
 
-A pagina de documentacao recebe `merchantCode` pelo contexto do `Outlet` do layout administrativo:
+A página de documentação recebe `merchantCode` pelo contexto do `Outlet` do layout administrativo:
 
-- Para um administrador de loja, use o codigo vinculado a sessao.
-- Para um superadministrador, a documentacao deve aparecer entre as rotas com seletor de loja, usando o codigo da loja selecionada.
-- Se nao houver codigo disponivel, nao exiba exemplos com um valor ficticio; solicite a selecao/identificacao da loja.
+- Para um administrador de loja, use o código vinculado à sessão.
+- Para um superadministrador, a documentação deve aparecer entre as rotas com seletor de loja, usando o código da loja selecionada.
+- Se não houver código disponível, não exiba exemplos com um valor fictício; solicite a seleção ou identificação da loja.
 
-## Localizacao por endpoint
+## Localização por endpoint
 
 Siga o contrato do endpoint documentado:
 
-- Endpoints de catalogo e outras operacoes com escopo de loja recebem `merchantCode` na query string.
-- Cadastro/autenticacao de cliente e solicitacao publica de encomenda recebem `merchantCode` no corpo, conforme o contrato da API.
-- Checkout e consulta de status nao recebem `merchantCode`: o backend identifica a loja pelos produtos do pedido ou pela chave unica do checkout. Nao acrescente o campo a essas requisicoes.
+- Endpoints de catálogo e outras operações com escopo de loja recebem `merchantCode` na query string.
+- Cadastro/autenticação de cliente e envio público de mensagem de contato recebem `merchantCode` no corpo, conforme o contrato da API.
+- Checkout e consulta de status não recebem `merchantCode`: o backend identifica a loja pelos produtos do pedido ou pela chave única do checkout. Não acrescente o campo a essas requisições.
 
-Ao adicionar um endpoint, coloque um token de substituicao nos campos `path` e/ou `request` de `api-docs.data.ts` onde o contrato exige o codigo. A pagina substitui o token pelo codigo atual antes de renderizar os cards e os botoes de copia.
+Ao adicionar um endpoint, coloque um token de substituição nos campos `path` e/ou `request` de `api-docs.data.ts` onde o contrato exige o código. A página substitui o token pelo código atual antes de renderizar os cards e os botões de cópia.

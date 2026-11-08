@@ -118,8 +118,7 @@ const ApiDocumentationPage = () => {
 
           {endpoints.length > 0 && (
             <p className="mt-5 text-xs leading-5 text-muted-foreground">
-              Os exemplos de resposta ilustram o formato dos dados. Os endpoints de cadastro de
-              cliente e solicitação de encomenda estão marcados como em manutenção na API.
+              Os exemplos de resposta ilustram o formato dos dados.
             </p>
           )}
         </div>

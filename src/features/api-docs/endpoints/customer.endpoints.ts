@@ -3,41 +3,12 @@ import { API_BASE_URL, MERCHANT_CODE_TOKEN } from "../api-docs.constants";
 
 export const customerEndpoints: ApiEndpoint[] = [
   {
-    id: "users-create",
-    method: "POST",
-    path: `/users?merchantCode=${MERCHANT_CODE_TOKEN}`,
-    title: "Cadastrar cliente",
-    summary: "Cria uma conta de cliente vinculada à loja.",
-    access: "Público • limite de requisicoes • em manutencao",
-    details: [
-      {
-        label: "Query param",
-        value: "merchantCode",
-        description: "Código da loja. Obrigatório.",
-      },
-      {
-        label: "Body",
-        value: "name, email, password",
-        description: "Senha com pelo menos 6 caracteres.",
-      },
-    ],
-    request: `curl -X POST "${API_BASE_URL}users?merchantCode=${MERCHANT_CODE_TOKEN}" \\
-  -H "Content-Type: application/json" \\
-  -d '{"name":"Cliente Exemplo","email":"cliente@example.com","password":"senha-segura"}'`,
-    response: `{
-  "id": "1455943e-6757-4a14-85c1-4376d9531059",
-  "merchantId": "0c2c334a-100f-4356-9ba9-0ffaf5527b05",
-  "name": "Cliente Exemplo",
-  "email": "cliente@example.com"
-}`,
-  },
-  {
     id: "auth-register",
     method: "POST",
     path: "/auth/register",
-    title: "Cadastrar cliente (autenticacao)",
-    summary: "Cria uma conta de cliente enviando o codigo da loja no corpo.",
-    access: "Público • limite de requisicoes • em manutencao",
+    title: "Autocadastro de cliente",
+    summary: "Permite que o próprio cliente crie uma conta enviando o código da loja no corpo.",
+    access: "Público • limite de requisições",
     details: [
       {
         label: "Body",
@@ -59,13 +30,13 @@ export const customerEndpoints: ApiEndpoint[] = [
     method: "POST",
     path: "/auth/login",
     title: "Entrar como cliente",
-    summary: "Autentica um cliente no contexto da loja e inicia a sessao.",
-    access: "Público • limite de requisicoes",
+    summary: "Autentica um cliente no contexto da loja e inicia a sessão.",
+    access: "Público • limite de requisições",
     details: [
       {
         label: "Body",
         value: "merchantCode, email, password",
-        description: "O backend tambem envia um cookie de sessao.",
+        description: "O backend também envia um cookie de sessão.",
       },
     ],
     request: `curl -X POST "${API_BASE_URL}auth/login" \\
@@ -85,14 +56,14 @@ export const customerEndpoints: ApiEndpoint[] = [
     id: "auth-forgot-password",
     method: "POST",
     path: "/auth/forgot-password",
-    title: "Solicitar recuperacao de senha",
-    summary: "Envia um link de recuperacao para o cliente da loja.",
-    access: "Público • limite de requisicoes",
+    title: "Solicitar recuperação de senha",
+    summary: "Envia um link de recuperação para o cliente da loja.",
+    access: "Público • limite de requisições",
     details: [
       {
         label: "Body",
         value: "merchantCode, email",
-        description: "O link de recuperacao expira em 15 minutos.",
+        description: "O link de recuperação expira em 15 minutos.",
       },
     ],
     request: `curl -X POST "${API_BASE_URL}auth/forgot-password" \\
@@ -106,14 +77,14 @@ export const customerEndpoints: ApiEndpoint[] = [
     id: "auth-reset-password-validate",
     method: "POST",
     path: "/auth/reset-password/validate",
-    title: "Validar token de recuperacao",
+    title: "Validar token de recuperação",
     summary: "Confirma se o token recebido por e-mail ainda pode ser usado.",
-    access: "Público • limite de requisicoes",
+    access: "Público • limite de requisições",
     details: [
       {
         label: "Body",
         value: "token",
-        description: "Token de recuperacao recebido por e-mail.",
+        description: "Token de recuperação recebido por e-mail.",
       },
     ],
     request: `curl -X POST "${API_BASE_URL}auth/reset-password/validate" \\
@@ -128,8 +99,8 @@ export const customerEndpoints: ApiEndpoint[] = [
     method: "POST",
     path: "/auth/reset-password",
     title: "Redefinir senha",
-    summary: "Define uma nova senha usando um token valido de recuperacao.",
-    access: "Público • limite de requisicoes",
+    summary: "Define uma nova senha usando um token válido de recuperação.",
+    access: "Público • limite de requisições",
     details: [
       {
         label: "Body",
@@ -148,14 +119,14 @@ export const customerEndpoints: ApiEndpoint[] = [
     id: "auth-logout",
     method: "POST",
     path: "/auth/logout",
-    title: "Encerrar sessao do cliente",
-    summary: "Encerra a sessao limpando o cookie de autenticacao.",
+    title: "Encerrar sessão do cliente",
+    summary: "Encerra a sessão limpando o cookie de autenticação.",
     access: "Público",
     details: [
       {
         label: "Cookie",
         value: "access_token",
-        description: "Envie o cookie da sessao atual.",
+        description: "Envie o cookie da sessão atual.",
       },
     ],
     request: `curl -X POST "${API_BASE_URL}auth/logout" \\
@@ -170,20 +141,20 @@ export const customOrderEndpoint: ApiEndpoint = {
   id: "email-custom-order",
   method: "POST",
   path: "/email/custom-order",
-  title: "Enviar solicitacao de encomenda",
-  summary: "Envia uma solicitacao de encomenda para a loja.",
-  access: "Público • limite de requisicoes • em manutencao",
+  title: "Enviar nova mensagem de contato",
+  summary: "Envia para a loja uma mensagem do cliente pelo formulário de contato do e-commerce.",
+  access: "Público • limite de requisições",
   details: [
     {
       label: "Body",
       value: "merchantCode, name, email, description",
-      description: "Descricao limitada a 2000 caracteres.",
+      description: "Descrição limitada a 2000 caracteres.",
     },
   ],
   request: `curl -X POST "${API_BASE_URL}email/custom-order" \\
   -H "Content-Type: application/json" \\
-  -d '{"merchantCode":"${MERCHANT_CODE_TOKEN}","name":"Cliente Exemplo","email":"cliente@example.com","description":"Solicito informacoes sobre uma encomenda personalizada."}'`,
+  -d '{"merchantCode":"${MERCHANT_CODE_TOKEN}","name":"Cliente Exemplo","email":"cliente@example.com","description":"Gostaria de obter mais informações sobre os produtos da loja."}'`,
   response: `{
-  "message": "Email de encomenda enviado com sucesso"
+  "message": "<mensagem de sucesso>"
 }`,
 };

@@ -22,8 +22,8 @@ export const catalogEndpoints: ApiEndpoint[] = [
   {
     "id": "f64f13f7-c7d8-4f2b-bcd2-45cca3408966",
     "merchantId": "0c2c334a-100f-4356-9ba9-0ffaf5527b05",
-    "name": "Decoracao",
-    "description": "Itens para decoracao.",
+    "name": "Decoração",
+    "description": "Itens para decoração.",
     "hashtags": ["decoracao"],
     "picturePublicId": null,
     "createdAt": "2026-10-05T18:03:10.659Z",
@@ -56,8 +56,8 @@ export const catalogEndpoints: ApiEndpoint[] = [
     response: `{
   "id": "f64f13f7-c7d8-4f2b-bcd2-45cca3408966",
   "merchantId": "0c2c334a-100f-4356-9ba9-0ffaf5527b05",
-  "name": "Decoracao",
-  "description": "Itens para decoracao.",
+  "name": "Decoração",
+  "description": "Itens para decoração.",
   "hashtags": ["decoracao"],
   "picturePublicId": null,
   "products": []
@@ -82,12 +82,12 @@ export const catalogEndpoints: ApiEndpoint[] = [
     response: `[
   {
     "id": "3e56c479-fc2c-4c63-a6b8-e6f674d81b22",
-    "name": "Luminaria de mesa",
-    "description": "Luminaria impressa em 3D.",
+    "name": "Luminária de mesa",
+    "description": "Luminária impressa em 3D.",
     "price": "89.90",
     "stock": 12,
     "categories": [
-      { "id": "f64f13f7-c7d8-4f2b-bcd2-45cca3408966", "name": "Decoracao" }
+      { "id": "f64f13f7-c7d8-4f2b-bcd2-45cca3408966", "name": "Decoração" }
     ],
     "media": [
       { "type": "image", "src": "https://res.cloudinary.com/demo/image/upload/luminaria.jpg" }
@@ -101,26 +101,26 @@ export const catalogEndpoints: ApiEndpoint[] = [
     method: "GET",
     path: `/products/search?merchantCode=${MERCHANT_CODE_TOKEN}&q=luminaria&page=1&limit=20`,
     title: "Buscar produtos",
-    summary: "Busca produtos em estoque com filtros, ordenacao e paginacao.",
+    summary: "Busca produtos em estoque com filtros, ordenação e paginação.",
     access: "Público",
     details: [
       {
         label: "merchantCode",
-        value: "Obrigatorio",
-        description: "Codigo da loja; a busca so retorna produtos dessa loja.",
+        value: "Obrigatório",
+        description: "Código da loja; a busca só retorna produtos dessa loja.",
       },
       {
         label: "Filtros",
         value: "q, categoryId, minPrice, maxPrice",
-        description: "Texto, categoria e faixa de preco sao opcionais.",
+        description: "Texto, categoria e faixa de preço são opcionais.",
       },
       {
-        label: "Paginacao",
+        label: "Paginação",
         value: "page, limit",
-        description: "Padrao: pagina 1 e 20 resultados; limite maximo: 200.",
+        description: "Padrão: página 1 e 20 resultados; limite máximo: 200.",
       },
       {
-        label: "Ordenacao",
+        label: "Ordenação",
         value: "sortBy, sortOrder",
         description: "sortBy: name, price ou createdAt; sortOrder: asc ou desc.",
       },
@@ -142,8 +142,8 @@ export const catalogEndpoints: ApiEndpoint[] = [
   "products": [
     {
       "id": "3e56c479-fc2c-4c63-a6b8-e6f674d81b22",
-      "name": "Luminaria de mesa",
-      "description": "Luminaria impressa em 3D.",
+      "name": "Luminária de mesa",
+      "description": "Luminária impressa em 3D.",
       "price": "89.90",
       "stock": 12,
       "categories": [],
@@ -182,8 +182,8 @@ export const catalogEndpoints: ApiEndpoint[] = [
   -H "Accept: application/json"`,
     response: `{
   "id": "3e56c479-fc2c-4c63-a6b8-e6f674d81b22",
-  "name": "Luminaria de mesa",
-  "description": "Luminaria impressa em 3D.",
+  "name": "Luminária de mesa",
+  "description": "Luminária impressa em 3D.",
   "price": "89.90",
   "stock": 12,
   "categories": [],
@@ -214,7 +214,7 @@ export const catalogEndpoints: ApiEndpoint[] = [
     "position": 1,
     "product": {
       "id": "3e56c479-fc2c-4c63-a6b8-e6f674d81b22",
-      "name": "Luminaria de mesa",
+      "name": "Luminária de mesa",
       "price": "89.90",
       "media": [],
       "mediaUrls": [],
