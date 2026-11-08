@@ -48,6 +48,9 @@ const MerchantForm = ({
           aria-invalid={!!errors.code}
           aria-describedby={errors.code ? "merchant-code-error" : undefined}
           className="bg-background disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground"
+          clearable
+          clearLabel="Limpar código"
+          onClear={() => onChange("code", "")}
         />
         <FieldError id="merchant-code-error" message={errors.code} />
       </div>
@@ -64,6 +67,9 @@ const MerchantForm = ({
           aria-invalid={!!errors.name}
           aria-describedby={errors.name ? "merchant-name-error" : undefined}
           className="bg-background"
+          clearable
+          clearLabel="Limpar nome"
+          onClear={() => onChange("name", "")}
         />
         <FieldError id="merchant-name-error" message={errors.name} />
       </div>
@@ -81,6 +87,9 @@ const MerchantForm = ({
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? "merchant-email-error" : undefined}
           className="bg-background"
+          clearable
+          clearLabel="Limpar e-mail"
+          onClear={() => onChange("email", "")}
         />
         <FieldError id="merchant-email-error" message={errors.email} />
       </div>
@@ -97,6 +106,9 @@ const MerchantForm = ({
           aria-invalid={!!errors.domain}
           aria-describedby={errors.domain ? "merchant-domain-error" : undefined}
           className="bg-background"
+          clearable
+          clearLabel="Limpar domínio"
+          onClear={() => onChange("domain", "")}
         />
         <FieldError id="merchant-domain-error" message={errors.domain} />
       </div>

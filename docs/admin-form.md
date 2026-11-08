@@ -77,6 +77,41 @@ O produto já está alinhado ao padrão de categoria: possui um componente de
 formulário compartilhado entre criação e edição, diálogos independentes, tipo
 de estado próprio e componentes auxiliares para campos específicos.
 
+## Campos de entrada
+
+Campos de texto editáveis usam o `Input` compartilhado com `clearable`,
+`clearLabel` descritivo e `onClear` que atualiza o mesmo estado de `onChange`:
+
+```tsx
+<Input
+  value={form.name}
+  onChange={(event) => onChange("name", event.target.value)}
+  clearable
+  clearLabel="Limpar nome"
+  onClear={() => onChange("name", "")}
+/>
+```
+
+O botão aparece quando há valor e fica desabilitado quando o input está
+`disabled` ou `readOnly`. Não use `clearable={!disabled}`: a prop exige o
+literal `true` quando `clearLabel` e `onClear` são informados.
+
+Quando houver também um `FieldCompletionIndicator`, mantenha o botão de
+limpar na posição padrão (`right-2`), posicione o indicador em `right-10` e
+reserve `pr-16` no input enquanto o indicador estiver visível. O indicador
+deve continuar acessível e não pode encobrir o botão ou o texto. Campos com
+outros controles, como mostrar senha, também precisam reservar espaço para
+cada ícone e sua área de clique.
+
+Em seletores com seta e indicador de conclusão, mantenha a seta no espaço
+padrão à direita e o indicador em `right-9`. Reserve espaço no conteúdo do
+trigger para o indicador, sem deslocar a seta: no `SelectTrigger`, aplique
+`pr-6` ao `span` do valor quando o indicador estiver visível; em seletores de
+múltiplas opções, reserve esse espaço no contêiner dos itens. O conteúdo deve
+poder encolher ou quebrar linha, sem encobrir os ícones.
+
+## Formulário de produto
+
 O formulário do produto organiza os campos em abas de **Dados do produto**,
 **Variantes** e **Fotos e vídeos**. Nome, preço e estoque são obrigatórios na
 criação e edição; uma ou mais categorias são obrigatórias na criação e

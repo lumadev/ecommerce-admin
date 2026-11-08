@@ -6,7 +6,7 @@ applyTo: "src/features//**/form/**/*.{ts,tsx}"
 
 Ao criar ou alterar um formulário em `src/features/`:
 
-- Siga a arquitetura descrita em [`docs/architecture/admin-form.md`](../../docs/architecture/admin-form.md).
+- Siga a arquitetura descrita em [`docs/admin-form.md`](../../docs/admin-form.md).
 - Mantenha um componente `<Recurso>Form.tsx` compartilhado entre os fluxos de
   criação e edição.
 - Mantenha `Create<Recurso>Dialog.tsx` e `Edit<Recurso>Dialog.tsx` separados.
