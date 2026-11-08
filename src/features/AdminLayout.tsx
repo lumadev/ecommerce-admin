@@ -1,11 +1,6 @@
-import { Outlet, useLocation } from "react-router-dom";
-import { useLayoutEffect, useState, type ReactNode } from "react";
+import { Outlet } from "react-router-dom";
+import { type ReactNode } from "react";
 import { motion } from "framer-motion";
-import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
-import { useMerchant } from "@/features/admin/merchant/hooks/useMerchant";
-import type { Merchant } from "@/features/admin/merchant/types/merchant.types";
-import type { SessionUser } from "@/features/auth/types/auth.types";
-import { setActiveMerchantCode } from "@/infra/http/httpClient";
 
 import {
   SidebarProvider,
@@ -17,70 +12,7 @@ import { ImpersonationSelect } from "@/features/components/ImpersonationSelect";
 import { StoreSelect } from "@/features/components/StoreSelect";
 import { VariantProvider } from "@/features/variant/variant.provider";
 import { AdminTheme } from "@/features/theme/AdminTheme";
-
-const STORE_DATA_ROUTES = new Set([
-  "/produtos",
-  "/categorias",
-  "/destaques",
-  "/clientes",
-  "/templates-email",
-]);
-
-interface AdminLayoutState {
-  user: SessionUser | null;
-  merchantCode?: string;
-  themeMerchantCode?: string;
-  selectedMerchant: Merchant | null;
-  setSelectedMerchant: (merchant: Merchant) => void;
-  showStoreSelector: boolean;
-  requiresStoreSelection: boolean;
-  contentKey: string;
-}
-
-const useAdminLayoutState = (): AdminLayoutState => {
-  const { user } = useAdminAuth();
-  const location = useLocation();
-  const [selectedMerchant, setSelectedMerchant] = useState<Merchant | null>(null);
-  const isSuperAdmin = user?.role === "SUPER_ADMIN";
-  const isSuperAdminActingAsSelf =
-    isSuperAdmin && user?.impersonatedBy == null;
-  const isStoreDataRoute = STORE_DATA_ROUTES.has(location.pathname);
-  const showStoreSelector = isSuperAdminActingAsSelf && isStoreDataRoute;
-  const accountMerchantId = user?.merchant?.id ?? user?.merchantId ?? undefined;
-
-  const merchantIdToFetch = isSuperAdminActingAsSelf
-    ? undefined
-    : accountMerchantId;
-  const { merchant: fetchedMerchant } = useMerchant(
-    user?.merchant?.code ? undefined : merchantIdToFetch
-  );
-  const merchantCode = showStoreSelector
-    ? selectedMerchant?.code
-    : user?.merchant?.code ?? fetchedMerchant?.code;
-  const activeMerchantCode = isSuperAdminActingAsSelf
-    ? isStoreDataRoute
-      ? selectedMerchant?.code
-      : undefined
-    : merchantCode;
-  const themeMerchantCode = isSuperAdminActingAsSelf
-    ? undefined
-    : user?.merchant?.code ?? fetchedMerchant?.code;
-
-  useLayoutEffect(() => {
-    setActiveMerchantCode(activeMerchantCode);
-  }, [activeMerchantCode]);
-
-  return {
-    user,
-    merchantCode,
-    themeMerchantCode,
-    selectedMerchant,
-    setSelectedMerchant,
-    showStoreSelector,
-    requiresStoreSelection: showStoreSelector && !selectedMerchant,
-    contentKey: `${user?.id}:${showStoreSelector ? selectedMerchant?.id ?? "none" : "account"}`,
-  };
-};
+import { useAdminLayoutState } from "@/features/admin/hooks/useAdminLayoutState";
 
 interface AdminHeaderProps {
   storeName?: string;
@@ -119,12 +51,14 @@ const AdminHeader = ({
 interface AdminPageContentProps {
   contentKey: string;
   merchantCode?: string;
+  isLoadingMerchants: boolean;
   requiresStoreSelection: boolean;
 }
 
 const AdminPageContent = ({
   contentKey,
   merchantCode,
+  isLoadingMerchants,
   requiresStoreSelection,
 }: AdminPageContentProps) => (
   <main className="min-h-0 flex-1 overflow-y-auto p-6">
@@ -136,7 +70,9 @@ const AdminPageContent = ({
     >
       {requiresStoreSelection ? (
         <p className="text-sm text-muted-foreground">
-          Selecione uma loja para visualizar os dados.
+          {isLoadingMerchants
+            ? "Carregando a loja padrão..."
+            : "Selecione uma loja para visualizar os dados."}
         </p>
       ) : (
         <Outlet context={{ merchantCode }} />
@@ -164,6 +100,8 @@ export const AdminLayout = () => {
               layout.showStoreSelector ? (
                 <StoreSelect
                   selectedMerchant={layout.selectedMerchant}
+                  merchantList={layout.merchantList}
+                  isLoading={layout.isLoadingMerchants}
                   onChange={layout.setSelectedMerchant}
                 />
               ) : null
@@ -173,6 +111,7 @@ export const AdminLayout = () => {
           <AdminPageContent
             contentKey={layout.contentKey}
             merchantCode={layout.merchantCode}
+            isLoadingMerchants={layout.isLoadingMerchants}
             requiresStoreSelection={layout.requiresStoreSelection}
           />
         </div>

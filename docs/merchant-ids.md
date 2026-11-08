@@ -9,9 +9,11 @@ atuais.
 
 | Loja | Código (`merchant.code`) | ID (`merchant.id`) |
 | --- | --- | --- |
+| Loja do Weslley (Ecommerce 3d) | `ecommerce-3d` | Obtido em tempo de execução pela API |
 | Loja da Mili | `milii-babystore` | Obtido em tempo de execução pela API |
 
-O código `milii-babystore` é o único código de loja encontrado versionado no
-frontend. Ele é usado para associar o tema Mili e restringir o roadmap dessa
+O código `ecommerce-3d` é a loja padrão selecionada para Super Admin nas
+listagens de dados por loja. Ele também identifica a loja do Weslley. O código
+`milii-babystore` é usado para associar o tema Mili e restringir o roadmap dessa
 loja. Esta lista não representa necessariamente todas as lojas cadastradas no
 backend; para a relação atual, consulte `GET /merchants`.

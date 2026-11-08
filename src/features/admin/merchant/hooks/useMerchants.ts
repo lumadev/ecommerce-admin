@@ -8,12 +8,16 @@ import {
   UpdateMerchantData,
 } from "../types/merchant.types";
 
-export const useMerchants = () => {
+export const useMerchants = (enabled = true) => {
   const { toast } = useToast();
   const [merchantList, setMerchantList] = useState<Merchant[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+
     const controller = new AbortController();
 
     const loadMerchants = async () => {
@@ -40,7 +44,7 @@ export const useMerchants = () => {
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [enabled, toast]);
 
   const createMerchant = async (data: CreateMerchantData) => {
     try {
