@@ -14,6 +14,7 @@ const STORE_DATA_ROUTES = new Set([
   "/destaques",
   "/clientes",
   "/templates-email",
+  "/documentacao-api",
 ]);
 
 const DEFAULT_STORE_CODE = "ecommerce-3d";
