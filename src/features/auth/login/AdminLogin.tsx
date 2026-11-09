@@ -14,6 +14,7 @@ import {
 import { getErrorMessage } from "@/infra/http/httpError";
 import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
 import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/shared/components/ui/input";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -106,15 +107,18 @@ const AdminLogin = () => {
               className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             />
 
-            <input
+            <Input
               type="text"
               placeholder="Usuário"
               value={formData.username}
               onChange={(e) =>
                 updateFormData("username")(e.target.value)
               }
+              clearable
+              clearLabel="Limpar usuário"
+              onClear={() => updateFormData("username")("")}
               autoFocus
-              className="w-full rounded-lg border border-border bg-secondary py-3 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              className="h-auto w-full rounded-lg border border-border bg-secondary py-3 pl-10 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
 
@@ -124,14 +128,18 @@ const AdminLogin = () => {
               className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             />
 
-            <input
+            <Input
               type={showPassword ? "text" : "password"}
               placeholder="Senha"
               value={formData.password}
               onChange={(e) =>
                 updateFormData("password")(e.target.value)
               }
-              className="w-full rounded-lg border border-border bg-secondary py-3 pl-10 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              clearable
+              clearLabel="Limpar senha"
+              onClear={() => updateFormData("password")("")}
+              clearButtonClassName="right-10"
+              className="h-auto w-full rounded-lg border border-border bg-secondary py-3 pl-10 pr-20 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
 
             <button
