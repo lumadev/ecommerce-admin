@@ -107,4 +107,61 @@ export const mockOrders: Order[] = [
       { status: 'PENDING', date: '2025-03-30T16:00:00' },
     ],
   },
+  {
+    id: 'PED-20250331-004',
+    date: '2025-03-31',
+    status: 'PAYMENT_FAILED',
+    customerName: 'Carlos Pereira',
+    items: [
+      { productName: 'Luminária Lua', quantity: 1, unitPrice: 89.9, image: productLuminaria },
+    ],
+    total: 89.9,
+    statusHistory: [
+      { status: 'PENDING', date: '2025-03-31T09:00:00' },
+      { status: 'PAYMENT_FAILED', date: '2025-03-31T09:02:00' },
+    ],
+  },
+  {
+    id: 'PED-20250331-005',
+    date: '2025-03-31',
+    status: 'PAID',
+    customerName: 'Fernanda Costa',
+    items: [
+      { productName: 'Suporte para Fone', quantity: 2, unitPrice: 39.9, image: productSuporte },
+    ],
+    total: 79.8,
+    statusHistory: [
+      { status: 'PENDING', date: '2025-03-31T11:00:00' },
+      { status: 'PAID', date: '2025-03-31T11:05:00' },
+    ],
+  },
+  {
+    id: 'PED-20250401-006',
+    date: '2025-04-01',
+    status: 'INVENTORY_ISSUE',
+    customerName: 'Rafael Lima',
+    items: [
+      { productName: 'Vaso Geométrico', quantity: 5, unitPrice: 49.9, image: productVaso },
+      { productName: 'Luminária Lua', quantity: 2, unitPrice: 89.9, image: productLuminaria },
+    ],
+    total: 429.3,
+    statusHistory: [
+      { status: 'PENDING', date: '2025-04-01T08:30:00' },
+      { status: 'INVENTORY_ISSUE', date: '2025-04-01T08:35:00' },
+    ],
+  },
+  {
+    id: 'PED-20250401-007',
+    date: '2025-04-01',
+    status: 'CANCELED',
+    customerName: 'Patrícia Alves',
+    items: [
+      { productName: 'Vaso Geométrico', quantity: 1, unitPrice: 49.9, image: productVaso },
+    ],
+    total: 49.9,
+    statusHistory: [
+      { status: 'PENDING', date: '2025-04-01T13:00:00' },
+      { status: 'CANCELED', date: '2025-04-01T15:00:00' },
+    ],
+  },
 ];
