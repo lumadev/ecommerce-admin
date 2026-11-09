@@ -182,10 +182,13 @@ const ProductForm = ({
                   aria-required="true"
                   aria-invalid={Boolean(errors.name)}
                   aria-describedby={errors.name ? "product-name-error" : undefined}
-                  className="bg-background pr-10"
+                  className={hasValidName ? "bg-background pr-16" : "bg-background"}
+                  clearable
+                  clearLabel="Limpar nome"
+                  onClear={() => onChange("name", "")}
                 />
                 {hasValidName && (
-                  <FieldCompletionIndicator label="Nome preenchido corretamente" />
+                  <FieldCompletionIndicator label="Nome preenchido corretamente" className="right-10" />
                 )}
               </div>
               {errors.name && (
@@ -256,10 +259,13 @@ const ProductForm = ({
                   }}
                   aria-invalid={Boolean(errors.price)}
                   aria-describedby={errors.price ? "product-price-error" : undefined}
-                  className="bg-background pr-10"
+                  className={hasValidPrice ? "bg-background pr-16" : "bg-background"}
+                  clearable
+                  clearLabel="Limpar preço"
+                  onClear={() => onChange("price", "")}
                 />
                 {hasValidPrice && (
-                  <FieldCompletionIndicator label="Preço preenchido corretamente" />
+                  <FieldCompletionIndicator label="Preço preenchido corretamente" className="right-10" />
                 )}
               </div>
               {errors.price && (
@@ -288,10 +294,13 @@ const ProductForm = ({
                   aria-required="true"
                   aria-invalid={Boolean(errors.stock)}
                   aria-describedby={errors.stock ? "product-stock-error" : undefined}
-                  className="bg-background pr-10"
+                  className={hasValidStock ? "bg-background pr-16" : "bg-background"}
+                  clearable
+                  clearLabel="Limpar estoque"
+                  onClear={() => onChange("stock", "")}
                 />
                 {hasValidStock && (
-                  <FieldCompletionIndicator label="Estoque preenchido corretamente" />
+                  <FieldCompletionIndicator label="Estoque preenchido corretamente" className="right-10" />
                 )}
               </div>
               {errors.stock && (

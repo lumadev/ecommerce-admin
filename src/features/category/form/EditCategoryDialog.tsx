@@ -63,7 +63,6 @@ const EditCategoryDialog = ({ category, onClose, onSave, merchantCode }: Props) 
           form.picturePublicId,
           "image",
           "categories",
-          merchantCode,
         );
       } catch (error) {
         console.error("Erro ao remover imagem no cancelamento:", error);

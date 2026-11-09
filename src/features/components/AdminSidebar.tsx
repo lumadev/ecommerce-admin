@@ -1,9 +1,12 @@
 import { LogOut } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
-import { adminNavigationItems } from "@/features//admin-navigation";
-import CurrentUserProfile from "./CurrentUserProfile";
-export type { AdminSection } from "@/features//admin-navigation";
+import {
+  adminNavigationItems,
+  isNavigationItemAvailableForUser,
+  type AdminSection,
+} from "@/features/admin-navigation";
+import type { SessionUser } from "@/features/auth/types/auth.types";
 import {
   Sidebar,
   SidebarContent,
@@ -20,11 +23,45 @@ import {
 import {
   useSidebar,
 } from "@/shared/components/ui/sidebar/sidebar-context";
+import CurrentUserProfile from "./CurrentUserProfile";
+
+export type { AdminSection } from "@/features/admin-navigation";
+
+const STORE_SPECIFIC_NAVIGATION_ITEMS: Record<
+  string,
+  readonly AdminSection[]
+> = {
+  "ecommerce-3d": [],
+  "milii-babystore": ["roadmap", "documentacao-api"],
+};
+
+const STORE_SPECIFIC_NAVIGATION_KEYS = new Set<AdminSection>(
+  Object.values(STORE_SPECIFIC_NAVIGATION_ITEMS).flat(),
+);
 
 interface AdminSidebarProps {
   className?: string;
   merchantCode?: string;
 }
+
+const getVisibleNavigationItems = (
+  user: SessionUser | null,
+  merchantCode?: string,
+) => {
+  const storeSpecificItems =
+    STORE_SPECIFIC_NAVIGATION_ITEMS[merchantCode ?? ""] ?? [];
+
+  return adminNavigationItems.filter(({ key }) => {
+    if (!isNavigationItemAvailableForUser(key, user)) {
+      return false;
+    }
+
+    return (
+      !STORE_SPECIFIC_NAVIGATION_KEYS.has(key) ||
+      storeSpecificItems.includes(key)
+    );
+  });
+};
 
 const AdminSidebar = ({ merchantCode }: AdminSidebarProps) => {
   const navigate = useNavigate();
@@ -51,6 +88,7 @@ const AdminSidebar = ({ merchantCode }: AdminSidebarProps) => {
   };
 
   const collapsed = state === "collapsed";
+  const visibleNavigationItems = getVisibleNavigationItems(user, merchantCode);
 
   return (
     <Sidebar collapsible="icon">
@@ -72,15 +110,7 @@ const AdminSidebar = ({ merchantCode }: AdminSidebarProps) => {
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {adminNavigationItems
-                .filter(
-                  (item) =>
-                    (item.key !== "lojas" || user?.role === "SUPER_ADMIN") &&
-                    (item.key !== "variantes" || Boolean(user?.merchant?.id)) &&
-                    (item.key !== "roadmap" || merchantCode === "milii-babystore") &&
-                    (item.key !== "documentacao-api" || merchantCode === "milii-babystore")
-                )
-                .map((item) => (
+              {visibleNavigationItems.map((item) => (
                 <SidebarMenuItem key={item.key}>
                   <SidebarMenuButton
                     isActive={location.pathname.endsWith(item.key)}
@@ -93,7 +123,7 @@ const AdminSidebar = ({ merchantCode }: AdminSidebarProps) => {
                     {!collapsed && <span>{item.title}</span>}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-                ))}
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

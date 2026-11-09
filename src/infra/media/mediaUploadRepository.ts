@@ -15,7 +15,6 @@ export const mediaUploadRepository = {
     formData.append("file", file);
     formData.append("folder", folder);
     formData.append("mediaType", mediaType);
-
     const response = await httpClientAuth.post<UploadMediaResponse>(
       "/upload",
       formData,
@@ -28,14 +27,12 @@ export const mediaUploadRepository = {
     publicId: string,
     mediaType: MediaType = "image",
     folder: MediaUploadFolder = "products",
-    merchantCode?: string,
   ): Promise<void> => {
     const response = await httpClientAuth.delete<{ result: string }>("/upload", {
       data: {
         public_id: publicId,
         media_type: mediaType,
         folder,
-        merchantCode,
       },
     });
     if (response.data.result === "error") {

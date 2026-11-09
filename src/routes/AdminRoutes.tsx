@@ -2,7 +2,7 @@ import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 
 import { AdminAuthProvider } from "@/features/auth/providers/admin-auth.provider";
 import { useAdminAuth } from "@/features/auth/hooks/useAdminAuth";
-import { AdminLayout } from "@/features/AdminLayout";
+import { AdminLayout } from "@/layout/AdminLayout";
 import AdminHome from "@/features/AdminHome";
 import { AdminLoadingScreen } from "@/features/components/AdminLoadingScreen";
 import AdminLogin from "@/features/auth/login/AdminLogin";

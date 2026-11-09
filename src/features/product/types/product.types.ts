@@ -35,7 +35,6 @@ export interface ProductListItem extends Product {
 }
 
 export interface CreateProductData {
-  merchantCode: string;
   name: string;
   description?: string;
   price: number;

@@ -58,25 +58,27 @@ export function CategoriesSelect({
               value.length <= 1 ? "h-10" : "min-h-10"
             }`}
           >
-            {isLoading ? (
-              <Skeleton className="h-5 w-48" />
-            ) : value.length > 0 ? (
-              <div className="flex flex-wrap gap-1">
-                {value.map((id) => {
-                  const cat = categories.find((c) => c.id === id);
-                  return (
-                    <span
-                      key={id}
-                      className="inline-flex items-center rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground"
-                    >
-                      {cat?.name ?? id}
-                    </span>
-                  );
-                })}
-              </div>
-            ) : (
-              <span className="text-muted-foreground">{placeholder}</span>
-            )}
+            <div className={`min-w-0 flex-1 ${isRequired && value.length > 0 && !error ? "pr-6" : ""}`}>
+              {isLoading ? (
+                <Skeleton className="h-5 w-48 max-w-full" />
+              ) : value.length > 0 ? (
+                <div className="flex flex-wrap gap-1">
+                  {value.map((id) => {
+                    const cat = categories.find((c) => c.id === id);
+                    return (
+                      <span
+                        key={id}
+                        className="inline-flex max-w-full items-center break-all rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground"
+                      >
+                        {cat?.name ?? id}
+                      </span>
+                    );
+                  })}
+                </div>
+              ) : (
+                <span className="text-muted-foreground">{placeholder}</span>
+              )}
+            </div>
 
             {isRequired && value.length > 0 && !error && (
               <FieldCompletionIndicator

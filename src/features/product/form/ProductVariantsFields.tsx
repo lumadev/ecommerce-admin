@@ -138,10 +138,16 @@ const ProductVariantsFields = ({
                   aria-required={definition.isRequired}
                   aria-invalid={Boolean(error)}
                   aria-describedby={error ? `${fieldId}-error` : undefined}
-                  className={definition.isRequired ? "bg-background pr-10" : "bg-background"}
+                  className={isRequiredValueValid ? "bg-background pr-16" : "bg-background"}
+                  clearable
+                  clearLabel={`Limpar ${definition.key.toLocaleLowerCase()}`}
+                  onClear={() => updateValue(definition.id, undefined)}
                 />
                 {isRequiredValueValid && (
-                  <FieldCompletionIndicator label={`${definition.key} preenchida corretamente`} />
+                  <FieldCompletionIndicator
+                    label={`${definition.key} preenchida corretamente`}
+                    className="right-10"
+                  />
                 )}
               </div>
             ) : (
@@ -178,7 +184,9 @@ const ProductVariantsFields = ({
                     aria-required={definition.isRequired}
                     aria-invalid={Boolean(error)}
                     aria-describedby={error ? `${fieldId}-error` : undefined}
-                    className={definition.isRequired ? "bg-background pr-10" : "bg-background"}
+                    className={`bg-background [&>span]:min-w-0 [&>span]:flex-1 [&>span]:text-left [&>svg]:shrink-0 ${
+                      isRequiredValueValid ? "[&>span]:pr-6" : ""
+                    }`}
                   >
                     <SelectValue
                       placeholder={
@@ -189,7 +197,9 @@ const ProductVariantsFields = ({
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value={EMPTY_OPTION}>Não selecionar</SelectItem>
+                    {!definition.isRequired && (
+                      <SelectItem value={EMPTY_OPTION}>Não selecionar</SelectItem>
+                    )}
                     {definition.values.map((option) => (
                       <SelectItem key={option.id} value={option.id}>
                         {option.value}

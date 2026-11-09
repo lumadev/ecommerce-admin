@@ -44,10 +44,16 @@ const CategoryForm = ({
               onChange={(e) => onChange("name", e.target.value)}
               placeholder={namePlaceholder}
               aria-required="true"
-              className="bg-background pr-10"
+              className={form.name.trim() ? "bg-background pr-16" : "bg-background"}
+              clearable
+              clearLabel="Limpar nome"
+              onClear={() => onChange("name", "")}
             />
             {form.name.trim() && (
-              <FieldCompletionIndicator label="Nome preenchido corretamente" />
+              <FieldCompletionIndicator
+                label="Nome preenchido corretamente"
+                className="right-10"
+              />
             )}
           </div>
         </div>

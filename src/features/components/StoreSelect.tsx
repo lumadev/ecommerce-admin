@@ -5,17 +5,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
-import { useMerchants } from "@/features/admin/merchant/hooks/useMerchants";
 import type { Merchant } from "@/features/admin/merchant/types/merchant.types";
 
 interface StoreSelectProps {
   selectedMerchant: Merchant | null;
+  merchantList: Merchant[];
+  isLoading: boolean;
   onChange: (merchant: Merchant) => void;
 }
 
-export const StoreSelect = ({ selectedMerchant, onChange }: StoreSelectProps) => {
-  const { merchantList, isLoading } = useMerchants();
-
+export const StoreSelect = ({
+  selectedMerchant,
+  merchantList,
+  isLoading,
+  onChange,
+}: StoreSelectProps) => {
   const handleChange = (merchantId: string) => {
     const merchant = merchantList.find((item) => item.id === merchantId);
     if (merchant) {

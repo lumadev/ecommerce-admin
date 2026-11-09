@@ -10,6 +10,7 @@ import {
   BookOpen,
   Mail,
 } from "lucide-react";
+import type { SessionUser } from "@/features/auth/types/auth.types";
 
 export const adminNavigationItems = [
   {
@@ -75,3 +76,16 @@ export const adminNavigationItems = [
 ] as const;
 
 export type AdminSection = (typeof adminNavigationItems)[number]["key"];
+
+export const isNavigationItemAvailableForUser = (
+  key: AdminSection,
+  user: SessionUser | null,
+): boolean => {
+  const isSuperAdmin = user?.role === "SUPER_ADMIN";
+
+  if (key === "lojas") {
+    return isSuperAdmin;
+  }
+
+  return true;
+};

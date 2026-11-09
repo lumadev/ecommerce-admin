@@ -48,7 +48,6 @@ const CreateCategoryDialog = ({ open, onClose, onCreate, merchantCode }: Props) 
           form.picturePublicId,
           "image",
           "categories",
-          merchantCode,
         );
       }
       onClose();
@@ -83,7 +82,6 @@ const CreateCategoryDialog = ({ open, onClose, onCreate, merchantCode }: Props) 
     }
 
     const newCategory: CreateCategoryData = {
-      merchantCode,
       name: form.name.trim(),
       description: form.description.trim(),
       picturePublicId: form.picturePublicId,

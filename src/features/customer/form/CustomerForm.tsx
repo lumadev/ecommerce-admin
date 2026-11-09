@@ -39,6 +39,9 @@ const CustomerForm = ({
           aria-invalid={!!errors.name}
           aria-describedby={errors.name ? "customer-name-error" : undefined}
           className="bg-background"
+          clearable
+          clearLabel="Limpar nome"
+          onClear={() => onChange("name", "")}
         />
         <FieldError id="customer-name-error" message={errors.name} />
       </div>
@@ -56,6 +59,9 @@ const CustomerForm = ({
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? "customer-email-error" : undefined}
           className="bg-background"
+          clearable
+          clearLabel="Limpar e-mail"
+          onClear={() => onChange("email", "")}
         />
         <FieldError id="customer-email-error" message={errors.email} />
       </div>
@@ -76,6 +82,9 @@ const CustomerForm = ({
           aria-invalid={!!errors.password}
           aria-describedby={errors.password ? "customer-password-error" : undefined}
           className="bg-background"
+          clearable
+          clearLabel="Limpar senha"
+          onClear={() => onChange("password", "")}
         />
         <FieldError id="customer-password-error" message={errors.password} />
       </div>
