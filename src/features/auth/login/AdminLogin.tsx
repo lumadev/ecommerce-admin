@@ -104,7 +104,7 @@ const AdminLogin = () => {
           <div className="relative">
             <User
               size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-muted-foreground"
             />
 
             <Input
@@ -125,7 +125,7 @@ const AdminLogin = () => {
           <div className="relative">
             <Lock
               size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-muted-foreground"
             />
 
             <Input
