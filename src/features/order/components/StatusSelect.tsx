@@ -6,7 +6,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
-import { OrderStatus, OrderStatusLabel } from "@/data/orders";
+import { OrderStatusLabel } from "@/data/orders";
+import type { Order, OrderStatus, OrderStatusAction } from "@/data/orders";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,50 +19,82 @@ import {
   AlertDialogTitle,
 } from "@/shared/components/ui/alert-dialog";
 
-const adminStatuses: OrderStatus[] = [
-  "PREPARING",
-  "SHIPPED",
-  "DELIVERED",
-  "CANCELED",
-];
+const availableStatuses: Record<OrderStatus, OrderStatusAction[]> = {
+  PENDING: ["PAID", "CANCELED"],
+  PAYMENT_FAILED: ["PAID", "CANCELED"],
+  PAID: ["SHIPPED", "CANCELED"],
+  INVENTORY_ISSUE: ["PAID", "CANCELED"],
+  SHIPPED: ["COMPLETED"],
+  COMPLETED: [],
+  CANCELED: [],
+};
 
-export const StatusSelect = ({
-  value,
-  onChange,
-}: {
-  value: OrderStatus;
-  onChange: (status: OrderStatus) => void;
-}) => {
-  const [pendingStatus, setPendingStatus] = useState<OrderStatus | null>(null);
+interface StatusSelectProps {
+  order: Order;
+  onChange: (status: OrderStatusAction) => Promise<boolean>;
+}
 
-  const handleStatusSelect = (status: OrderStatus) => {
-    if (status !== value) setPendingStatus(status);
+export const StatusSelect = ({ order, onChange }: StatusSelectProps) => {
+  const { status, items } = order;
+  const selectableStatuses = availableStatuses[status];
+  const [pendingStatus, setPendingStatus] =
+    useState<OrderStatusAction | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const itemQuantities = items
+    .map(({ productName, quantity }) => `${quantity}x ${productName}`)
+    .join(", ");
+
+  const handleStatusSelect = (selectedValue: string) => {
+    const selectedStatus = selectableStatuses.find(
+      (candidate) => candidate === selectedValue,
+    );
+    if (selectedStatus) setPendingStatus(selectedStatus);
   };
 
-  const handleConfirm = () => {
-    if (!pendingStatus) return;
-    onChange(pendingStatus);
-    setPendingStatus(null);
+  const handleConfirm = async () => {
+    if (!pendingStatus || isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const succeeded = await onChange(pendingStatus);
+      if (succeeded) setPendingStatus(null);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  const inventoryWarning =
+    pendingStatus === "PAID"
+      ? `As quantidades dos produtos do pedido serão descontadas do estoque: ${itemQuantities}.`
+      : pendingStatus === "CANCELED" && status === "PAID"
+        ? `O estoque será acrescido pelas quantidades dos produtos deste pedido: ${itemQuantities}.`
+        : null;
+  const emailWarning =
+    pendingStatus === "PAID"
+      ? "Um e-mail de confirmação do pagamento será enviado ao cliente."
+      : pendingStatus === "SHIPPED"
+        ? "Um e-mail com as informações de envio será enviado ao cliente."
+        : null;
 
   return (
     <>
       <Select
-        value={value}
-        onValueChange={(status) => handleStatusSelect(status as OrderStatus)}
+        value={status}
+        disabled={isSubmitting || selectableStatuses.length === 0}
+        onValueChange={handleStatusSelect}
       >
         <SelectTrigger className="h-8 w-[200px] border-border bg-secondary/50 text-xs hover:bg-secondary">
           <SelectValue>
             <span className="text-xs font-medium">
-              {OrderStatusLabel[value]}
+              {OrderStatusLabel[status]}
             </span>
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
-          {adminStatuses.map((status) => (
-            <SelectItem key={status} value={status} className="text-xs">
+          {selectableStatuses.map((nextStatus) => (
+            <SelectItem key={nextStatus} value={nextStatus} className="text-xs">
               <span className="text-xs font-medium">
-                {OrderStatusLabel[status]}
+                {OrderStatusLabel[nextStatus]}
               </span>
             </SelectItem>
           ))}
@@ -71,22 +104,40 @@ export const StatusSelect = ({
       <AlertDialog
         open={pendingStatus !== null}
         onOpenChange={(open) => {
-          if (!open) setPendingStatus(null);
+          if (!open && !isSubmitting) setPendingStatus(null);
         }}
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirmar alteração de status?</AlertDialogTitle>
+            <AlertDialogTitle>
+              Confirmar alteração para{" "}
+              {pendingStatus ? OrderStatusLabel[pendingStatus] : ""}?
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              O status será alterado para{" "}
-              {pendingStatus ? OrderStatusLabel[pendingStatus] : ""}.{" "}
-              Um e-mail será enviado ao usuário para informá-lo sobre essa alteração.
+              <span className="block">
+                O status do pedido será alterado para{" "}
+                {pendingStatus ? OrderStatusLabel[pendingStatus] : ""}.
+              </span>
+              {inventoryWarning && (
+                <span className="mt-2 block">{inventoryWarning}</span>
+              )}
+              {emailWarning && (
+                <span className="mt-2 block">{emailWarning}</span>
+              )}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirm}>
-              Confirmar alteração
+            <AlertDialogCancel disabled={isSubmitting}>
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              disabled={isSubmitting}
+              onClick={(event) => {
+                event.preventDefault();
+                void handleConfirm();
+              }}
+            >
+              {isSubmitting ? "Salvando..." : "Confirmar alteração"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

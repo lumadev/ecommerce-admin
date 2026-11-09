@@ -8,7 +8,7 @@ import {
   TableRow,
   TableCell,
 } from "@/shared/components/ui/table";
-import { Order, OrderStatus } from "@/data/orders";
+import type { Order, OrderStatusAction } from "@/data/orders";
 import { OrderRow } from "./OrderRow";
 import { StatusTimeline } from "./StatusTimeline";
 
@@ -17,7 +17,10 @@ export const OrderTable = ({
   onStatusChange,
 }: {
   orders: Order[];
-  onStatusChange: (id: string, status: OrderStatus) => void;
+  onStatusChange: (
+    id: string,
+    status: OrderStatusAction,
+  ) => Promise<boolean>;
 }) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 

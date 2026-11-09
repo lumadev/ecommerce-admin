@@ -1,6 +1,6 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { TableCell, TableRow } from "@/shared/components/ui/table";
-import { Order, OrderStatus } from "@/data/orders";
+import type { Order, OrderStatusAction } from "@/data/orders";
 import { StatusSelect } from "./StatusSelect";
 
 export const OrderRow = ({
@@ -12,7 +12,7 @@ export const OrderRow = ({
   order: Order;
   isExpanded: boolean;
   onToggle: () => void;
-  onStatusChange: (status: OrderStatus) => void;
+  onStatusChange: (status: OrderStatusAction) => Promise<boolean>;
 }) => {
   return (
     <TableRow className="cursor-pointer" onClick={onToggle}>
@@ -38,7 +38,7 @@ export const OrderRow = ({
 
       <TableCell onClick={(e) => e.stopPropagation()}>
         <StatusSelect
-          value={order.status}
+          order={order}
           onChange={onStatusChange}
         />
       </TableCell>
