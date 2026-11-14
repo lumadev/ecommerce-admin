@@ -1,7 +1,7 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { TableCell, TableRow } from "@/shared/components/ui/table";
 import type { Order, OrderStatusAction } from "@/data/orders";
-import { StatusSelect } from "./StatusSelect";
+import { StatusActions } from "./StatusActions";
 
 export const OrderRow = ({
   order,
@@ -40,9 +40,9 @@ export const OrderRow = ({
       </TableCell>
 
       <TableCell onClick={(e) => e.stopPropagation()}>
-        <StatusSelect
+        <StatusActions
           order={order}
-          onChange={onStatusChange}
+          onStatusChange={onStatusChange}
         />
       </TableCell>
     </TableRow>

@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { CircleHelp } from "lucide-react";
+import { ChevronDown, CircleHelp } from "lucide-react";
+import { Badge } from "@/shared/components/ui/badge";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shared/components/ui/select";
-import { OrderStatusLabel } from "@/data/orders";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/shared/components/ui/dropdown-menu";
+import { OrderStatusColor, OrderStatusLabel } from "@/data/orders";
 import type { Order, OrderStatusAction } from "@/data/orders";
 import {
   Popover,
@@ -27,15 +28,25 @@ import {
 } from "@/shared/components/ui/alert-dialog";
 import { Textarea } from "@/shared/components/ui/textarea";
 
-interface StatusSelectProps {
+interface StatusActionsProps {
   order: Order;
-  onChange: (
+  onStatusChange: (
     status: OrderStatusAction,
     cancellationMessage?: string,
   ) => Promise<boolean>;
 }
 
-export const StatusSelect = ({ order, onChange }: StatusSelectProps) => {
+const actionLabels: Record<OrderStatusAction, string> = {
+  PAID: "Confirmar pagamento",
+  SHIPPED: "Marcar como enviado",
+  COMPLETED: "Confirmar entrega",
+  CANCELED: "Cancelar pedido",
+};
+
+export const StatusActions = ({
+  order,
+  onStatusChange,
+}: StatusActionsProps) => {
   const { status, items } = order;
   const transitionHelp = getOrderStatusTransitionHelp(status);
   const selectableStatuses = transitionHelp.transitions.map(
@@ -49,14 +60,9 @@ export const StatusSelect = ({ order, onChange }: StatusSelectProps) => {
     .map(({ productName, quantity }) => `${quantity}x ${productName}`)
     .join(", ");
 
-  const handleStatusSelect = (selectedValue: string) => {
-    const selectedStatus = selectableStatuses.find(
-      (candidate) => candidate === selectedValue,
-    );
-    if (selectedStatus) {
-      setPendingStatus(selectedStatus);
-      setCancellationMessage("");
-    }
+  const handleStatusAction = (selectedStatus: OrderStatusAction) => {
+    setPendingStatus(selectedStatus);
+    setCancellationMessage("");
   };
 
   const handleConfirm = async () => {
@@ -64,7 +70,7 @@ export const StatusSelect = ({ order, onChange }: StatusSelectProps) => {
 
     setIsSubmitting(true);
     try {
-      const succeeded = await onChange(
+      const succeeded = await onStatusChange(
         pendingStatus,
         pendingStatus === "CANCELED"
           ? cancellationMessage.trim() || undefined
@@ -95,28 +101,47 @@ export const StatusSelect = ({ order, onChange }: StatusSelectProps) => {
   return (
     <>
       <div className="flex items-center gap-1">
-        <Select
-          value={status}
-          disabled={isSubmitting || selectableStatuses.length === 0}
-          onValueChange={handleStatusSelect}
+        <Badge
+          variant="outline"
+          className={`shrink-0 whitespace-nowrap text-xs ${OrderStatusColor[status]}`}
         >
-          <SelectTrigger className="h-8 w-[200px] border-border bg-secondary/50 text-xs hover:bg-secondary">
-            <SelectValue>
-              <span className="text-xs font-medium">
-                {OrderStatusLabel[status]}
-              </span>
-            </SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            {selectableStatuses.map((nextStatus) => (
-              <SelectItem key={nextStatus} value={nextStatus} className="text-xs">
-                <span className="text-xs font-medium">
-                  {OrderStatusLabel[nextStatus]}
-                </span>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          {OrderStatusLabel[status]}
+        </Badge>
+
+        {selectableStatuses.length > 0 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                disabled={isSubmitting}
+                aria-label={`Alterar status do pedido. Status atual: ${OrderStatusLabel[status]}`}
+                className="inline-flex h-8 shrink-0 items-center gap-1 rounded-md border border-input bg-background px-2 text-xs font-medium transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+              >
+                Alterar
+                <ChevronDown size={14} aria-hidden="true" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-72">
+              <DropdownMenuLabel>Próxima ação</DropdownMenuLabel>
+              {transitionHelp.transitions.map((transition) => (
+                <DropdownMenuItem
+                  key={transition.status}
+                  onSelect={() => handleStatusAction(transition.status)}
+                  className="items-start"
+                >
+                  <span className="grid gap-1">
+                    <span className="font-medium">
+                      {actionLabels[transition.status]}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {transition.explanation}
+                    </span>
+                  </span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
 
         <Popover>
           <PopoverTrigger asChild>
@@ -130,31 +155,10 @@ export const StatusSelect = ({ order, onChange }: StatusSelectProps) => {
           </PopoverTrigger>
           <PopoverContent align="end" className="w-80 space-y-3 text-sm">
             <div>
-              <h3 className="font-medium">
-                Mudanças: {OrderStatusLabel[status]}
-              </h3>
+              <h3 className="font-medium">Sobre esta etapa</h3>
               <p className="mt-1 text-muted-foreground">
                 {transitionHelp.restriction}
               </p>
-            </div>
-            <div>
-              <h4 className="font-medium">Status disponíveis</h4>
-              {transitionHelp.transitions.length > 0 ? (
-                <ul className="mt-1 list-disc space-y-1 pl-5 text-muted-foreground">
-                  {transitionHelp.transitions.map((transition) => (
-                    <li key={transition.status}>
-                      <strong className="text-foreground">
-                        {OrderStatusLabel[transition.status]}:
-                      </strong>{" "}
-                      {transition.explanation}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="mt-1 text-muted-foreground">
-                  Não há mudanças disponíveis para este pedido.
-                </p>
-              )}
             </div>
           </PopoverContent>
         </Popover>

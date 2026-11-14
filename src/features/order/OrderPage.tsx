@@ -5,7 +5,13 @@ import { useOrders } from "./hooks/useOrders";
 import { Alert, AlertDescription, AlertTitle } from "@/shared/components/ui/alert";
 
 const OrderPage = () => {
-  const { orders, updateStatus } = useOrders();
+  const {
+    orders,
+    confirmPayment,
+    shipOrder,
+    completeOrder,
+    cancelOrder,
+  } = useOrders();
 
   return (
     <div>
@@ -21,7 +27,10 @@ const OrderPage = () => {
 
       <OrderTable
         orders={orders}
-        onStatusChange={updateStatus}
+        onConfirmPayment={confirmPayment}
+        onShip={shipOrder}
+        onComplete={completeOrder}
+        onCancel={cancelOrder}
       />
     </div>
   );
