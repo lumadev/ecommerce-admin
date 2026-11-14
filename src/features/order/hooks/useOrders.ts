@@ -9,7 +9,7 @@ export const useOrders = () => {
   const { toast } = useToast();
   const [orders, setOrders] = useState<Order[]>(mockOrders);
 
-  const updateOrderStatus = async (
+  const updateStatus = async (
     orderId: string,
     newStatus: OrderStatusAction,
     cancellationMessage?: string,
@@ -48,20 +48,8 @@ export const useOrders = () => {
     }
   };
 
-  const confirmPayment = (orderId: string) =>
-    updateOrderStatus(orderId, "PAID");
-  const shipOrder = (orderId: string) =>
-    updateOrderStatus(orderId, "SHIPPED");
-  const completeOrder = (orderId: string) =>
-    updateOrderStatus(orderId, "COMPLETED");
-  const cancelOrder = (orderId: string, cancellationMessage?: string) =>
-    updateOrderStatus(orderId, "CANCELED", cancellationMessage);
-
   return {
     orders,
-    confirmPayment,
-    shipOrder,
-    completeOrder,
-    cancelOrder,
+    updateStatus,
   };
 };
