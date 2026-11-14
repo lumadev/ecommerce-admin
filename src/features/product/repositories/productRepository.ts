@@ -4,6 +4,7 @@ import {
   Product,
   ProductCategory,
   ProductListItem,
+  StockMovementPage,
   UpdateProductData,
 } from "../types/product.types";
 
@@ -55,6 +56,19 @@ export const productRepository = {
   findOne: async (id: string): Promise<Product> => {
     const response = await httpClientAuth.get<ApiProduct>(`${BASE_URL}/${id}`);
     return normalizeProduct(response.data);
+  },
+
+  findStockMovements: async (
+    id: string,
+    page: number,
+    merchantCode: string | undefined,
+    signal?: AbortSignal,
+  ): Promise<StockMovementPage> => {
+    const response = await httpClientAuth.get<StockMovementPage>(
+      `${BASE_URL}/${id}/stock-movements`,
+      { params: { page, merchantCode }, signal },
+    );
+    return response.data;
   },
 
   update: async (

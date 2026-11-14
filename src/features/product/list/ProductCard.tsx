@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { PackageCheck, Pencil, Trash2 } from "lucide-react";
+import { History, PackageCheck, Pencil, Trash2 } from "lucide-react";
 import ConfirmActionDialog from "@/shared/components/ConfirmActionDialog";
 import { ProductListItem } from "../types/product.types";
 
@@ -7,10 +7,11 @@ interface Props {
   product: ProductListItem;
   index: number;
   onEdit: (product: ProductListItem) => void;
+  onHistory: (product: ProductListItem) => void;
   onRemove: (id: string) => Promise<void>;
 }
 
-const ProductCard = ({ product, index, onEdit, onRemove }: Props) => {
+const ProductCard = ({ product, index, onEdit, onHistory, onRemove }: Props) => {
   const numericPrice = Number(product.price);
   const formattedPrice = Number.isFinite(numericPrice)
     ? numericPrice.toFixed(2).replace(".", ",")
@@ -86,6 +87,15 @@ const ProductCard = ({ product, index, onEdit, onRemove }: Props) => {
         )}
 
         <div className="flex shrink-0 items-center gap-1">
+          <button
+            type="button"
+            onClick={() => onHistory(product)}
+            aria-label={`Histórico de estoque de ${product.name}`}
+            title="Histórico de estoque"
+            className="rounded-md p-2.5 transition-colors hover:bg-secondary"
+          >
+            <History size={18} aria-hidden="true" />
+          </button>
           <button
             type="button"
             onClick={() => onEdit(product)}

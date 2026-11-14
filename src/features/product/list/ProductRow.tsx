@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { PackageCheck, Pencil, Trash2 } from "lucide-react";
+import { History, PackageCheck, Pencil, Trash2 } from "lucide-react";
 import { TableCell } from "@/shared/components/ui/table";
 import { ProductListItem } from "../types/product.types";
 import ConfirmActionDialog from "@/shared/components/ConfirmActionDialog";
@@ -8,10 +8,11 @@ interface Props {
   product: ProductListItem;
   index: number;
   onEdit: (product: ProductListItem) => void;
+  onHistory: (product: ProductListItem) => void;
   onRemove: (id: string) => Promise<void>;
 }
 
-const ProductRow = ({ product, index, onEdit, onRemove }: Props) => {
+const ProductRow = ({ product, index, onEdit, onHistory, onRemove }: Props) => {
   const numericPrice = Number(product.price);
   const formattedPrice = Number.isFinite(numericPrice)
     ? numericPrice.toFixed(2).replace(".", ",")
@@ -87,6 +88,15 @@ const ProductRow = ({ product, index, onEdit, onRemove }: Props) => {
 
       <TableCell className="text-center">
         <div className="flex items-center justify-center gap-1">
+          <button
+            type="button"
+            onClick={() => onHistory(product)}
+            aria-label={`Histórico de estoque de ${product.name}`}
+            title="Histórico de estoque"
+            className="rounded-md p-2 hover:bg-secondary"
+          >
+            <History size={16} aria-hidden="true" />
+          </button>
           <button
             onClick={() => onEdit(product)}
             className="rounded-md p-2 hover:bg-secondary"

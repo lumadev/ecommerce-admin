@@ -109,6 +109,7 @@ const MERCHANT_CODE_QUERY_ROUTES: readonly MerchantCodeQueryRoute[] = [
   // Produtos
   { path: "/admin/products", methods: ["get", "post"] },
   { path: /^\/admin\/products\/[^/]+$/, methods: ["get", "patch", "delete"] },
+  { path: /^\/admin\/products\/[^/]+\/stock-movements$/, methods: ["get"] },
 
   // Destaques
   { path: "/highlights", methods: ["get", "post"] },

@@ -12,10 +12,11 @@ import ProductCard from "./ProductCard";
 interface Props {
   products: ProductListItem[];
   onEdit: (product: ProductListItem) => void;
+  onHistory: (product: ProductListItem) => void;
   onRemove: (id: string) => Promise<void>;
 }
 
-const ProductTable = ({ products, onEdit, onRemove }: Props) => {
+const ProductTable = ({ products, onEdit, onHistory, onRemove }: Props) => {
   return (
     <>
       <div className="space-y-3 lg:hidden">
@@ -25,6 +26,7 @@ const ProductTable = ({ products, onEdit, onRemove }: Props) => {
             product={product}
             index={index}
             onEdit={onEdit}
+            onHistory={onHistory}
             onRemove={onRemove}
           />
         ))}
@@ -50,6 +52,7 @@ const ProductTable = ({ products, onEdit, onRemove }: Props) => {
                 product={product}
                 index={index}
                 onEdit={onEdit}
+                onHistory={onHistory}
                 onRemove={onRemove}
               />
             ))}

@@ -12,6 +12,7 @@ import ProductTable from "./list/ProductTable";
 
 import EditProductDialog from "./form/dialog/EditProductDialog";
 import CreateProductDialog from "./form/dialog/CreateProductDialog";
+import StockHistoryDialog from "./components/StockHistoryDialog";
 
 const AdminProducts = () => {
   const { productList, isLoading, updateProduct, createProduct, removeProduct } = useProducts();
@@ -22,6 +23,7 @@ const AdminProducts = () => {
     null
   );
   const [createOpen, setCreateOpen] = useState(false);
+  const [historyProduct, setHistoryProduct] = useState<ProductListItem | null>(null);
 
   return (
     <div>
@@ -60,6 +62,7 @@ const AdminProducts = () => {
         <ProductTable 
           products={filteredProducts} 
           onEdit={setEditingProduct}
+          onHistory={setHistoryProduct}
           onRemove={removeProduct}
         />
       )}
@@ -78,6 +81,15 @@ const AdminProducts = () => {
         onCreate={createProduct}
         merchantCode={merchantCode}
       />
+
+      {historyProduct && (
+        <StockHistoryDialog
+          key={`${merchantCode}-${historyProduct.id}`}
+          product={historyProduct}
+          merchantCode={merchantCode}
+          onClose={() => setHistoryProduct(null)}
+        />
+      )}
     </div>
   );
 };

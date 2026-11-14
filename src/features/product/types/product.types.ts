@@ -53,3 +53,20 @@ export interface UpdateProductData {
   categoryIds?: string[];
   variants?: ProductVariantInput[];
 }
+
+export interface StockMovement {
+  id: string;
+  type: "INITIAL_STOCK" | "ADMIN_ADJUSTMENT" | "ORDER_DEDUCTION" | "ORDER_RETURN";
+  quantity: number;
+  stockBefore: number;
+  stockAfter: number;
+  orderId: string | null;
+  createdAt: string;
+}
+
+export interface StockMovementPage {
+  items: StockMovement[];
+  total: number;
+  page: number;
+  pageSize: number;
+}

@@ -161,6 +161,7 @@ const EditProductDialog = ({
 
     const updateData: UpdateProductData = {
       ...validation.data,
+      stock: validation.data.stock === product.stock ? undefined : validation.data.stock,
       media: validation.data.media ?? [],
       ...(hasChangedVariants || product.variants !== undefined
         ? { variants: validation.data.variants ?? [] }
