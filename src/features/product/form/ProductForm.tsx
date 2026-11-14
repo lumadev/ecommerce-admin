@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { Label } from "@/shared/components/ui/label";
@@ -54,6 +55,7 @@ const ProductForm = ({
   onChange,
   onMediaUploadingChange,
 }: Props) => {
+  const [isPriceFocused, setIsPriceFocused] = useState(false);
   const dataErrors = [
     errors.name,
     errors.price,
@@ -82,6 +84,15 @@ const ProductForm = ({
     Number.isFinite(Number(priceValue)) &&
     Number(priceValue) > 0 &&
     !errors.price;
+  const numericPrice = Number(form.price);
+  const localizedPrice = Number.isFinite(numericPrice)
+    ? numericPrice.toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    : form.price.replace(".", ",");
+  const displayedPrice = form.price === "" ? "" : localizedPrice;
+  const priceForEditing = form.price.replace(".", ",");
   const stockValue = form.stock.trim();
   const hasValidStock =
     /^\d+$/.test(stockValue) &&
@@ -239,23 +250,23 @@ const ProductForm = ({
               <div className="relative">
                 <Input
                   id="price"
-                  type="number"
+                  type="text"
                   inputMode="decimal"
-                  step="0.01"
-                  min="0"
                   placeholder="0,00"
-                  value={form.price}
+                  value={isPriceFocused ? priceForEditing : displayedPrice}
                   aria-required="true"
                   onChange={(event) => {
-                    const value = event.target.value;
+                    const value = event.target.value.replace(",", ".");
                     if (/^\d*(?:\.\d{0,2})?$/.test(value)) {
                       onChange("price", value);
                     }
                   }}
+                  onFocus={() => setIsPriceFocused(true)}
                   onBlur={() => {
                     if (form.price !== "" && Number(form.price) > 0) {
                       onChange("price", Number(form.price).toFixed(2));
                     }
+                    setIsPriceFocused(false);
                   }}
                   aria-invalid={Boolean(errors.price)}
                   aria-describedby={errors.price ? "product-price-error" : undefined}
