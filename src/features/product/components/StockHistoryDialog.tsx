@@ -54,10 +54,10 @@ const StockHistoryDialog = ({ product, merchantCode, onClose }: StockHistoryDial
               <Button type="button" variant="outline" onClick={retry}>Tentar novamente</Button>
             </div>
           )}
-          {showResults && result.items.length === 0 && (
+          {showResults && result && result.items.length === 0 && (
             <p className="py-6 text-sm text-muted-foreground">Nenhuma movimentação registrada.</p>
           )}
-          {showResults && result.items.length > 0 && (
+          {showResults && result && result.items.length > 0 && (
             <ul className="space-y-3">
               {result.items.map((movement) => {
                 const isIncrease = movement.quantity > 0;
@@ -91,7 +91,7 @@ const StockHistoryDialog = ({ product, merchantCode, onClose }: StockHistoryDial
           )}
         </div>
 
-        {showResults && (
+        {showResults && result && (
           <div className="flex items-center justify-between gap-2 border-t border-border pt-4">
             <Button type="button" variant="outline" size="sm" disabled={page === 1} onClick={() => setPage(page - 1)}>
               Anterior

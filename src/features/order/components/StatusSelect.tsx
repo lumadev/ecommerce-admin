@@ -25,10 +25,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/shared/components/ui/alert-dialog";
+import { Textarea } from "@/shared/components/ui/textarea";
 
 interface StatusSelectProps {
   order: Order;
-  onChange: (status: OrderStatusAction) => Promise<boolean>;
+  onChange: (
+    status: OrderStatusAction,
+    cancellationMessage?: string,
+  ) => Promise<boolean>;
 }
 
 export const StatusSelect = ({ order, onChange }: StatusSelectProps) => {
@@ -40,6 +44,7 @@ export const StatusSelect = ({ order, onChange }: StatusSelectProps) => {
   const [pendingStatus, setPendingStatus] =
     useState<OrderStatusAction | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [cancellationMessage, setCancellationMessage] = useState("");
   const itemQuantities = items
     .map(({ productName, quantity }) => `${quantity}x ${productName}`)
     .join(", ");
@@ -48,7 +53,10 @@ export const StatusSelect = ({ order, onChange }: StatusSelectProps) => {
     const selectedStatus = selectableStatuses.find(
       (candidate) => candidate === selectedValue,
     );
-    if (selectedStatus) setPendingStatus(selectedStatus);
+    if (selectedStatus) {
+      setPendingStatus(selectedStatus);
+      setCancellationMessage("");
+    }
   };
 
   const handleConfirm = async () => {
@@ -56,8 +64,16 @@ export const StatusSelect = ({ order, onChange }: StatusSelectProps) => {
 
     setIsSubmitting(true);
     try {
-      const succeeded = await onChange(pendingStatus);
-      if (succeeded) setPendingStatus(null);
+      const succeeded = await onChange(
+        pendingStatus,
+        pendingStatus === "CANCELED"
+          ? cancellationMessage.trim() || undefined
+          : undefined,
+      );
+      if (succeeded) {
+        setPendingStatus(null);
+        setCancellationMessage("");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -72,7 +88,9 @@ export const StatusSelect = ({ order, onChange }: StatusSelectProps) => {
       ? "Um e-mail de confirmação do pagamento será enviado ao cliente."
       : pendingStatus === "SHIPPED"
         ? "Um e-mail com as informações de envio será enviado ao cliente."
-        : null;
+        : pendingStatus === "CANCELED"
+          ? "Um e-mail informando o cancelamento será enviado ao cliente."
+          : null;
 
   return (
     <>
@@ -145,14 +163,20 @@ export const StatusSelect = ({ order, onChange }: StatusSelectProps) => {
       <AlertDialog
         open={pendingStatus !== null}
         onOpenChange={(open) => {
-          if (!open && !isSubmitting) setPendingStatus(null);
+          if (!open && !isSubmitting) {
+            setPendingStatus(null);
+            setCancellationMessage("");
+          }
         }}
       >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Confirmar alteração para{" "}
-              {pendingStatus ? OrderStatusLabel[pendingStatus] : ""}?
+              {pendingStatus === "CANCELED"
+                ? "Confirmar cancelamento do pedido?"
+                : `Confirmar alteração para ${
+                    pendingStatus ? OrderStatusLabel[pendingStatus] : ""
+                  }?`}
             </AlertDialogTitle>
             <AlertDialogDescription>
               <span className="block">
@@ -167,6 +191,32 @@ export const StatusSelect = ({ order, onChange }: StatusSelectProps) => {
               )}
             </AlertDialogDescription>
           </AlertDialogHeader>
+          {pendingStatus === "CANCELED" && (
+            <div className="space-y-2">
+              <label
+                className="text-sm font-medium"
+                htmlFor={`cancellation-message-${order.id}`}
+              >
+                Mensagem para o cliente (opcional)
+              </label>
+              <Textarea
+                id={`cancellation-message-${order.id}`}
+                value={cancellationMessage}
+                onChange={(event) => setCancellationMessage(event.target.value)}
+                maxLength={2000}
+                disabled={isSubmitting}
+                placeholder="Informe o motivo do cancelamento ou deixe uma mensagem de desculpas."
+                aria-describedby={`cancellation-message-help-${order.id}`}
+              />
+              <p
+                id={`cancellation-message-help-${order.id}`}
+                className="text-xs text-muted-foreground"
+              >
+                Esta mensagem será incluída no e-mail de cancelamento.{" "}
+                {cancellationMessage.length}/2000
+              </p>
+            </div>
+          )}
           <AlertDialogFooter>
             <AlertDialogCancel disabled={isSubmitting}>
               Cancelar
@@ -178,7 +228,11 @@ export const StatusSelect = ({ order, onChange }: StatusSelectProps) => {
                 void handleConfirm();
               }}
             >
-              {isSubmitting ? "Salvando..." : "Confirmar alteração"}
+              {isSubmitting
+                ? "Salvando..."
+                : pendingStatus === "CANCELED"
+                  ? "Confirmar cancelamento"
+                  : "Confirmar alteração"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

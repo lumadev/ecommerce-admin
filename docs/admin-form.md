@@ -130,6 +130,12 @@ com uma posição própria. Vídeos aceitam até 100 MB e 60 segundos; imagens
 mantêm o limite de 5 MB. Embora a API aceite mídia opcional, o formulário de
 criação exige ao menos uma foto do produto.
 
+O preço é sempre exibido no padrão brasileiro, com vírgula decimal; fora da
+edição, também usa duas casas decimais. A digitação aceita vírgula ou ponto,
+mas o estado do formulário mantém o valor como `string` com ponto decimal.
+Na validação, o preço é convertido para `number` antes de ser enviado no
+payload de criação ou edição.
+
 ## Regras de implementação
 
 1. Use imports absolutos `@/` para módulos compartilhados ou de outra

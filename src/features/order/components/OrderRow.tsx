@@ -12,7 +12,10 @@ export const OrderRow = ({
   order: Order;
   isExpanded: boolean;
   onToggle: () => void;
-  onStatusChange: (status: OrderStatusAction) => Promise<boolean>;
+  onStatusChange: (
+    status: OrderStatusAction,
+    cancellationMessage?: string,
+  ) => Promise<boolean>;
 }) => {
   return (
     <TableRow className="cursor-pointer" onClick={onToggle}>

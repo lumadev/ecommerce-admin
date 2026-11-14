@@ -20,6 +20,7 @@ export const OrderTable = ({
   onStatusChange: (
     id: string,
     status: OrderStatusAction,
+    cancellationMessage?: string,
   ) => Promise<boolean>;
 }) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -46,8 +47,8 @@ export const OrderTable = ({
               onToggle={() =>
                 setExpandedId((prev) => (prev === order.id ? null : order.id))
               }
-              onStatusChange={(status) =>
-                onStatusChange(order.id, status)
+              onStatusChange={(status, cancellationMessage) =>
+                onStatusChange(order.id, status, cancellationMessage)
               }
             />
 

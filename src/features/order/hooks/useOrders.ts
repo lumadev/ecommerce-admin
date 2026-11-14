@@ -12,11 +12,13 @@ export const useOrders = () => {
   const updateStatus = async (
     orderId: string,
     newStatus: OrderStatusAction,
+    cancellationMessage?: string,
   ): Promise<boolean> => {
     try {
       const updatedOrder = await orderRepository.updateStatus(
         orderId,
         newStatus,
+        cancellationMessage,
       );
       const now = new Date().toISOString();
 
