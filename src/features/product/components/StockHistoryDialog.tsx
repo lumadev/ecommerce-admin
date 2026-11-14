@@ -37,7 +37,7 @@ const StockHistoryDialog = ({ product, merchantCode, onClose }: StockHistoryDial
         <DialogHeader className="pr-6">
           <DialogTitle>Histórico de estoque</DialogTitle>
           <DialogDescription>
-            Movimentações de {product.name}. Registros anteriores à ativação do histórico não estão disponíveis.
+            Movimentações de {product.name}.
           </DialogDescription>
         </DialogHeader>
 
