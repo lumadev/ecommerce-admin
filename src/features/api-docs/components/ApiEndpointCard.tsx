@@ -1,14 +1,18 @@
-import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import type { ApiEndpoint } from "../api-docs.types";
 import CodeExample from "./CodeExample";
 
 interface ApiEndpointCardProps {
   endpoint: ApiEndpoint;
+  isExpanded: boolean;
+  onExpandedChange: (isExpanded: boolean) => void;
 }
 
-const ApiEndpointCard = ({ endpoint }: ApiEndpointCardProps) => {
-  const [isExpanded, setIsExpanded] = useState(true);
+const ApiEndpointCard = ({
+  endpoint,
+  isExpanded,
+  onExpandedChange,
+}: ApiEndpointCardProps) => {
   const contentId = `endpoint-content-${endpoint.id}`;
 
   return (
@@ -20,7 +24,7 @@ const ApiEndpointCard = ({ endpoint }: ApiEndpointCardProps) => {
         type="button"
         aria-expanded={isExpanded}
         aria-controls={contentId}
-        onClick={() => setIsExpanded((expanded) => !expanded)}
+        onClick={() => onExpandedChange(!isExpanded)}
         className="flex w-full items-center justify-between gap-4 border-b border-border bg-gradient-to-r from-primary/5 to-transparent px-5 py-4 text-left transition hover:from-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary sm:px-6"
       >
         <span className="min-w-0 flex-1">

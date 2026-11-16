@@ -8,7 +8,7 @@ export const customerEndpoints: ApiEndpoint[] = [
     path: "/auth/register",
     title: "Autocadastro de cliente",
     summary: "Permite que o próprio cliente crie uma conta enviando o código da loja no corpo.",
-    access: "Público • limite de requisições",
+    access: "Público",
     details: [
       {
         label: "Body",
@@ -31,7 +31,7 @@ export const customerEndpoints: ApiEndpoint[] = [
     path: "/auth/login",
     title: "Entrar como cliente",
     summary: "Autentica um cliente no contexto da loja e inicia a sessão.",
-    access: "Público • limite de requisições",
+    access: "Público",
     details: [
       {
         label: "Body",
@@ -58,7 +58,7 @@ export const customerEndpoints: ApiEndpoint[] = [
     path: "/auth/forgot-password",
     title: "Solicitar recuperação de senha",
     summary: "Envia um link de recuperação para o cliente da loja.",
-    access: "Público • limite de requisições",
+    access: "Público",
     details: [
       {
         label: "Body",
@@ -79,7 +79,7 @@ export const customerEndpoints: ApiEndpoint[] = [
     path: "/auth/reset-password/validate",
     title: "Validar token de recuperação",
     summary: "Confirma se o token recebido por e-mail ainda pode ser usado.",
-    access: "Público • limite de requisições",
+    access: "Público",
     details: [
       {
         label: "Body",
@@ -100,7 +100,7 @@ export const customerEndpoints: ApiEndpoint[] = [
     path: "/auth/reset-password",
     title: "Redefinir senha",
     summary: "Define uma nova senha usando um token válido de recuperação.",
-    access: "Público • limite de requisições",
+    access: "Público",
     details: [
       {
         label: "Body",
@@ -143,7 +143,7 @@ export const customOrderEndpoint: ApiEndpoint = {
   path: "/email/custom-order",
   title: "Enviar nova mensagem de contato",
   summary: "Envia para a loja uma mensagem do cliente pelo formulário de contato do e-commerce.",
-  access: "Público • limite de requisições",
+  access: "Público",
   details: [
     {
       label: "Body",

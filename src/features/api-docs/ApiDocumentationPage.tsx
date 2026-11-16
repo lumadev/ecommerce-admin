@@ -1,5 +1,7 @@
-import { BookOpen, Tag } from "lucide-react";
+import { useState } from "react";
+import { BookOpen, ChevronsDown, ChevronsUp, Tag } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
+import { Button } from "@/shared/components/ui/button/button";
 import { API_BASE_URL, getApiEndpoints } from "./api-docs.data";
 import ApiEndpointCard from "./components/ApiEndpointCard";
 
@@ -10,6 +12,29 @@ interface AdminOutletContext {
 const ApiDocumentationPage = () => {
   const { merchantCode } = useOutletContext<AdminOutletContext>();
   const endpoints = merchantCode ? getApiEndpoints(merchantCode) : [];
+  const [expandedEndpointIds, setExpandedEndpointIds] = useState<Set<string>>(
+    () => new Set(),
+  );
+  const allEndpointsExpanded =
+    endpoints.length > 0 && endpoints.every(({ id }) => expandedEndpointIds.has(id));
+
+  const toggleAllEndpoints = () => {
+    setExpandedEndpointIds(
+      allEndpointsExpanded ? new Set() : new Set(endpoints.map(({ id }) => id)),
+    );
+  };
+
+  const handleEndpointExpandedChange = (endpointId: string, isExpanded: boolean) => {
+    setExpandedEndpointIds((currentExpandedIds) => {
+      const nextExpandedIds = new Set(currentExpandedIds);
+      if (isExpanded) {
+        nextExpandedIds.add(endpointId);
+      } else {
+        nextExpandedIds.delete(endpointId);
+      }
+      return nextExpandedIds;
+    });
+  };
 
   return (
     <main className="-mx-6 -my-6 min-h-full bg-background text-foreground">
@@ -25,7 +50,7 @@ const ApiDocumentationPage = () => {
                 API para seu e-commerce
               </h1>
               <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-200 sm:text-base">
-                Documentação dos endpoints públicos usados para integrar o e-commerce da sua loja.
+                Esta documentação mapeia apenas endpoints públicos usados para integrar o e-commerce da sua loja.
                 Os exemplos de requisição usam automaticamente o código da loja selecionada no painel.
               </p>
             </div>
@@ -73,16 +98,34 @@ const ApiDocumentationPage = () => {
 
         <div className="min-w-0">
           <section id="public-endpoints" className="mb-8 scroll-mt-6">
-            <div className="mb-4 flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Tag className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <div>
-                <h2 className="font-display text-xl font-bold">Endpoints públicos</h2>
-                <p className="text-sm text-muted-foreground">
-                  Consulte o catálogo, autentique clientes e acompanhe pedidos da loja.
-                </p>
+            <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <Tag className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <h2 className="font-display text-xl font-bold">Endpoints públicos</h2>
+                  <p className="text-sm text-muted-foreground">
+                    Consulte o catálogo, autentique clientes e acompanhe pedidos da loja.
+                  </p>
+                </div>
               </div>
+              {endpoints.length > 0 && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="w-fit shrink-0 gap-2"
+                  onClick={toggleAllEndpoints}
+                >
+                  {allEndpointsExpanded ? (
+                    <ChevronsUp className="h-4 w-4" aria-hidden="true" />
+                  ) : (
+                    <ChevronsDown className="h-4 w-4" aria-hidden="true" />
+                  )}
+                  {allEndpointsExpanded ? "Recolher todos" : "Expandir todos"}
+                </Button>
+              )}
             </div>
             {merchantCode ? (
               <div className="flex flex-col gap-2 rounded-xl border border-primary/15 bg-primary/5 p-4 sm:flex-row sm:items-center sm:gap-4">
@@ -112,7 +155,14 @@ const ApiDocumentationPage = () => {
 
           <div className="space-y-5">
             {endpoints.map((endpoint) => (
-              <ApiEndpointCard key={endpoint.id} endpoint={endpoint} />
+              <ApiEndpointCard
+                key={endpoint.id}
+                endpoint={endpoint}
+                isExpanded={expandedEndpointIds.has(endpoint.id)}
+                onExpandedChange={(isExpanded) =>
+                  handleEndpointExpandedChange(endpoint.id, isExpanded)
+                }
+              />
             ))}
           </div>
 
