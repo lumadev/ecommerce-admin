@@ -17,24 +17,24 @@ export const todoTasks: RoadmapTask[] = [
     note: "Backend e frontend.",
   },
   { id: "19", title: "Definir vínculo do Resend à loja" },
-  { id: "20", title: "Enviar email para cliente quando alterar o status do pedido" },
   {
     id: "17",
     title: "Definir fluxo de cobrança automatizada",
   },
   {
-    id: "10",
-    title: "Criar documentação dos endpoints do ecommerce backend",
-  },
-  {
     id: "11",
     title: "Lógica de observabilidade da aplicação",
   },
-  { id: "15", title: "Testar cadastro de variantes em produto" },
   { id: "16", title: "Pensar em forma de dar baixa em Produtos (físicos)" },
 ];
 
 export const doneTasks: RoadmapTask[] = [
+  { id: "20", title: "Enviar email para cliente quando alterar o status do pedido" },
+  {
+    id: "21",
+    title: "Criar documentação dos endpoints do ecommerce backend",
+  },
+  { id: "15", title: "Testar cadastro de variantes em produto" },
   {
     id: "4",
     title: "Cadastrar variante \"Código\" para a loja Mili",

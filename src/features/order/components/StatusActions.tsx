@@ -100,7 +100,7 @@ export const StatusActions = ({
 
   return (
     <>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         <Badge
           variant="outline"
           className={`shrink-0 whitespace-nowrap text-xs ${OrderStatusColor[status]}`}
