@@ -44,3 +44,10 @@ por domínio. Rotas e inicialização da aplicação ficam, respectivamente, em
 `src/routes` e `src/App.tsx`; componentes compartilhados ficam em `src/shared`,
 e integrações externas reutilizadas por diferentes funcionalidades ficam em
 `src/infra` (por exemplo, cliente HTTP e upload de mídias).
+
+Listagens paginadas podem usar `usePagination` em `src/hooks/usePagination.ts`.
+O hook recebe uma função estável `fetchPage(page, limit, signal)` que retorna
+`{ items, total }` e deve repassar o limite e o sinal de cancelamento à API.
+Ele oferece página, total de páginas, carregamento, erro e atualização. Os
+tamanhos padrão da interface e da API ficam em
+`src/shared/pagination.constants.ts`.
